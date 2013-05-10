@@ -1,0 +1,700 @@
+﻿		body 
+		{
+			background: url("/Content/sliki/alfa7.png"); 
+            	display:block;
+			width:1024px;
+			height:100%;
+			margin:0px auto;
+			background:white;
+			border-left:solid 1px #c7c7c7;
+			border-right:solid 1px #c7c7c7;
+			box-shadow:2px 5px 7px #a2a2a2, -2px 5px 7px #a2a2a2;
+		}
+		#layer_1
+		{
+			position:absolute;
+			top:0px;
+			left:0px;
+			width:100%;
+			height:100%;
+			z-index:10;
+		}
+		#mid_1024_px
+		{
+			display:block;
+			width:1024px;
+			height:100%;
+			margin:0px auto;
+			background:white;
+			border-left:solid 1px #c7c7c7;
+			border-right:solid 1px #c7c7c7;
+			box-shadow:2px 5px 7px #a2a2a2, -2px 5px 7px #a2a2a2;
+		}
+		#header
+		{
+			display:block;
+			width:1024px;
+			height:140px;
+			margin:0px;
+			background:url('/Content/sliki/header_bg_6.png');
+		}
+		#header_top
+		{
+			display:block;
+			width:1024px;
+			height:80px;
+		}
+		#logo
+		{
+			display:inline-block;
+			float:left;
+			width:141px;
+			height:60px;
+			margin: 25px 0px 0px 30px;
+		}
+		#logo img
+		{
+			border: none;
+		}
+		#general_menu
+		{
+			position:absolute;
+			top:50px;
+			display:block;
+			width:100%;
+			margin:auto;
+		}
+		#general_menu_mid_600px
+		{
+			display:block;
+			width:600px;
+			height:25px;
+			margin:auto;
+		}
+		#general_menu_content
+		{
+			display:inline-block;
+			float:right;
+			width:600px;
+			height:22px;
+		}
+		#login
+		{
+			display:inline-block;
+			float:right;
+			width:auto;
+			height:20px;
+		}
+		#login ul
+		{
+			/*dipslay:inline-block;*/
+			float:right;
+			width:200px;
+			list-style-type:none;
+			margin:0px;
+			padding:0px;
+		}
+		#login ul li
+		{
+			display:inline-block;
+			float:left;
+		}
+		#login ul li a
+		{
+			display:block;
+			width:99px;
+			height:20px;
+			line-height:20px;
+			text-decoration:none;
+			background:#8d5e4f;
+			color:#e7e7e7;
+			border-left:solid 1px #f5c77d;
+			font-family:"Segoe UI";
+			font-size:8pt;
+			font-weight:normal;
+			text-align:center;
+		}
+		#login ul li a:hover
+		{
+			color:#337ba5;
+		}
+		#searchbox
+		{
+			display:inline-block;float:right;
+			width:auto;
+			height:20px;
+			margin:0px;
+			border-top-left-radius:10px;
+			border-bottom-left-radius:10px;
+			background:transparent;
+		}
+		#searchbox_icon
+		{
+			display:block;
+			float:left;
+			width:27px;
+			height:20px;
+			border-top-left-radius:10px;
+			border-bottom-left-radius:10px;
+			background:#90aec0;
+		}
+		#searchbox_icon img
+		{
+			width:18px;
+			height:18px;
+			float:right;
+			margin-right:2px;
+			margin-top:1px;
+			border:none;
+		}
+		#searchbox input
+		{
+			display:block;
+			float:left;
+			width:100px;
+			height:16px;
+			margin:0px;
+			line-height:16px;
+			border:solid 1px #bda17f;
+			font-family:verdana,sans-serif;
+			font-size:7pt;
+			color:#676767;
+		}
+		#searchbox input:active
+		{	
+			border:none;
+		}
+		#contact
+		{
+			display:inline-block;
+			float:right;
+		}
+		#contact ul
+		{
+			width:140px;
+			list-style-type:none;
+			margin:0px;
+			padding:0px;
+		}
+		#contact ul li
+		{
+			display:inline-block;
+			float:left;
+		}
+		#contact ul li a
+		{
+			display:block;
+			width:65px;
+			height:20px;
+			line-height:20px;
+			text-decoration:none;
+			background:transparent;
+			color:#747474;
+			font-family:"Segoe UI";
+			font-size:8pt;
+			font-weight:bold;
+		}
+		#contact ul li a:hover
+		{
+			color:#337ba5;
+		}
+		#layer_2
+		{
+			position:absolute;
+			top:0px;
+			left:0px;
+			width:100%;
+			height:100%;
+			z-index:20;
+			overflow:hidden;
+		}
+		#products_menu
+		{
+			position:absolute;
+			top:115px;
+			display:block;
+			width:100%;
+			height:20px;
+			background:transparent;
+			margin:0px;
+			padding:0px;
+            left:0;
+		}
+		#products_menu ul
+		{
+			display:block;
+			padding:0px;
+			margin:0px auto;
+			width:909px;
+			height:20px;
+			list-style-type:none;
+		}
+		#products_menu ul li
+		{
+			display:inline;
+			float:left;	
+			height:20px;
+		}
+		#manuLink
+		{
+			display:block;
+			float:right;
+			width:90px;
+			height:20px;
+			line-height:20px;
+			background:#90aec0; 
+			color:#f5f5f5;
+			text-decoration:none;
+			font-family:"Segoe UI";
+			font-size:8pt;
+			text-align:center;
+			border-left:solid 1px #f5c77d;
+		}
+		#manuLink:hover
+		{
+			background:#d44d22;
+		}
+		#products_menu ul li:first-child a
+		{
+			border-left:none;
+		}
+		#main_content
+		{
+			display:block;
+			width:1024px;
+			min-height:574px;
+		}
+		#product1
+		{
+			position:relative;
+			top:140px;
+			left:120px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:1;
+		}
+		#product2
+		{
+			position:relative;
+			top:120px;
+			left:180px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:2;
+		}
+		#product3
+		{
+			position:relative;
+			top:-80px;
+			left:380px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
+
+/*==============products_subMenu=================*/
+
+#products_submenu
+		{
+			position:absolute;
+			top:320px;
+			left:40px;
+			display:block;
+			width:200px;
+			height:250px;
+			border:solid 1px #c2c2c2;
+			background:transparent;
+		}
+        #products_submenu h2
+		{
+			display:block;
+			width:auto;
+			height:25px;
+			line-height:25px;
+			font-family:tahoma,sans-serif;
+			font-size:12pt;
+			font-weight:bold;
+			background:transparent;
+			color:#6d3e2f;
+			opacity:0.6;
+			text-align:center; 
+		}
+		#products_submenu h3
+		{
+			display:block;
+			width:auto;
+			height:25px;
+			line-height:25px;
+			font-family:tahoma,sans-serif;
+			font-size:12pt;
+			font-weight:bold;
+			background:transparent;
+			color:#6d3e2f;
+			opacity:0.6;
+			text-align:center; 
+		}
+		#products_submenu ul
+		{
+			display:block;
+			width:100%;
+			height:auto;
+			margin: 10px 0px 0px 10px;
+			padding:0px;
+			list-style-type:none;
+		}
+		#products_submenu ul li
+		{
+			display:block;
+			width:auto;
+			/*height:23px;*/
+			margin:0px;
+		}
+		#products_submenu ul li a
+		{
+			display:block;
+			width:180px;
+            text-decoration:none;
+			/*height:22px;*/
+			margin:0px;
+			line-height:22px;
+			font-family:"Segoe UI",sans-serif;
+			font-size:9pt;
+			font-weight:normal;
+			background:transparent;
+			color:#034e7b;
+			text-align:center;
+			border-bottom:solid 1px #c2c2c2;
+		}
+		#products_submenu ul li a:hover
+		{
+			background:#c7c7c7;
+			
+		}
+		#products_submenu
+		{
+			position:absolute;
+			top:280px;
+			left:20px;
+			display:block;
+			width:200px;
+			height:250px;
+			border:solid 0px #c2c2c2;
+			background:transparent;
+		}
+		#products_submenu h3
+		{
+			display:block;
+			width:auto;
+			height:25px;
+			line-height:25px;
+			font-family:tahoma,sans-serif;
+			font-size:10pt;
+			font-weight:bold;
+			background:transparent;
+			color:#034e7b;
+			text-align:center;
+		}
+		#products_submenu ul
+		{
+			display:block;
+			width:100%;
+			height:auto;
+			margin: 10px 0px 0px 10px;
+			padding:0px;
+			list-style-type:none;
+		}
+		#products_submenu ul li
+		{
+			display:block;
+			width:auto;
+			/*height:23px;*/
+			margin:0px;
+		}
+		#products_submenu ul li a
+		{
+			display:block;
+			width:180px;
+			/*height:22px;*/
+			margin:0px;
+			/*line-height:22px;*/
+			font-family:"Segoe UI",sans-serif;
+			font-size:9pt;
+			font-weight:normal;
+			background:transparent;
+			color:#034e7b;
+			text-align:center;
+			border-bottom:solid 1px #c2c2c2;
+		}
+		#products_submenu ul li a:hover
+		{
+			background:#c7c7c7;
+			
+		}
+
+
+/*==============end_products_subMenu=================*/
+
+
+/*=================product slide stype================*/
+        #products
+		{
+			display:block;
+			width:990px;
+			height:490px;
+			margin:50px auto 0px auto;
+		}
+		#products_scroll_left
+		{
+			display:inline_block;
+			float:left;
+			width:100px;
+			height:400px;
+		}
+		#products_scroll_right
+		{
+			display:inline_block;
+			float:left;
+			width:100px;
+			height:400px;
+		}
+		#scroll_left 
+		{
+			display:block;
+			width:30px;
+			height:45px;
+			margin:230px auto 0px auto;
+		}
+		#scroll_right
+		{
+			display:block;
+			width:45px;
+			height:45px;
+			margin:230px auto 0px auto;
+		}
+		#scroll_left img,#scroll_right img
+		{
+			border:none;
+		}
+		#products_window
+		{
+			display:inline_block;
+			float:left;
+			width:790px;
+			height:490px; 
+			overflow:hidden;border:solid 0px crimson;
+			margin:0px auto 0px auto;
+			font-family:"Segoe UI",sans-serif;
+			font-size:8pt;
+			font-weight:normal;
+			color:#809eb0;
+			line-height:12px;
+		}
+		#products_selection
+		{
+			position:relative;
+			display:block;
+			width:7900px;
+			margin:0px;
+			height:490px; 			
+		}
+		.products_frame
+		{
+			display:inline-block;
+			float:left;
+			width:750px;
+			height:490px;
+			margin:20px 0px 20px 20px;
+		}
+		.frame_title
+		{
+			display:block;
+			width:750px;
+			height:35px;
+		}
+		.products_group
+		{
+			display:block;
+			width:750px;
+			height:440px;
+		}
+		#products_selection h3
+		{
+			display:block;
+			width:auto;
+			height:25px;
+			float:left;
+			text-align:left;
+			margin:0px 25px 0px 0px;
+			font-family:verdana,sans-serif;
+			font-size:11pt;
+			font-weight:bold;
+			color:#214d37;
+			opacity:0.4;
+		}
+		.product
+		{
+			position:relative;
+			display:block;
+			float:left;
+			width:146px;
+			margin-left:2px;
+			margin-top:2px;
+			height:196px;
+			border:solid 1px #d7d7d7;
+		}
+		.product_image
+		{
+			display:block;
+			width:90px;
+			height:90px;
+			margin:25px auto 0px auto;
+		}
+		.product_image img
+		{
+			width:90px;
+			height:90px;
+			border:none;
+		}
+		.product_title
+		{
+			display:block;
+			width:120px;
+			height:15px;
+			margin:25px auto 0px auto;
+			font-weight:bold;
+			text-align:center;
+		}
+		.product_description
+		{
+			display:block;
+			width:120px;
+			height:50px;
+			margin:0px auto 0px auto;
+			font-weight:normal; 
+			opacity:0.9;
+			text-align:center;
+		}
+		
+ /*=====================end slide products style===============*/
+
+		#annyer
+		{	
+			position:relative;
+			top:-220px;
+			left:720px;
+			width:158px;
+			height:200px;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
+		#footer
+		{
+		
+			bottom:0px;
+			display:block;
+			width:1024px;
+			height:60px;
+			border-top:dotted 1px #a2a2a2;
+			background:url('/Content/sliki/footer_bg.jpg');
+		}
+
+/*=======drop_down_list============*/
+
+#show_dropdown_div {
+    position: absolute;
+    top: 20px;
+    display:none;
+}
+
+#manuLink:hover  + #show_dropdown_div{
+	background:#d44d22;
+    display:block;
+}
+
+.item_0 {
+    left: 346px !important;
+    width:710px  !important;
+    background:#d44d22;
+}
+.item_1 {
+    left: 437px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+.item_2 {
+    left: 528px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+.item_3 {
+    left: 619px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+.item_4 {
+    left: 519px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+.item_5 {
+    left: 619px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+.item_6 {
+    left: 482px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+.item_7 {
+    left: 573px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+.item_8 {
+    left: 664px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+ .item_9 {
+    left: 755px !important;
+    width:500px !important;
+    background:#d44d22;
+}
+
+#show_dropdown_div:hover {
+display:block !important;
+}
+.companyName {
+    float: left;
+    margin-right: 10px;
+    margin-left: 10px;
+    font-family: Segoe UI;
+    font-size: 8pt;
+    text-decoration: none;
+    color: white;
+    line-height: 32px;
+}
+.companyName:hover {
+    color:#90aec0;
+}
+
+/*=============end_drop_down_lists==============*/
