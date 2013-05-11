@@ -6,6 +6,14 @@
     <edmx:StorageModels>
     <Schema Namespace="BelinaModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="BelinaModelStoreContainer">
+          <EntitySet Name="Administrator" EntityType="BelinaModel.Store.Administrator" store:Type="Tables" store:Schema="dbo" store:Name="Administrator">
+            <DefiningQuery>SELECT 
+      [Administrator].[user_id] AS [user_id], 
+      [Administrator].[user_name] AS [user_name], 
+      [Administrator].[user_pass] AS [user_pass], 
+      [Administrator].[user_email] AS [user_email]
+      FROM [dbo].[Administrator] AS [Administrator]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Attributes" EntityType="BelinaModel.Store.Attributes" store:Type="Tables" store:Schema="dbo" store:Name="Attributes">
             <DefiningQuery>SELECT 
       [Attributes].[company_id] AS [company_id], 
@@ -22,6 +30,21 @@
           <EntitySet Name="Type" EntityType="BelinaModel.Store.Type" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Type_Company" EntityType="BelinaModel.Store.Type_Company" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'Belina.dbo.Administrator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="user_name" />
+            <PropertyRef Name="user_pass" />
+            <PropertyRef Name="user_email" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="user_name" Type="nvarchar" Nullable="false" MaxLength="250" />
+          <Property Name="user_pass" Type="nvarchar" Nullable="false" MaxLength="250" />
+          <Property Name="user_email" Type="nvarchar" Nullable="false" MaxLength="250" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Belina.dbo.Attributes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
@@ -68,6 +91,9 @@
           <Property Name="type_id" Type="int" />
           <Property Name="attribute_id" Type="int" />
           <Property Name="product_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="product_description" Type="nvarchar" MaxLength="250" />
+          <Property Name="product_promotion" Type="nvarchar" MaxLength="250" />
+          <Property Name="product_discount" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -109,6 +135,7 @@
           <EntitySet Name="sysdiagrams" EntityType="BelinaModel.sysdiagrams" />
           <EntitySet Name="Type" EntityType="BelinaModel.Type" />
           <EntitySet Name="Type_Company" EntityType="BelinaModel.Type_Company" />
+          <EntitySet Name="Administrator" EntityType="BelinaModel.Administrator" />
         </EntityContainer>
         <EntityType Name="Attributes">
           <Key>
@@ -153,6 +180,9 @@
           <Property Name="type_id" Type="Int32" />
           <Property Name="attribute_id" Type="Int32" />
           <Property Name="product_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="product_description" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="product_promotion" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="product_discount" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -180,6 +210,18 @@
           <Property Name="company_id" Type="Int32" />
           <Property Name="type_id" Type="Int32" />
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="user_name" />
+            <PropertyRef Name="user_pass" />
+            <PropertyRef Name="user_email" />
+          </Key>
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="user_name" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="user_pass" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="user_email" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -225,6 +267,9 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="BelinaModel.Products">
               <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="product_discount" ColumnName="product_discount" />
+                <ScalarProperty Name="product_promotion" ColumnName="product_promotion" />
+                <ScalarProperty Name="product_description" ColumnName="product_description" />
                 <ScalarProperty Name="product_name" ColumnName="product_name" />
                 <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="class_id" ColumnName="class_id" />
@@ -261,6 +306,16 @@
                 <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="type_id" ColumnName="type_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Administrator">
+            <EntityTypeMapping TypeName="BelinaModel.Administrator">
+              <MappingFragment StoreEntitySet="Administrator">
+                <ScalarProperty Name="user_email" ColumnName="user_email" />
+                <ScalarProperty Name="user_pass" ColumnName="user_pass" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
