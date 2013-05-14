@@ -1,16 +1,15 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Belina</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
-        <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
-    	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-        <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" type="text/css" />
-@*    @Styles.Render("~/Content/css")
+    <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" type="text/css" />
+    @*    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")*@
 </head>
 <body>
@@ -26,12 +25,13 @@
             <div id="products_submenu">
                 <h2></h2>
                 <h3></h3>
+
                 <ul>
                 </ul>
             </div>
         </div>
     </div>
-    <div id="main_content">
+    <div id="main_content" class="cf">
         @RenderBody()
     </div>
     <div id="footer"></div>
@@ -43,98 +43,126 @@
             var n;
             var dinamycLeft = 347;
             var x;
+            var k;
+            var className, companyName, typeName, attributeName;
             $.ajax({
                 url: "/Home/getClasses",
                 type: "GET",
                 data: {},
                 success: function (result) {
+
                     for (n = 0; n < result.length; n++) {
-                        $('.classesName').append('<li><a href="#" id="manuLink" onmouseover="showFirm( \'' + result[n].class_name + '\',' + n + ')" onmouseout="emptyFirm(' + n + ')" class="classesLink" >' + result[n].class_name + '</a>'
-                            + '<div id="show_dropdown_div" class="item_' + n + '" onmouseout="emptyFirm(' + n + ')"></div></li>');
+                        $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes( \'' + result[n].class_name + '\')"'
+                            + 'class="classesLink" >' + result[n].class_name + '</a></li>');
                     }
                 }
             });
+
             //==========================slide products script======================
 
 
             $("#prebaraj").animate({ right: "-270px" }, 0);
             //==================end slide products script================
         });
-        function showFirm(className, classId) {
-            var companyName;
-            $.ajax({
-                url: "/Home/getCompanies",
-                type: "GET",
-                data: { productName: className },
-                success: function (result) {
-                    for (x = 0; x < result.length; x++) {
-                        companyName = result[x];
-                        $('.item_' + classId).append('<a href="#" class="companyName" class="companyName" onclick="showSubmenu(\'' + className + '\',\'' + companyName + '\')">' + companyName + '</a>');
-                    }
-                }
-            });
-        }
-        function emptyFirm(classId) {
-            if ($('.item_' + classId).is(":hover") == false) {
-                $('.item_' + classId).empty();
-            }
-        }
 
-        function showSubmenu(className, companyName) {
-            $('#main_content').empty();
-            $('#products_submenu ul').empty();
+        function showTypes(className) {
             $('#products_submenu h2').empty();
-            $('#products_submenu h2').append(companyName);
             $('#products_submenu h3').empty();
-            $('#products_submenu h3').append(className);
+            $('#products_submenu ul').empty();
+            $('#products_submenu #dropDownAttributes').remove();
+            $('#main_content').empty();
+            $('#main_content').append('<div id="left_cube"><div id="top_cube">Најбарани</div><div id="bottom_cube">Промоција</div></div><div id="right_cube"></div>');
             var typeName;
             $.ajax({
                 url: "/Home/getTypes",
                 type: "GET",
-                data: { className: className, companyName: companyName },
+                data: { className: className },
                 success: function (result) {
                     for (x = 0; x < result.length; x++) {
                         typeName = result[x];
-
-                        $('#products_submenu ul').append('<li><a href="#" onclick="showProducts(\'' + className + '\',\'' + companyName + '\',\'' + typeName + '\')">' + typeName + '</a></li>');
+                        $('#right_cube').append('<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + className + '\',\'' + typeName + '\')">'
+                             + '<div style="width:90px;height:80px;margin-right:10px;margin-top:5px;margin-bottom:5px;float:left;text-align:center">'
+                             + '<div style="margin: auto;width: 70px;height: 40px;background-color:rgb(' + Math.floor((Math.random() * 255) + 3) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 2) + ')">'
+                             + '</div>' + '<p style="font-size: 13px;margin-bottom: 0px;margin-top: 0px;">' + typeName + '</p>' + '</div></a>');
                     }
                 }
             });
         }
+        function showCompanies(className, typeName) {
+            $('#main_content').empty();
+            $('#products_submenu ul').empty();
+            $('#products_submenu h2').empty();
+            $('#products_submenu h3').empty();
+            $('#products_submenu h2').append(className);
+            $('#products_submenu h3').append(typeName);
+            var companyName;
+            $.ajax({
+                url: "/Home/getCompanies",
+                type: "GET",
+                data: { className: className, typeName: typeName },
+                success: function (result) {
+                    for (x = 0; x < result.length; x++) {
+                        companyName = result[x];
+                        $('#products_submenu ul').append('<li><a href="#" onclick="showProducts(\'' + className + '\',\'' + companyName + '\',\'' + typeName + '\',\'' + 'false' + '\')">' + companyName + '</a></li>');
+                    }
+                }
+            });
+        }
+        //function emptyFirm(classId) {
+        //    if ($('.item_' + classId).is(":hover") == false) {
+        //        $('.item_' + classId).empty();
+        //    }
+        //}
 
-        function showProducts(className, companyName, typeName) {
+
+
+        function showProducts(className, companyName, typeName, attributeName) {
+            className = className;
+            companyName = companyName;
+            typeName = typeName;
             $('#main_content').empty();
             var product = '<div id="products">';
             var products_scroll_left = '<div id="products_scroll_left">';
-            var scroll_left = '<div id="scroll_left"><img  src="/Content/sliki/green-arrow-left-2.png"></img></div>';
+            var scroll_left = '<a href="#" id="scroll_left"><img src="/Content/sliki/green-arrow-left-2.png"></img></a>';
             var products_scroll_right = ' <div id="products_scroll_right">';
-            var scroll_right = '  <div id="scroll_right"><img src="/Content/sliki/green-arrow-right-2.png"></img></div>'
+            var scroll_right = '  <a href="#" id="scroll_right"><img src="/Content/sliki/green-arrow-right-2.png"></img></a>'
             var closeDiv = '</div>';
             var products_window = '<div id="products_window">';
             var products_selection = '<div id="products_selection">';
 
             var left = products_scroll_left + scroll_left + closeDiv;
             var right = products_scroll_right + scroll_right + closeDiv;
-
+            var dropDownAttributes = '<select id="dropDownAttributes"></select>';
             $('#main_content').append(product + left + products_window + products_selection + closeDiv + closeDiv + right + closeDiv);
+           
 
             $.ajax({
                 url: "/Home/getProducts",
                 type: "GET",
-                data: { className: className, companyName: companyName, typeName: typeName },
+                data: { className: className, companyName: companyName, typeName: typeName, attributeName: attributeName },
                 success: function (result) {
+                    debugger;
+                    if (attributeName == 'false') {
+                        $('#products_submenu #dropDownAttributes').remove();
+                        $('#products_submenu').append(dropDownAttributes);
+                        for (k = 0; k < result.attributes.length; k++) {
+                            $('#dropDownAttributes').append('<option value=' + result.attributes[k].replace(" ", "_") + '>' + result.attributes[k] + '</option>');
+                        }
+                    }
+                    if (result.products.length > 10) {
+                        $('#scroll_right').css('display', 'block');
+                    }
                     var count_next_container = -1;
-                    for (x = 0; x < result.length; x++) {
-                        debugger;
+                    for (x = 0; x < result.products.length; x++) {
                         if (x == 0 || ((x / 10) % 1 != 0) == false) {
-
                             count_next_container++;
+                           // $('#products_selection').empty();
                             $('#products_selection').append('<div class="products_frame"><div class="frame_title">'
                             + '<h3>' + typeName + '</h3>'
                             + '</div><div id="prod_container_' + count_next_container + '" class="products_group">'
                             + '<div class="product"><div class="product_image">'
                             + '<img src="/Content/sliki/kraft/vnatresni/Superior.jpg"></img></div>'
-                            + '<div class="product_title">' + result[x] + '</div>'
+                            + '<div class="product_title">' + result.products[x] + '</div>'
                             + '<div class="product_description"></div>'
                             + '</div>'
                             + '</div>');
@@ -143,28 +171,20 @@
                             var count = count_next_container.toString();
                             $('#prod_container_' + count).append('<div class="product"><div class="product_image">'
                             + '<img src="/Content/sliki/kraft/vnatresni/Superior.jpg"></img></div>'
-                            + '<div class="product_title">' + result[x] + '</div>'
+                            + '<div class="product_title">' + result.products[x] + '</div>'
                             + '<div class="product_description"></div>');
                         }
                     }
                     setScrolling();
+                    $('#dropDownAttributes').change(function () {
+                        $('#main_content').empty();
+                        var attributeValue = $("#dropDownAttributes option:selected").text();
+                        showProducts(className, companyName, typeName, attributeValue);
+                        attributeName = attributeValue;
+                    });
                 }
             });
         }
-
-        //function proba() {
-        //    alert(1);
-        //    if (frame_index < frame_length) {
-        //        alert(1);
-        //        position = "-=770px";
-        //        $('#products_selection').animate(
-        //            { left: position },
-        //            800,
-        //            'easeInOutQuint'
-        //        );
-        //        frame_index++;
-        //    }
-        //}
 
         function setScrolling() {
             var hidden = true;
@@ -197,7 +217,7 @@
             });
 
             $("#scroll_right").click(function () {
-                debugger;
+                $('#scroll_left').css('display', 'block');
                 if (frame_index < frame_length) {
                     position = "-=770px";
                     $('#products_selection').animate(

@@ -20,5 +20,8 @@ namespace Belina.Models
         public Nullable<int> type_id { get; set; }
         public Nullable<int> attribute_id { get; set; }
         public int product_id { get; set; }
+        public string product_description { get; set; }
+        public string product_promotion { get; set; }
+        public string product_discount { get; set; }
     }
 }

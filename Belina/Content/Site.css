@@ -235,7 +235,7 @@
 			float:left;	
 			height:20px;
 		}
-		#manuLink
+		#menuLink
 		{
 			display:block;
 			float:right;
@@ -250,7 +250,7 @@
 			text-align:center;
 			border-left:solid 1px #f5c77d;
 		}
-		#manuLink:hover
+		#menuLink:hover
 		{
 			background:#d44d22;
 		}
@@ -341,7 +341,7 @@
 		{
 			display:block;
 			width:auto;
-			height:25px;
+			height:40px;
 			line-height:25px;
 			font-family:tahoma,sans-serif;
 			font-size:12pt;
@@ -477,14 +477,14 @@
 		}
 		#scroll_left 
 		{
-			display:block;
+			display:none;
 			width:30px;
 			height:45px;
 			margin:230px auto 0px auto;
 		}
 		#scroll_right
 		{
-			display:block;
+			display:none;
 			width:45px;
 			height:45px;
 			margin:230px auto 0px auto;
@@ -592,7 +592,13 @@
 			opacity:0.9;
 			text-align:center;
 		}
-		
+
+#dropDownAttributes {
+position: absolute;
+top: -120px;
+left: 1000px;
+
+}
  /*=====================end slide products style===============*/
 
 		#annyer
@@ -616,7 +622,7 @@
 			background:url('/Content/sliki/footer_bg.jpg');
 		}
 
-/*=======drop_down_list============*/
+/*=======drop_down_list============
 
 #show_dropdown_div {
     position: absolute;
@@ -624,7 +630,7 @@
     display:none;
 }
 
-#manuLink:hover  + #show_dropdown_div{
+#menuLink:hover  + #show_dropdown_div{
 	background:#d44d22;
     display:block;
 }
@@ -697,4 +703,54 @@ display:block !important;
     color:#90aec0;
 }
 
-/*=============end_drop_down_lists==============*/
+=============end_drop_down_lists==============*/
+#left_cube {
+   width:604px;
+   min-height:574px;
+   float:left
+
+}
+
+#top_cube {
+    width:604px;
+    min-height:287px;
+    float:left;
+}
+#bottom_cube {
+    width:604px;
+    min-height:287px;
+    float:left;
+    background-color: rgba(128, 128, 128, 0.22);
+}
+#right_cube {
+    width:420px;
+    height:574px;
+    float:left;
+    overflow:auto;
+}
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}
