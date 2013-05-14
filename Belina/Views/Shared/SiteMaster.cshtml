@@ -37,14 +37,15 @@
     <div id="footer"></div>
 
     <script type="text/javascript">
-
+        var className, companyName, typeName, attributeName;
+        var n;
+        var dinamycLeft = 347;
+        var x;
+        var k;
         var companyList = new Array();
         $(document).ready(function () {
-            var n;
-            var dinamycLeft = 347;
-            var x;
-            var k;
-            var className, companyName, typeName, attributeName;
+            
+            
             $.ajax({
                 url: "/Home/getClasses",
                 type: "GET",
@@ -57,12 +58,7 @@
                     }
                 }
             });
-
-            //==========================slide products script======================
-
-
-            $("#prebaraj").animate({ right: "-270px" }, 0);
-            //==================end slide products script================
+           
         });
 
         function showTypes(className) {
@@ -88,6 +84,7 @@
                 }
             });
         }
+
         function showCompanies(className, typeName) {
             $('#main_content').empty();
             $('#products_submenu ul').empty();
@@ -108,18 +105,13 @@
                 }
             });
         }
-        //function emptyFirm(classId) {
-        //    if ($('.item_' + classId).is(":hover") == false) {
-        //        $('.item_' + classId).empty();
-        //    }
-        //}
 
+        function showProducts(classNameF, companyNameF, typeNameF, attributeNameF) {
+            debugger;
+            className = classNameF;
+            companyName = companyNameF;
+            typeName = typeNameF;
 
-
-        function showProducts(className, companyName, typeName, attributeName) {
-            className = className;
-            companyName = companyName;
-            typeName = typeName;
             $('#main_content').empty();
             var product = '<div id="products">';
             var products_scroll_left = '<div id="products_scroll_left">';
@@ -134,17 +126,16 @@
             var right = products_scroll_right + scroll_right + closeDiv;
             var dropDownAttributes = '<select id="dropDownAttributes"></select>';
             $('#main_content').append(product + left + products_window + products_selection + closeDiv + closeDiv + right + closeDiv);
-           
-
             $.ajax({
                 url: "/Home/getProducts",
                 type: "GET",
-                data: { className: className, companyName: companyName, typeName: typeName, attributeName: attributeName },
+                data: { className: classNameF, companyName: companyNameF, typeName: typeNameF, attributeName: attributeNameF },
                 success: function (result) {
                     debugger;
-                    if (attributeName == 'false') {
+                    if (attributeNameF == 'false') {
                         $('#products_submenu #dropDownAttributes').remove();
                         $('#products_submenu').append(dropDownAttributes);
+                        $('#dropDownAttributes').append('<option value="all">Сите</option>');
                         for (k = 0; k < result.attributes.length; k++) {
                             $('#dropDownAttributes').append('<option value=' + result.attributes[k].replace(" ", "_") + '>' + result.attributes[k] + '</option>');
                         }
@@ -176,12 +167,7 @@
                         }
                     }
                     setScrolling();
-                    $('#dropDownAttributes').change(function () {
-                        $('#main_content').empty();
-                        var attributeValue = $("#dropDownAttributes option:selected").text();
-                        showProducts(className, companyName, typeName, attributeValue);
-                        attributeName = attributeValue;
-                    });
+                  
                 }
             });
         }
@@ -332,6 +318,13 @@
                 );
             });
         }
+        $('#dropDownAttributes').live('change', function (event) {
+            $('#main_content').empty();
+            var attributeValue = $("#dropDownAttributes option:selected").text();
+            showProducts(className, companyName, typeName, attributeValue);
+            attributeName = attributeValue;
+        });
+       
     </script>
 </body>
 </html>

@@ -49,7 +49,7 @@ namespace Belina.Controllers
 
         public JsonResult getProducts(string className, string companyName, string typeName, string attributeName)
         {
-            if (attributeName.Equals("false"))
+            if (attributeName.Equals("false") || attributeName.Equals("Сите"))
             {
                 var products = (from company in db.Company
                                 from classes in db.Class
