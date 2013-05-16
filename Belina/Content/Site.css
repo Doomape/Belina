@@ -1,7 +1,7 @@
 ﻿		body 
 		{
 			background: url("/Content/sliki/alfa7.png"); 
-            	display:block;
+            display:block;
 			width:1024px;
 			height:100%;
 			margin:0px auto;
@@ -9,6 +9,7 @@
 			border-left:solid 1px #c7c7c7;
 			border-right:solid 1px #c7c7c7;
 			box-shadow:2px 5px 7px #a2a2a2, -2px 5px 7px #a2a2a2;
+            overflow:hidden;
 		}
 		#layer_1
 		{
@@ -448,8 +449,6 @@
 			background:#c7c7c7;
 			
 		}
-
-
 /*==============end_products_subMenu=================*/
 
 
@@ -601,6 +600,136 @@ left: 1000px;
 }
  /*=====================end slide products style===============*/
 
+
+ /*======================search form======================*/
+ 		#prebaraj
+		{
+			position:absolute;
+			right:0px;
+			top:280px;
+			width:auto;
+			height:auto;
+		}
+		#tab_icon
+		{
+			display:block;
+			float:left;
+			width:24px;
+			height:195px;
+			background:#e5e5e5;
+			border:solid 1px #c7c7c7;
+			border-top-left-radius: 8px;
+			border-bottom-left-radius: 10px;
+			box-shadow: -2px 5px 7px #a2a2a2;
+		}
+		#tab_icon img
+		{
+			display:block;
+			margin-top:10px;
+			margin-left:4px;
+			border:none;
+		}
+		#prebaraj form
+		{
+			display:block;
+			float:right;
+			width:auto;
+			height:auto;
+			padding:0px;
+			margin:0px;
+			font-family:tahoma,sans-serif;
+		}
+		#prebaraj fieldset
+		{
+			width:268px;
+			height:195px;
+			border:solid 1px #c7c7c7;
+			background:#efefef;
+			padding:0px;
+			margin:0px;
+			border:solid 1px #c7c7c7;
+			border-left:none;
+			box-shadow: 0px 5px 7px #a2a2a2;
+		}
+		#prebaraj h3
+		{
+			display:block
+			width:auto;
+			height:22px;
+			padding:0px 5px 0px 5px;
+			margin:0px auto 25px auto;
+			font-family:tahoma,sans-serif;
+			font-size:8pt;
+			line-height:22px;
+			background:#d7d7d7;
+			color:#034e7b;
+			font-weight:bold;
+			text-align:center;
+			border-top:solid 1px #c7c7c7;
+		}
+		#prebaraj label
+		{
+			display:block;
+			float:left;
+			width:95px;
+			height:14px;
+			line-height:14px;
+			margin:5px 0px 0px 25px;
+			font-size:8pt;
+			color:#034e7b;
+		}
+		#prebaraj select
+		{
+			display:inline-block;
+			float:left;
+			font-size:8pt;
+			width:125px;
+			height:18px;
+			line-height:12px;
+			margin:2px 0px 0px 0px;
+			text-align:center;
+			color:#c7c7c7;
+			border:solid 1px #d7d7d7;
+		}
+		#prebaraj input
+		{
+			display:inline-block;
+			float:left;
+			font-size:8pt;
+			width:105px;
+			height:14px;
+			line-height:14px;
+			margin:2px 0px 0px 0px;
+			text-align:left;
+			color:#c7c7c7;
+			background:white;
+			border:solid 1px #d7d7d7;
+		}
+		#select_spacing
+		{
+			display:block;
+			width:248px;
+			height:63px;
+		}
+		#input_spacing
+		{
+			display:block;
+			width:248px;
+			height:32px;
+		}
+		#prebaraj button
+		{
+			display:block;
+			float:left;
+			width:60px;
+			color:#3f5766;
+			background:#e7e7ef;
+			border:solid 1px #b7b7b7;
+			border-radius:3px;
+		/*	box-shadow: inset 0 0 5px 1px #337ba5; */
+			margin:0px;
+		}
+/*======================edn search form======================*/	
 		#annyer
 		{	
 			position:relative;
@@ -622,88 +751,7 @@ left: 1000px;
 			background:url('/Content/sliki/footer_bg.jpg');
 		}
 
-/*=======drop_down_list============
 
-#show_dropdown_div {
-    position: absolute;
-    top: 20px;
-    display:none;
-}
-
-#menuLink:hover  + #show_dropdown_div{
-	background:#d44d22;
-    display:block;
-}
-
-.item_0 {
-    left: 346px !important;
-    width:710px  !important;
-    background:#d44d22;
-}
-.item_1 {
-    left: 437px !important;
-    width:500px !important;
-    background:#d44d22;
-}
-.item_2 {
-    left: 528px !important;
-    width:500px !important;
-    background:#d44d22;
-}
-.item_3 {
-    left: 619px !important;
-    width:500px !important;
-    background:#d44d22;
-}
-.item_4 {
-    left: 519px !important;
-    width:500px !important;
-    background:#d44d22;
-}
-.item_5 {
-    left: 619px !important;
-    width:500px !important;
-    background:#d44d22;
-}
-.item_6 {
-    left: 482px !important;
-    width:500px !important;
-    background:#d44d22;
-}
-.item_7 {
-    left: 573px !important;
-    width:500px !important;
-    background:#d44d22;
-}
-.item_8 {
-    left: 664px !important;
-    width:500px !important;
-    background:#d44d22;
-}
- .item_9 {
-    left: 755px !important;
-    width:500px !important;
-    background:#d44d22;
-}
-
-#show_dropdown_div:hover {
-display:block !important;
-}
-.companyName {
-    float: left;
-    margin-right: 10px;
-    margin-left: 10px;
-    font-family: Segoe UI;
-    font-size: 8pt;
-    text-decoration: none;
-    color: white;
-    line-height: 32px;
-}
-.companyName:hover {
-    color:#90aec0;
-}
-
-=============end_drop_down_lists==============*/
 #left_cube {
    width:604px;
    min-height:574px;

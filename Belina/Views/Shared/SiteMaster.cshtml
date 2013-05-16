@@ -25,40 +25,81 @@
             <div id="products_submenu">
                 <h2></h2>
                 <h3></h3>
-
-                <ul>
-                </ul>
+                <ul></ul>
             </div>
         </div>
     </div>
     <div id="main_content" class="cf">
         @RenderBody()
     </div>
+    <div id="prebaraj">
+			<div id="tab_icon">
+				<img src="/Content/sliki/search-icon-2.png"/>
+			</div>
+       
+			<form action="">
+				<fieldset>
+					<h3>Пребарај во групата</h3>
+					<div id="select_spacing">
+						<label>Класа</label>
+						<select id="name" name="class">
+							
+							
+
+						</select>
+						<label>Карактеристика</label>
+						<select name="type">
+	
+						</select>
+                        <label>Особина</label>
+						<select name="attribute">
+	
+						</select>
+                        <label>Производител</label>
+						<select name="brand">
+
+						</select>
+					</div>
+					<div id="input_spacing">
+						<label>Клучен збор</label>
+						<input></input>
+					</div>
+					<label></label>
+					<button>Најди!</button>
+				</fieldset>
+			</form>
+		</div>
     <div id="footer"></div>
 
     <script type="text/javascript">
         var className, companyName, typeName, attributeName;
-        var n;
-        var dinamycLeft = 347;
-        var x;
-        var k;
-        var companyList = new Array();
+        var n,x,k;
         $(document).ready(function () {
-            
-            
             $.ajax({
                 url: "/Home/getClasses",
                 type: "GET",
                 data: {},
                 success: function (result) {
-
                     for (n = 0; n < result.length; n++) {
                         $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes( \'' + result[n].class_name + '\')"'
                             + 'class="classesLink" >' + result[n].class_name + '</a></li>');
+                        $('#name').append('<option>' + result[n].class_name + '</option>');
                     }
                 }
             });
-           
+            $("#prebaraj").animate({ right: "-270px" }, 0);
+            var hidden = true;
+            $("#tab_icon").click(function () {
+                if (hidden) {
+                    $("#prebaraj").animate({ right: "0px" }, 600, 'easeInBack');
+                    hidden = false;
+                }
+                else {
+                    $("#prebaraj").animate({ right: "-270px" }, 600, 'easeOutBounce');
+                    hidden = true;
+                }
+            });
+
         });
 
         function showTypes(className) {
@@ -67,7 +108,7 @@
             $('#products_submenu ul').empty();
             $('#products_submenu #dropDownAttributes').remove();
             $('#main_content').empty();
-            $('#main_content').append('<div id="left_cube"><div id="top_cube">Најбарани</div><div id="bottom_cube">Промоција</div></div><div id="right_cube"></div>');
+            $('#main_content').append('<div id="left_cube"><div id="top_cube">Предлог/проба за да се искористи просторот..пример да прикажува Најбарани производи од секоја една класа, во моментов од класата Бои и лакови</div><div id="bottom_cube">Предлог/проба за да се искористи просторот..пример да прикажува Промоција на производи од секоја една класа, во моментов од класата Бои и лакови</div></div><div id="right_cube"></div>');
             var typeName;
             $.ajax({
                 url: "/Home/getTypes",
@@ -86,6 +127,7 @@
         }
 
         function showCompanies(className, typeName) {
+            var getfirstCompany='';
             $('#main_content').empty();
             $('#products_submenu ul').empty();
             $('#products_submenu h2').empty();
@@ -99,19 +141,20 @@
                 data: { className: className, typeName: typeName },
                 success: function (result) {
                     for (x = 0; x < result.length; x++) {
+                        getfirstCompany=result[0];
                         companyName = result[x];
                         $('#products_submenu ul').append('<li><a href="#" onclick="showProducts(\'' + className + '\',\'' + companyName + '\',\'' + typeName + '\',\'' + 'false' + '\')">' + companyName + '</a></li>');
                     }
+                    showProducts(className, getfirstCompany, typeName, 'false');
+                    $("#products_submenu ul li a").first().css('color', 'red')
                 }
             });
         }
 
         function showProducts(classNameF, companyNameF, typeNameF, attributeNameF) {
-            debugger;
             className = classNameF;
             companyName = companyNameF;
             typeName = typeNameF;
-
             $('#main_content').empty();
             var product = '<div id="products">';
             var products_scroll_left = '<div id="products_scroll_left">';
@@ -121,7 +164,6 @@
             var closeDiv = '</div>';
             var products_window = '<div id="products_window">';
             var products_selection = '<div id="products_selection">';
-
             var left = products_scroll_left + scroll_left + closeDiv;
             var right = products_scroll_right + scroll_right + closeDiv;
             var dropDownAttributes = '<select id="dropDownAttributes"></select>';
@@ -131,7 +173,6 @@
                 type: "GET",
                 data: { className: classNameF, companyName: companyNameF, typeName: typeNameF, attributeName: attributeNameF },
                 success: function (result) {
-                    debugger;
                     if (attributeNameF == 'false') {
                         $('#products_submenu #dropDownAttributes').remove();
                         $('#products_submenu').append(dropDownAttributes);
@@ -147,7 +188,6 @@
                     for (x = 0; x < result.products.length; x++) {
                         if (x == 0 || ((x / 10) % 1 != 0) == false) {
                             count_next_container++;
-                           // $('#products_selection').empty();
                             $('#products_selection').append('<div class="products_frame"><div class="frame_title">'
                             + '<h3>' + typeName + '</h3>'
                             + '</div><div id="prod_container_' + count_next_container + '" class="products_group">'
@@ -167,30 +207,18 @@
                         }
                     }
                     setScrolling();
-                  
                 }
             });
         }
 
         function setScrolling() {
             var hidden = true;
-
             var frame_index = 1;
             var frame_length = $(".products_frame").length;
 
-            $("#tab_icon").click(function () {
-                if (hidden) {
-                    $("#prebaraj").animate({ right: "0px" }, 600, 'easeInBack');
-                    hidden = false;
-                }
-                else {
-                    $("#prebaraj").animate({ right: "-270px" }, 600, 'easeOutBounce');
-                    hidden = true;
-                }
-            });
+           
 
             $("#scroll_left").click(function () {
-
                 if (frame_index > 1) {
                     position = "+=770px";
                     $('#products_selection').animate(
@@ -318,13 +346,14 @@
                 );
             });
         }
+
         $('#dropDownAttributes').live('change', function (event) {
             $('#main_content').empty();
             var attributeValue = $("#dropDownAttributes option:selected").text();
             showProducts(className, companyName, typeName, attributeValue);
             attributeName = attributeValue;
         });
-       
+
     </script>
 </body>
 </html>

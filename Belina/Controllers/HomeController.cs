@@ -11,7 +11,6 @@ namespace Belina.Controllers
     public class HomeController : Controller
     {
         BelinaEntities2 db = new BelinaEntities2();
-
         public ActionResult Index()
         {
             return View();
@@ -118,23 +117,5 @@ namespace Belina.Controllers
         }
     }
 }
-//select p.product_name,a.attribute_name
-
-//from Class c,Company com,Type t,Products p,Attributes a 
-
-//where
-
-//c.class_id=p.class_id  and
-//com.company_id=p.company_id and 
-//t.type_id=p.type_id and 
-//a.company_id=com.company_id and
-//a.type_id=t.type_id and
-//p.attribute_id=a.attribute_id and
-
-//com.company_name=N'Јуб' and 
-//c.class_name=N'Бои и лакови' and 
-//t.type_name=N'Внатрешни ѕидови' 
-
-//group by p.product_name,a.attribute_name order by a.attribute_name
 
 
