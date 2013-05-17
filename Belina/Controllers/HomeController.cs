@@ -21,7 +21,7 @@ namespace Belina.Controllers
         }
         public JsonResult getClasses()
         {
-            IList<Class> classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).ToList();
+            IList<Class> classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).Distinct().ToList();
             return Json(classes, JsonRequestBehavior.AllowGet);
         }
 
@@ -30,7 +30,7 @@ namespace Belina.Controllers
             IList<String> allTypes = (from type in db.Type
                                       where type.class_name == className
                                       orderby type.type_name
-                                      select type.type_name).ToList();
+                                      select type.type_name).Distinct().ToList();
             return Json(allTypes, JsonRequestBehavior.AllowGet);
         }
 
@@ -42,7 +42,7 @@ namespace Belina.Controllers
                                        where company.company_id == type_company.company_id && type_company.type_id == type.type_id && type.class_name == className
                                        && type.type_name == typeName
                                        orderby company.company_name
-                                       select company.company_name).ToList();
+                                       select company.company_name).Distinct().ToList();
             return Json(companies, JsonRequestBehavior.AllowGet);
         }
 
@@ -72,7 +72,7 @@ namespace Belina.Controllers
                                 {
                                     product.product_name,
                                     a.attribute_name
-                                }).ToList();
+                                }).Distinct().ToList();
 
                 var attributes = products.Select(p => p.attribute_name).Distinct().ToList();
                 Dictionary<string, List<String>> res = new Dictionary<string, List<string>>();
@@ -107,13 +107,58 @@ namespace Belina.Controllers
                                                   a.attribute_name == attributeName
                                                   orderby product.product_name
                                                   select  product.product_name
-                                                  ).ToList();
+                                                  ).Distinct().ToList();
                 Dictionary<string, List<String>> res = new Dictionary<string, List<string>>();
                 res.Add("products", productsAttribute);
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
             else return Json("Error!", JsonRequestBehavior.AllowGet);
             
+        }
+        public JsonResult getByClass(string className)
+        {
+            var Types = (from type in db.Type
+                                      where type.class_name == className
+                                      orderby type.type_name
+                                      select type.type_name).Distinct().ToList();
+
+            var Attributes = (from types in db.Type
+                               from attributes in db.Attributes
+                                where types.class_name == className && attributes.type_id == types.type_id
+                                  select attributes.attribute_name).Distinct().ToList();
+
+            var Companies = (from classes in db.Class
+                             from cc in db.Company_Class
+                             from company in db.Company
+
+                             where classes.class_id == cc.class_id && cc.company_id == company.company_id && classes.class_name == className
+                             select company.company_name).Distinct().ToList();
+            Dictionary<string, List<String>> allByOneClass = new Dictionary<string, List<string>>();
+            allByOneClass.Add("types", Types);
+            allByOneClass.Add("attributes", Attributes);
+            allByOneClass.Add("companies", Companies);
+            return Json(allByOneClass, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getAttributesbyClassType(string className, string typeName)
+        {
+            List<string> attributes = (from type in db.Type
+                                       from attribute in db.Attributes
+                                       where type.class_name == className && type.type_name == typeName &&
+                                             type.type_id == attribute.type_id
+                                       select attribute.attribute_name).Distinct().ToList();
+            return Json(attributes, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getCompanybyClassTypeAttribute(string className, string typeName, string attributeName)
+        {
+            List<string> companies = (from company in db.Company
+                           from tc in db.Type_Company
+                           from type in db.Type
+                           from attr in db.Attributes
+                           where
+                           company.company_id == tc.company_id && tc.type_id == type.type_id && company.company_id == attr.company_id &&
+                           type.type_id == attr.type_id && type.class_name == className && type.type_name == typeName && attr.attribute_name == attributeName
+                           select company.company_name).ToList();
+            return Json(companies, JsonRequestBehavior.AllowGet);
         }
     }
 }

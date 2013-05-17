@@ -33,47 +33,46 @@
         @RenderBody()
     </div>
     <div id="prebaraj">
-			<div id="tab_icon">
-				<img src="/Content/sliki/search-icon-2.png"/>
-			</div>
-       
-			<form action="">
-				<fieldset>
-					<h3>Пребарај во групата</h3>
-					<div id="select_spacing">
-						<label>Класа</label>
-						<select id="name" name="class">
-							
-							
+        <div id="tab_icon">
+            <img src="/Content/sliki/search-icon-2.png" />
+        </div>
 
-						</select>
-						<label>Карактеристика</label>
-						<select name="type">
-	
-						</select>
-                        <label>Особина</label>
-						<select name="attribute">
-	
-						</select>
-                        <label>Производител</label>
-						<select name="brand">
-
-						</select>
-					</div>
-					<div id="input_spacing">
-						<label>Клучен збор</label>
-						<input></input>
-					</div>
-					<label></label>
-					<button>Најди!</button>
-				</fieldset>
-			</form>
-		</div>
+        <form action="">
+            <fieldset>
+                <h3>Пребарај во групата</h3>
+                <div id="select_spacing">
+                    <label>Класа</label>
+                    <select id="class">
+                        <option>Сите</option>
+                    </select>
+                    <label>Карактеристика</label>
+                    <select id="type">
+                         <option>Сите</option>
+                    </select>
+                    <label>Особина</label>
+                    <select id="attribute">
+                        <option>Сите</option>
+                    </select>
+                    <label>Производител</label>
+                    <select id="brand">
+                        <option>Сите</option>
+                    </select>
+                </div>
+                <div id="input_spacing">
+                    <label>Клучен збор</label>
+                    <input></input>
+                </div>
+                <label></label>
+                <button>Најди!</button>
+            </fieldset>
+        </form>
+    </div>
     <div id="footer"></div>
 
     <script type="text/javascript">
         var className, companyName, typeName, attributeName;
-        var n,x,k;
+        var classNameS, companyNameS, typeNameS, attributeNameS;
+        var n, x, k;
         $(document).ready(function () {
             $.ajax({
                 url: "/Home/getClasses",
@@ -83,10 +82,127 @@
                     for (n = 0; n < result.length; n++) {
                         $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes( \'' + result[n].class_name + '\')"'
                             + 'class="classesLink" >' + result[n].class_name + '</a></li>');
-                        $('#name').append('<option>' + result[n].class_name + '</option>');
+                        $('#class').append('<option>' + result[n].class_name + '</option>');
                     }
                 }
             });
+          
+
+            $("#class").change(function () {
+               classNameS = $(this).val();
+                $('#type').empty();
+                $('#type').append('<option>Сите</option>');
+                $('#attribute').empty();
+                $('#attribute').append('<option>Сите</option>');
+                $('#brand').empty();
+                $('#brand').append('<option>Сите</option>');
+                $.ajax({
+                    url: "/Home/getByClass",
+                    type: "GET",
+                    data: { className: classNameS },
+                    success: function (result) {
+                        for (x = 0; x < result.types.length; x++) {
+                            typeNameS = result.types[x];
+                            $('#type').append('<option>' + typeNameS + '</option>');
+                        }
+                        for (x = 0; x < result.attributes.length; x++) {
+                            attributeNameS = result.attributes[x];
+                            $('#attribute').append('<option>' + attributeNameS + '</option>');
+                        }
+                        for (x = 0; x < result.companies.length; x++) {
+                            companyNameS = result.companies[x];
+                            $('#brand').append('<option>' + companyNameS + '</option>');
+                        }
+                    }
+                });
+            });
+
+            $("#type").change(function () {
+                typeNameS = "";
+                typeNameS=$(this).val();
+                classNameS = $('#class').val();
+                $('#attribute').empty();
+                $('#attribute').append('<option>Сите</option>');
+                $('#brand').empty();
+                $('#brand').append('<option>Сите</option>');
+                if (typeNameS == "Сите") {
+                    $.ajax({
+                        url: "/Home/getByClass",
+                        type: "GET",
+                        data: { className: classNameS },
+                        success: function (result) {
+                            for (x = 0; x < result.companies.length; x++) {
+                                companyNameS = result.companies[x];
+                                $('#brand').append('<option>' + companyNameS + '</option>');
+                            }
+                            for (x = 0; x < result.attributes.length; x++) {
+                                attributeNameS = result.attributes[x];
+                                $('#attribute').append('<option>' + attributeNameS + '</option>');
+                            }
+                        }
+                    });
+                }
+                if (typeNameS != "Сите") {
+                    $.ajax({
+                        url: "/Home/getCompanies",
+                        type: "GET",
+                        data: { className: classNameS, typeName: typeNameS },
+                        success: function (result) {
+                            for (x = 0; x < result.length; x++) {
+                                companyNameS = result[x];
+                                $('#brand').append('<option>' + companyNameS + '</option>');
+                            }
+                        }
+                    });
+                    $.ajax({
+                        url: "/Home/getAttributesbyClassType",
+                        type: "GET",
+                        data: { className: classNameS, typeName: typeNameS },
+                        success: function (result) {
+                            for (x = 0; x < result.length; x++) {
+                                attributeNameS = result[x];
+                                $('#attribute').append('<option>' + attributeNameS + '</option>');
+                            }
+                        }
+                    });
+                }
+            });
+
+            $("#attribute").change(function () {
+                $('#brand').empty();
+                $('#brand').append('<option>Сите</option>');
+                typeName = $('#type').val();
+                classNameS = $('#class').val();
+                attributeNameS = $("#attribute").val();
+                companyNameS = "";
+                if (attributeNameS == "Сите") {
+                    $.ajax({
+                        url: "/Home/getCompanies",
+                        type: "GET",
+                        data: { className: classNameS, typeName: typeNameS },
+                        success: function (result) {
+                            for (x = 0; x < result.length; x++) {
+                                companyNameS = result[x];
+                                $('#brand').append('<option>' + companyNameS + '</option>');
+                            }
+                        }
+                    });
+                }
+                if (attributeNameS != "Сите") {
+                    $.ajax({
+                        url: "/Home/getCompanybyClassTypeAttribute",
+                        type: "GET",
+                        data: { className: classNameS, typeName: typeNameS, attributeName: attributeNameS },
+                        success: function (result) {
+                            for (x = 0; x < result.length; x++) {
+                                companyNameS = result[x];
+                                $('#brand').append('<option>' + companyNameS + '</option>');
+                            }
+                        }
+                    });
+                }
+            });
+
             $("#prebaraj").animate({ right: "-270px" }, 0);
             var hidden = true;
             $("#tab_icon").click(function () {
@@ -99,7 +215,6 @@
                     hidden = true;
                 }
             });
-
         });
 
         function showTypes(className) {
@@ -127,7 +242,7 @@
         }
 
         function showCompanies(className, typeName) {
-            var getfirstCompany='';
+            var getfirstCompany = '';
             $('#main_content').empty();
             $('#products_submenu ul').empty();
             $('#products_submenu h2').empty();
@@ -141,7 +256,7 @@
                 data: { className: className, typeName: typeName },
                 success: function (result) {
                     for (x = 0; x < result.length; x++) {
-                        getfirstCompany=result[0];
+                        getfirstCompany = result[0];
                         companyName = result[x];
                         $('#products_submenu ul').append('<li><a href="#" onclick="showProducts(\'' + className + '\',\'' + companyName + '\',\'' + typeName + '\',\'' + 'false' + '\')">' + companyName + '</a></li>');
                     }
@@ -216,7 +331,7 @@
             var frame_index = 1;
             var frame_length = $(".products_frame").length;
 
-           
+
 
             $("#scroll_left").click(function () {
                 if (frame_index > 1) {
