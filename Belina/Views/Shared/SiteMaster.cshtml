@@ -66,9 +66,34 @@
                 <button>Најди!</button>
             </fieldset>
         </form>
+        
     </div>
+    <div id="layer_3"><div id="layer_3_mid_1024_px"></div></div>
+    <div id="layer_4">
+		<div id="layer_4_mid_1024_px">
+			<div id="product_details">
+				<div id="product_details_content">
+					<div id="details_info">
+						<div id="details_title">
+							<h4>Impregnant</h4>
+							<div id="details_subtitle">Заштита на дрвото од штеточини</div>
+						</div>
+						<div id="details_image"></div>
+					</div>
+					<div id="details_order">
+					</div>
+				</div>
+				<div id="product_details_close">
+					<a href="#">						
+						<img src="Content/sliki/close-button.png"></img>
+						<div id="close_text">Затвори го прозорецот</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
     <div id="footer"></div>
-
+   
     <script type="text/javascript">
         var className, companyName, typeName, attributeName;
         var classNameS, companyNameS, typeNameS, attributeNameS;
@@ -306,22 +331,27 @@
                             $('#products_selection').append('<div class="products_frame"><div class="frame_title">'
                             + '<h3>' + typeName + '</h3>'
                             + '</div><div id="prod_container_' + count_next_container + '" class="products_group">'
-                            + '<div class="product"><div class="product_image">'
+                            + '<a href="javascript:void(0)"><div class="product">'
+                            + '<p class="fullDescription">'+x+'</p>'
+                            + '<div class="product_image">'
                             + '<img src="/Content/sliki/kraft/vnatresni/Superior.jpg"></img></div>'
                             + '<div class="product_title">' + result.products[x] + '</div>'
                             + '<div class="product_description"></div>'
-                            + '</div>'
-                            + '</div>');
+                            + '</div></a>'
+                            + '</div><p style="display:none" class="proba">' + x + '</p>');
                         }
                         else {
                             var count = count_next_container.toString();
-                            $('#prod_container_' + count).append('<div class="product"><div class="product_image">'
+                            $('#prod_container_' + count).append('<a href="javascript:void(0)"><div class="product"><div class="product_image">'
+                            + '<p class="fullDescription">' + x + '</p>'
                             + '<img src="/Content/sliki/kraft/vnatresni/Superior.jpg"></img></div>'
                             + '<div class="product_title">' + result.products[x] + '</div>'
-                            + '<div class="product_description"></div>');
+                            + '<div class="product_description"></div>'
+                            + '</div></a>');
                         }
                     }
                     setScrolling();
+                    productDetails();
                 }
             });
         }
@@ -382,7 +412,9 @@
                 };
                 $(this).css(styles);
             });
+        }
 
+        function productDetails() {
             $(".product").click(function () {
                 $('#layer_3').show();
                 var styles =
@@ -405,8 +437,9 @@
                 var description = $(this).find('.product_description').text();
                 $('#details_subtitle').text(description);
                 var image = $(this).find('.product_image').html() + "</img>";
-                $('#details_image').html(image);
-
+                $('#details_image').html(image); //debugger;
+                var fullDescription = $(this).find('.fullDescription').text();
+                $('#details_order').text(fullDescription);
                 $('#layer_4').show(800, function () {
                     $('#product_details').animate(
                         {

@@ -534,6 +534,11 @@
 			width:750px;
 			height:440px;
 		}
+        .products_group a
+		{
+			text-decoration: none;
+            color: #809eb0;
+		}
 		#products_selection h3
 		{
 			display:block;
@@ -547,6 +552,7 @@
 			font-weight:bold;
 			color:#214d37;
 			opacity:0.4;
+            text-decoration:none;
 		}
 		.product
 		{
@@ -580,6 +586,7 @@
 			margin:25px auto 0px auto;
 			font-weight:bold;
 			text-align:center;
+            text-decoration:none;
 		}
 		.product_description
 		{
@@ -591,6 +598,9 @@
 			opacity:0.9;
 			text-align:center;
 		}
+        .fullDescription {
+        display:none;
+        }
 
 #dropDownAttributes {
 position: absolute;
@@ -599,6 +609,183 @@ left: 1000px;
 
 }
  /*=====================end slide products style===============*/
+
+
+ /*================product details==================*/
+
+ 	#product_details
+		{
+			display:block;
+			width:900px;
+			height:622px;
+			margin:80px auto 0px auto;
+			overflow:hidden;
+			position:relative;
+			border:solid 1px #d7d7d7;
+			background:white;
+			opacity:1;
+			box-shadow:0px 0px 15px 5px #777777;
+		}
+		#product_details img
+		{
+			display:block;
+			width:180px;
+			height:180px;
+			margin:0px 0px 10px 30px;
+			border:none;
+		}
+		#product_details_content
+		{
+			display:block;
+			width:100%;
+			height:600px;
+			margin:0px;
+		}
+		#product_details_close
+		{
+			display:block;
+			width:100%;
+			height:20px;
+		}
+		#product_details_close a
+		{
+			display:block;
+			width:100%;
+			height:100%;
+			text-decoration:none;
+		}
+		#close_text
+		{
+			display:block;
+			float:right;
+			width:auto;
+			height:20px;
+			margin:0px 15px 0px 0px;
+			line-height:20px;
+			text-align:center;
+			font-family:verdana,sans-serif;
+			font-size:8pt;
+			font-weight:bold;
+			color:#a7a7a7;
+			opacity:1;
+		}
+		#product_details_close img
+		{
+			display:block;
+			float:right;
+			width:20px;
+			height:20px;
+			margin:0px;
+			border:none;
+		}
+		#details_info
+		{
+			display:block;
+			float:left;
+			width:570px;
+			height:578px;
+			margin:20px 5px 0px 20px;
+			border:dotted 1px #d7d7d7;
+		}
+		#details_order
+		{
+			display:block;
+			float:left;
+			width:280px;
+			height:578px;
+			margin:20px 0px 0px 0px;
+			border:dotted 1px #c7c7c7;
+		}
+		
+		#details_title
+		{
+			display:block;
+			width:100%;
+			height:70px;
+			margin-top:35px;
+		}
+		#details_title h4
+		{
+			display:block;
+			width:100%;
+			height:20px;
+			margin:0px 0px 0px 45px;
+			line-height:20px;
+			font-family:"arial",sans-serif;
+			font-weight:bold;
+			font-size:18pt;
+			color:#214d37;
+			text-align:left;
+			opacity:0.5;
+		}
+		#details_subtitle
+		{
+			display:block;
+			width:auto;
+			height:12px;
+			margin:2px 0px 0px 45px;
+			line-height:12px;
+			font-family:tahoma,sans-serif;
+			font-weight:normal;
+			font-size:8pt;
+			color:#a7a7a7;
+			text-align:left;
+		}
+		#details_image
+		{
+			display:block;
+			width:180px;
+			height:180px;
+			margin:0px 0px 10px 30px;
+		}
+		#detailsImage img
+		{
+			width:180px;
+			height:180px;
+			border:none;
+		}
+        #layer_3
+		{
+			display:none;
+			position:absolute;
+			top:0px;
+			left:0px;
+			width:100%;
+			height:100%;
+			background:#000000;
+			opacity:0.3;
+			z-index:30;
+			overflow:hidden;
+		}
+		#layer_3_mid_1024_px
+		{
+			display:inherit;
+			width:1024px;
+			height:500px;
+			margin:160px auto; 0px auto;
+			background:transparent;
+		}
+		
+		#layer_4
+		{
+			display:none;
+			position:absolute;
+			top:0px;
+			left:0px;
+			width:100%;
+			height:100%;
+			background:transparent;
+			z-index:40;
+			overflow:hidden;
+		}
+		#layer_4_mid_1024_px
+		{
+			display:inherit;
+			width:1024px;
+			height:100%;
+			margin:0px auto 0px auto;
+		}
+/*=================end product details================*/
 
 
  /*======================search form======================*/
