@@ -30,8 +30,8 @@ namespace Belina.Models
         public DbSet<Company> Company { get; set; }
         public DbSet<Company_Class> Company_Class { get; set; }
         public DbSet<Products> Products { get; set; }
-        public DbSet<sysdiagrams> sysdiagrams { get; set; }
         public DbSet<Type> Type { get; set; }
         public DbSet<Type_Company> Type_Company { get; set; }
+        public DbSet<Administrator> Administrator { get; set; }
     }
 }
