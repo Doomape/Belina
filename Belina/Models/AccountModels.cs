@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -9,53 +10,7 @@ using System.Web.Security;
 
 namespace Belina.Models
 {
-    public class UsersContext : DbContext
-    {
-        public UsersContext()
-            : base("DefaultConnection")
-        {
-        }
-
-        public DbSet<UserProfile> UserProfiles { get; set; }
-    }
-
-    [Table("UserProfile")]
-    public class UserProfile
-    {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-    }
-
-    public class RegisterExternalLoginModel
-    {
-        [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
-
-        public string ExternalLoginData { get; set; }
-    }
-
-    public class LocalPasswordModel
-    {
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
-        public string OldPassword { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "New password")]
-        public string NewPassword { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-    }
-
+    #region Models
     public class LoginModel
     {
         [Required]
@@ -87,12 +42,247 @@ namespace Belina.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [DisplayName("E-mail")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
     }
 
-    public class ExternalLogin
+    [PropertiesMustMatch("NewPassword", "ConfirmPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+    public class ChangePasswordModel
     {
-        public string Provider { get; set; }
-        public string ProviderDisplayName { get; set; }
-        public string ProviderUserId { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        [DisplayName("Current password")]
+        public string OldPassword { get; set; }
+
+        [Required]
+        [ValidatePasswordLength]
+        [DataType(DataType.Password)]
+        [DisplayName("New password")]
+        public string NewPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [DisplayName("Confirm new password")]
+        public string ConfirmPassword { get; set; }
     }
+    #endregion
+
+    #region Services
+    // The FormsAuthentication type is sealed and contains static members, so it is difficult to
+    // unit test code that calls its members. The interface and helper class below demonstrate
+    // how to create an abstract wrapper around such a type in order to make the AccountController
+    // code unit testable.
+
+    public interface IMembershipService
+    {
+        int MinPasswordLength { get; }
+
+        bool ValidateUser(string userName, string password);
+        MembershipCreateStatus CreateUser(string userName, string password, string email);
+        bool ChangePassword(string userName, string oldPassword, string newPassword);
+    }
+
+    public class AccountMembershipService : IMembershipService
+    {
+        private readonly MembershipProvider _provider;
+
+        public AccountMembershipService()
+            : this(null)
+        {
+        }
+
+        public AccountMembershipService(MembershipProvider provider)
+        {
+            _provider = provider ?? Membership.Provider;
+        }
+
+        public int MinPasswordLength
+        {
+            get
+            {
+                return _provider.MinRequiredPasswordLength;
+            }
+        }
+
+        public bool ValidateUser(string userName, string password)
+        {
+            if (String.IsNullOrEmpty(userName)) throw new ArgumentException(("Value cannot be null or empty."), "userName");
+            if (String.IsNullOrEmpty(password)) throw new ArgumentException(("Value cannot be null or empty."), "password");
+
+            return _provider.ValidateUser(userName, password);
+        }
+
+        public MembershipCreateStatus CreateUser(string userName, string password, string email)
+        {
+            if (String.IsNullOrEmpty(userName)) throw new ArgumentException(("Value cannot be null or empty."), "userName");
+            if (String.IsNullOrEmpty(password)) throw new ArgumentException(("Value cannot be null or empty."), "password");
+
+            MembershipCreateStatus status;
+            _provider.CreateUser(userName, password, null, null, null, true, new object[] { email }, out status);
+            if (email != null)
+            {
+                if (!System.Text.RegularExpressions.Regex.IsMatch(email,
+                    @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$",
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    status = MembershipCreateStatus.InvalidEmail;
+            }
+            if (email == null)
+                status = MembershipCreateStatus.InvalidEmail;
+
+            return status;
+        }
+
+        public bool ChangePassword(string userName, string oldPassword, string newPassword)
+        {
+            if (String.IsNullOrEmpty(userName)) throw new ArgumentException(("Value cannot be null or empty."), "userName");
+            if (String.IsNullOrEmpty(oldPassword)) throw new ArgumentException(("Value cannot be null or empty."), "oldPassword");
+            if (String.IsNullOrEmpty(newPassword)) throw new ArgumentException(("Value cannot be null or empty."), "newPassword");
+
+            // The underlying ChangePassword() will throw an exception rather
+            // than return false in certain failure scenarios.
+            try
+            {
+                return _provider.ChangePassword(userName, oldPassword, newPassword);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+            catch (MembershipPasswordException)
+            {
+                return false;
+            }
+        }
+    }
+
+    public interface IFormsAuthenticationService
+    {
+        void SignIn(string userName, bool createPersistentCookie);
+        void SignOut();
+    }
+
+    public class FormsAuthenticationService : IFormsAuthenticationService
+    {
+        public void SignIn(string userName, bool createPersistentCookie)
+        {
+            if (String.IsNullOrEmpty(userName)) throw new ArgumentException(("Value cannot be null or empty."), "userName");
+
+            FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
+        }
+
+        public void SignOut()
+        {
+            FormsAuthentication.SignOut();
+        }
+    }
+    #endregion
+
+    #region Validation
+    public static class AccountValidation
+    {
+        public static string ErrorCodeToString(MembershipCreateStatus createStatus)
+        {
+            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
+            // a full list of status codes.
+            switch (createStatus)
+            {
+                case MembershipCreateStatus.DuplicateUserName:
+                    return ("Username already exists. Please enter a different user name.");
+
+                case MembershipCreateStatus.DuplicateEmail:
+                    return ("A username for that e-mail address already exists. Please enter a different e-mail address.");
+
+                case MembershipCreateStatus.InvalidPassword:
+                    return ("The password provided is invalid. Please enter a valid password value.");
+
+                case MembershipCreateStatus.InvalidEmail:
+                    return ("The e-mail address provided is invalid. Please check the value and try again.");
+
+                case MembershipCreateStatus.InvalidAnswer:
+                    return ("The password retrieval answer provided is invalid. Please check the value and try again.");
+
+                case MembershipCreateStatus.InvalidQuestion:
+                    return ("The password retrieval question provided is invalid. Please check the value and try again.");
+
+                case MembershipCreateStatus.InvalidUserName:
+                    return ("The user name provided is invalid. Please check the value and try again.");
+
+                case MembershipCreateStatus.ProviderError:
+                    return ("The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.");
+
+                case MembershipCreateStatus.UserRejected:
+                    return ("The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.");
+
+                default:
+                    return ("An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.");
+            }
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+    public sealed class PropertiesMustMatchAttribute : ValidationAttribute
+    {
+        private const string _defaultErrorMessage = "'{0}' and '{1}' do not match.";
+        private readonly object _typeId = new object();
+
+        public PropertiesMustMatchAttribute(string originalProperty, string confirmProperty)
+            : base(_defaultErrorMessage)
+        {
+            OriginalProperty = originalProperty;
+            ConfirmProperty = confirmProperty;
+        }
+
+        public string ConfirmProperty { get; private set; }
+        public string OriginalProperty { get; private set; }
+
+        public override object TypeId
+        {
+            get
+            {
+                return _typeId;
+            }
+        }
+
+        public override string FormatErrorMessage(string name)
+        {
+            return String.Format(CultureInfo.CurrentUICulture, ErrorMessageString,
+                OriginalProperty, ConfirmProperty);
+        }
+
+        public override bool IsValid(object value)
+        {
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(value);
+            object originalValue = properties.Find(OriginalProperty, true /* ignoreCase */).GetValue(value);
+            object confirmValue = properties.Find(ConfirmProperty, true /* ignoreCase */).GetValue(value);
+            return Object.Equals(originalValue, confirmValue);
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public sealed class ValidatePasswordLengthAttribute : ValidationAttribute
+    {
+        private const string _defaultErrorMessage = "'{0}' must be at least {1} characters long.";
+        private readonly int _minCharacters = Membership.Provider.MinRequiredPasswordLength;
+
+        public ValidatePasswordLengthAttribute()
+            : base(_defaultErrorMessage)
+        {
+        }
+
+        public override string FormatErrorMessage(string name)
+        {
+            return String.Format(CultureInfo.CurrentUICulture, ErrorMessageString,
+                name, _minCharacters);
+        }
+
+        public override bool IsValid(object value)
+        {
+            string valueAsString = value as string;
+            return (valueAsString != null && valueAsString.Length >= _minCharacters);
+        }
+    }
+    #endregion
 }

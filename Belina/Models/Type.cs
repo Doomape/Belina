@@ -16,7 +16,7 @@ namespace Belina.Models
     {
         public int type_id { get; set; }
         public string type_name { get; set; }
-        public Nullable<int>class_id { get; set; }
+        public Nullable<int> class_id { get; set; }
         public string class_name { get; set; }
     }
 }

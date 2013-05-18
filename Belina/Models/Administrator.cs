@@ -12,12 +12,11 @@ namespace Belina.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class Administrator
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int user_id { get; set; }
+        public string user_name { get; set; }
+        public byte[] user_pass { get; set; }
+        public string user_email { get; set; }
     }
 }

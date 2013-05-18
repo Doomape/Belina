@@ -1,7 +1,8 @@
 ﻿@model Belina.Models.LoginModel
 
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "Log on";
+    Layout = null;
 }
 
 <hgroup class="title">
@@ -15,24 +16,24 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Log in Form</legend>
+        <legend>Log on Form</legend>
         <ol>
             <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
+                @Html.LabelFor(c => c.UserName)
+                @Html.TextBoxFor(c => c.UserName)
+                @Html.ValidationMessageFor(c => c.UserName)
             </li>
             <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
+                @Html.LabelFor(c => c.Password)
+                @Html.PasswordFor(c => c.Password)
+                @Html.ValidationMessageFor(c => c.Password)
             </li>
             <li>
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                @Html.CheckBoxFor(c => c.RememberMe)
+                @Html.LabelFor(c => c.RememberMe, new { @class = "checkbox" })
             </li>
         </ol>
-        <input type="submit" value="Log in" />
+        <input type="submit" value="Log on" />
     </fieldset>
     <p>
         @Html.ActionLink("Register", "Register") if you don't have an account.
@@ -40,11 +41,8 @@
 }
 </section>
 
-<section class="social" id="socialLoginForm">
+@*<section class="social" id="socialLoginForm">
     <h2>Use another service to log in.</h2>
     @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-</section>
+</section>*@
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

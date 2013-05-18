@@ -189,11 +189,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Administrator.cs">
+      <DependentUpon>BelinaEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Attributes.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
@@ -221,10 +223,8 @@
     <Compile Include="Models\Company_Class.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MyMembershipProvider.cs" />
     <Compile Include="Models\Products.cs">
-      <DependentUpon>BelinaEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Type.cs">
@@ -636,6 +636,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\companies\" />
+    <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

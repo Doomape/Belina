@@ -10,10 +10,9 @@
         <EntityTypeShape EntityType="BelinaModel.Company" Width="1.5" PointX="4.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BelinaModel.Company_Class" Width="1.75" PointX="2.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="BelinaModel.Products" Width="1.75" PointX="4.125" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="BelinaModel.sysdiagrams" Width="1.5" PointX="14" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BelinaModel.Type" Width="1.5" PointX="7.875" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BelinaModel.Type_Company" Width="1.5" PointX="6" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BelinaModel.Administrator" Width="1.5" PointX="13.875" PointY="4.125" />
+        <EntityTypeShape EntityType="BelinaModel.Administrator" Width="1.5" PointX="11.15532136855429" PointY="0.74646085535476958" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
