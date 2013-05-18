@@ -2,4 +2,45 @@
     Layout = "~/Views/Shared/SiteMaster.cshtml";
 }
 
-Contact
+     <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxgrid.css">
+     <script src="/Content/grid/codebase/dhtmlxcommon.js"></script>
+     <script src="/Content/grid/codebase/dhtmlxgrid.js"></script>
+     <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
+     <script type="text/javascript">
+         var mygrid;
+         function doInitGrid() {
+
+             mygrid = new dhtmlXGridObject('mygrid_container');
+
+             mygrid.setImagePath("/Content/grid/codebase/imgs/");
+             mygrid.setHeader("Model,Qty");//,Price
+             mygrid.setInitWidths("600,280");
+             mygrid.setColAlign("left,right,right");
+            // mygrid.setColTypes("ro,ed,ch");
+             mygrid.setSkin("light");
+             mygrid.setColSorting("str,int");
+          //   mygrid.enableAutoHeight(true);
+          //   mygrid.setSizes();
+           //  mygrid.setTabOrder("1,2,3,4");
+             mygrid.init();
+
+             $.ajax({
+                 url: "/Home/getClasses",
+                 dataType: "json",
+                 type: "GET",
+                 data: {},
+                 success: function (result) {
+                     for (var x = 0; x < result.length; x++) {
+                         mygrid.addRow(x, ['<a href="">' + result[x].class_name + '</a>', result[x].class_id]);
+                     }
+                 }
+             });
+         }
+         $(window).load(function () {
+             doInitGrid();
+         });
+     </script>
+
+
+	<div id="mygrid_container" style="width:900px;height:200px"></div>
+ 
