@@ -236,6 +236,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\companies\jub\DSC04916_done_thumb.png" />
+    <Content Include="Content\companies\jub\jub_akrilen_malter_done_thumb.png" />
+    <Content Include="Content\companies\jub\jub_akrilna_boja_done_thumb.png" />
+    <Content Include="Content\companies\jub\jub_fuga_done_thumb.png" />
     <Content Include="Content\grid\codebase\calendar\calendar.css" />
     <Content Include="Content\grid\codebase\calendar\calendar.js" />
     <Content Include="Content\grid\codebase\calendar\calendar_init.js" />
@@ -635,7 +639,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\companies\" />
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>

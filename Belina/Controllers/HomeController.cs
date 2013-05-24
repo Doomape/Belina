@@ -71,7 +71,9 @@ namespace Belina.Controllers
                                 select new
                                 {
                                     product.product_name,
-                                    a.attribute_name
+                                    product.product_image,
+                                    product.product_description,
+                                    a.attribute_name     
                                 }).Distinct().ToList();
 
                 var attributes = products.Select(p => p.attribute_name).Distinct().ToList();
@@ -79,7 +81,7 @@ namespace Belina.Controllers
                 List<String> productList = new List<string>();
                 foreach (var product in products)
                 {
-                    productList.Add(product.product_name);
+                    productList.Add(product.product_name + "#" + product.product_image + "@" + product.product_description);
                 }
                 res.Add("products", productList);
                 res.Add("attributes", attributes);
@@ -87,29 +89,38 @@ namespace Belina.Controllers
             }
             if (!(attributeName.Equals("false")))
             {
-                var productsAttribute = (from company in db.Company
-                                                  from classes in db.Class
-                                                  from types in db.Type
-                                                  from product in db.Products
-                                                  from a in db.Attributes
-                                                  where
+                var productsByAttribute = (from company in db.Company
+                                         from classes in db.Class
+                                         from types in db.Type
+                                         from product in db.Products
+                                         from a in db.Attributes
+                                         where
 
-                                                  classes.class_id == product.class_id &&
-                                                  company.company_id == product.company_id &&
-                                                  types.type_id == product.type_id &&
-                                                  a.type_id == types.type_id &&
-                                                  a.company_id == company.company_id &&
-                                                  a.attribute_id == product.attribute_id &&
+                                         classes.class_id == product.class_id &&
+                                         company.company_id == product.company_id &&
+                                         types.type_id == product.type_id &&
+                                         a.type_id == types.type_id &&
+                                         a.company_id == company.company_id &&
+                                         a.attribute_id == product.attribute_id &&
 
-                                                  company.company_name == companyName &&
-                                                  classes.class_name == className &&
-                                                  types.type_name == typeName &&
-                                                  a.attribute_name == attributeName
-                                                  orderby product.product_name
-                                                  select  product.product_name
-                                                  ).Distinct().ToList();
+                                         company.company_name == companyName &&
+                                         classes.class_name == className &&
+                                         types.type_name == typeName &&
+                                         a.attribute_name == attributeName
+                                         orderby product.product_name
+                                         select new
+                                         {
+                                             product.product_name,
+                                             product.product_image,
+                                             product.product_description
+                                         }).Distinct().ToList();
                 Dictionary<string, List<String>> res = new Dictionary<string, List<string>>();
-                res.Add("products", productsAttribute);
+                List<String> productList = new List<string>();
+                foreach (var product in productsByAttribute)
+                {
+                    productList.Add(product.product_name + "#" + product.product_image + "@" + product.product_description);
+                }
+                res.Add("products", productList);
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
             else return Json("Error!", JsonRequestBehavior.AllowGet);

@@ -248,7 +248,10 @@
             $('#products_submenu ul').empty();
             $('#products_submenu #dropDownAttributes').remove();
             $('#main_content').empty();
-            $('#main_content').append('<div id="left_cube"><div id="top_cube">Предлог/проба за да се искористи просторот..пример да прикажува Најбарани производи од секоја една класа, во моментов од класата Бои и лакови</div><div id="bottom_cube">Предлог/проба за да се искористи просторот..пример да прикажува Промоција на производи од секоја една класа, во моментов од класата Бои и лакови</div></div><div id="right_cube"></div>');
+            $('#main_content').append(
+                '<div id="left_cube"><div id="top_cube">Предлог/проба за да се искористи просторот..пример да прикажува Најбарани производи од секоја една класа, во моментов од класата Бои и лакови</div>'
+                + '<div id="bottom_cube">Предлог/проба за да се искористи просторот..пример да прикажува Промоција на производи од секоја една класа, во моментов од класата Бои и лакови</div>'
+                +'</div><div id="right_cube"></div>');
             var typeName;
             $.ajax({
                 url: "/Home/getTypes",
@@ -257,7 +260,8 @@
                 success: function (result) {
                     for (x = 0; x < result.length; x++) {
                         typeName = result[x];
-                        $('#right_cube').append('<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + className + '\',\'' + typeName + '\')">'
+                        $('#right_cube').append(
+                             '<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + className + '\',\'' + typeName + '\')">'
                              + '<div style="width:90px;height:80px;margin-right:10px;margin-top:5px;margin-bottom:5px;float:left;text-align:center">'
                              + '<div style="margin: auto;width: 70px;height: 40px;background-color:rgb(' + Math.floor((Math.random() * 255) + 3) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 2) + ')">'
                              + '</div>' + '<p style="font-size: 13px;margin-bottom: 0px;margin-top: 0px;">' + typeName + '</p>' + '</div></a>');
@@ -313,6 +317,7 @@
                 type: "GET",
                 data: { className: classNameF, companyName: companyNameF, typeName: typeNameF, attributeName: attributeNameF },
                 success: function (result) {
+                    debugger;
                     if (attributeNameF == 'false') {
                         $('#products_submenu #dropDownAttributes').remove();
                         $('#products_submenu').append(dropDownAttributes);
@@ -326,26 +331,34 @@
                     }
                     var count_next_container = -1;
                     for (x = 0; x < result.products.length; x++) {
+                      
                         if (x == 0 || ((x / 10) % 1 != 0) == false) {
                             count_next_container++;
+                            var productImage = result.products[x].split('#')[1].split('@@')[0];
+                            var productDescription = result.products[x].split('#')[1].split('@@')[1];
+                            var productTitle = result.products[x].split('#')[0];
                             $('#products_selection').append('<div class="products_frame"><div class="frame_title">'
                             + '<h3>' + typeName + '</h3>'
                             + '</div><div id="prod_container_' + count_next_container + '" class="products_group">'
                             + '<a href="javascript:void(0)"><div class="product">'
-                            + '<p class="fullDescription">'+x+'</p>'
+                            + '<p class="fullDescription">' + productDescription + '</p>'
                             + '<div class="product_image">'
-                            + '<img src="/Content/sliki/kraft/vnatresni/Superior.jpg"></img></div>'
-                            + '<div class="product_title">' + result.products[x] + '</div>'
+                            + '<img src="' + productImage + '"></img></div>'
+                            + '<div class="product_title">' + productTitle + '</div>'
                             + '<div class="product_description"></div>'
                             + '</div></a>'
-                            + '</div><p style="display:none" class="proba">' + x + '</p>');
+                            + '</div>');
                         }
                         else {
                             var count = count_next_container.toString();
-                            $('#prod_container_' + count).append('<a href="javascript:void(0)"><div class="product"><div class="product_image">'
-                            + '<p class="fullDescription">' + x + '</p>'
-                            + '<img src="/Content/sliki/kraft/vnatresni/Superior.jpg"></img></div>'
-                            + '<div class="product_title">' + result.products[x] + '</div>'
+                            var productDescription = result.products[x].split('#')[1].split('@@')[1];
+                            var productImage = result.products[x].split('#')[1].split('@@')[0];
+                            var productTitle = result.products[x].split('#')[0];
+                            $('#prod_container_' + count).append(
+                            '<a href="javascript:void(0)"><div class="product"><div class="product_image">'
+                            + '<p class="fullDescription">' + productDescription + '</p>'
+                            + '<img src="' + productImage + '"></img></div>'
+                            + '<div class="product_title">' + productTitle + '</div>'
                             + '<div class="product_description"></div>'
                             + '</div></a>');
                         }
