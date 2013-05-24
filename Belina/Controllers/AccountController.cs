@@ -56,7 +56,7 @@ namespace Belina.Controllers
 
                     FormsService.SignIn(model.UserName, model.RememberMe);
 
-                    return Redirect("/Home/Contact");
+                    return Redirect("/Admin/Index");
                 }
                 else
                 {
@@ -94,27 +94,40 @@ namespace Belina.Controllers
         // POST: /Account/Register
 
         [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model)
+        public JsonResult RegisterUser(RegisterModel regmodel)
         {
-            if (ModelState.IsValid)
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            try
             {
+                MembershipCreateStatus createStatus;
                 // Attempt to register the user
-                try
+                if (regmodel.Password == regmodel.ConfirmPassword)
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                    createStatus = MembershipService.CreateUser(regmodel.UserName, regmodel.Password, regmodel.Email);
                 }
-                catch (MembershipCreateUserException e)
+                else
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                    res["msg"] = "Не се исти лозинките";
+                    return Json(res, JsonRequestBehavior.AllowGet);
+                }
+                    
+
+                if (createStatus == MembershipCreateStatus.Success)
+                {
+                    res["msg"] = "OK";
+                    return Json(res, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    res["msg"] = AccountValidation.ErrorCodeToString(createStatus);
+                    return Json(res, JsonRequestBehavior.AllowGet);
                 }
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            catch
+            {
+                res["msg"] = "Грешка!";
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
         }
 
         //

@@ -33,7 +33,40 @@ public class MyMembershipProvider : MembershipProvider
 
     public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
     {
-        throw new NotImplementedException();
+        System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+        byte[] bs = System.Text.Encoding.UTF8.GetBytes(password);
+
+        bs = md5.ComputeHash(bs);
+        try
+        {
+            int exist = (from x in db.Administrator where x.user_name == username select x).Count();
+
+            if (exist == 1)
+            {
+                //The user exists with that username and password
+                status = MembershipCreateStatus.DuplicateUserName;
+                return null;
+            }
+
+            object[] param = (object[])providerUserKey;
+
+            Administrator admin = new Administrator();
+            admin.user_name = username;
+            admin.user_pass = bs;
+            admin.user_email = (string)param[0];
+            db.Administrator.Add(admin);
+            db.SaveChanges();
+
+            status = MembershipCreateStatus.Success;
+            return GetUser(admin.user_name, true);
+
+        }
+        catch
+        {
+            status = MembershipCreateStatus.ProviderError;
+            return null;
+        }
+        //throw new NotImplementedException();
     }
 
     public override bool DeleteUser(string username, bool deleteAllRelatedData)
@@ -78,7 +111,50 @@ public class MyMembershipProvider : MembershipProvider
 
     public override MembershipUser GetUser(string username, bool userIsOnline)
     {
-        throw new NotImplementedException();
+        var result = from u in db.Administrator where (u.user_name == username) select u;
+
+        if (result.Count() != 0)
+        {
+            var admin_dbuser = result.FirstOrDefault();
+
+            string _username = admin_dbuser.user_name;
+            int _providerUserKey = admin_dbuser.user_id;
+            string _email = "";
+            string _passwordQuestion = "";
+            string _comment = "";
+            bool _isApproved = true;
+            bool _isLockedOut = false;
+            DateTime _creationDate = DateTime.Now;
+            DateTime _lastLoginDate = DateTime.Now;
+            try
+            {
+                _lastLoginDate = DateTime.Now;
+            }
+            catch { }
+            DateTime _lastActivityDate = DateTime.Now;
+            DateTime _lastPasswordChangedDate = DateTime.Now;
+            DateTime _lastLockedOutDate = DateTime.Now;
+
+            MembershipUser admin = new MembershipUser("CustomMembershipProvider",
+                                                      _username,
+                                                      _providerUserKey,
+                                                      _email,
+                                                      _passwordQuestion,
+                                                      _comment,
+                                                      _isApproved,
+                                                      _isLockedOut,
+                                                      _creationDate,
+                                                      _lastLoginDate,
+                                                      _lastActivityDate,
+                                                      _lastPasswordChangedDate,
+                                                      _lastLockedOutDate);
+
+            return admin;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
