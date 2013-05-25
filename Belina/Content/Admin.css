@@ -107,13 +107,15 @@ body {
 }
 
 #left_middle {
-    margin-top: 50px;
+    margin-top: 59px;
+    margin-bottom: 50px;
     float: left;
     width: 50%;
 }
 
 #right_middle {
     margin-top: 50px;
+    margin-bottom: 50px;
     float: left;
     width: 50%;
 }
