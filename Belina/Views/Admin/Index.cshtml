@@ -7,14 +7,32 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/Admin.css")" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
     <title>Index</title>
 </head>
 <body>
-    <div>
-       <p> Добредојдовте во админ делот </p>
+    <div id="logo">
+        <img src="~/Content/sliki/belinaLogo5.png" />
     </div>
-    <div>
-     <p>@Html.ActionLink("Register", "Register","Account") Ако сакате да регистрирате нов администратор.</p>
+    <div id="add">
+        <a href="~/Admin/Add">
+            <img style="width: 30%;" src="~/Content/sliki/Folder-Add-icon.png" />
+            <p>Додавање</p>
+        </a>
+    </div>
+    <div id="edit">
+        <a href="~/Admin/Edit">
+            <img style="width: 30%;" src="~/Content/sliki/note-edit-icon.png" />
+            <p>Едитирање</p>
+        </a>
+    </div>
+    <div id="register">
+        <a href="/Account/Register">
+            <img style="width: 30%;" src="~/Content/sliki/Register-icon.png" />
+            <p>Регистрирање нови администратори</p>
+            @* <p>@Html.ActionLink("Регистрирање нови корисници", "Register", "Account")</p>*@
+        </a>
     </div>
 </body>
 </html>

@@ -237,6 +237,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Admin.css" />
     <Content Include="Content\companies\jub\DSC04916_done_thumb.png" />
     <Content Include="Content\companies\jub\jub_akrilen_malter_done_thumb.png" />
     <Content Include="Content\companies\jub\jub_akrilna_boja_done_thumb.png" />
@@ -464,6 +465,7 @@
     <Content Include="Content\sliki\belinka\sanacija\Fentin.jpg" />
     <Content Include="Content\sliki\close-button.png" />
     <Content Include="Content\sliki\d28A.jpg" />
+    <Content Include="Content\sliki\Folder-Add-icon.png" />
     <Content Include="Content\sliki\footer_bg.jpg" />
     <Content Include="Content\sliki\green-arrow-left-2.png" />
     <Content Include="Content\sliki\green-arrow-right-2.png" />
@@ -505,7 +507,9 @@
     <Content Include="Content\sliki\kraft\vnatresni\Master.jpg" />
     <Content Include="Content\sliki\kraft\vnatresni\Profi-Interior.jpg" />
     <Content Include="Content\sliki\kraft\vnatresni\Superior.jpg" />
+    <Content Include="Content\sliki\note-edit-icon.png" />
     <Content Include="Content\sliki\painting-3.jpg" />
+    <Content Include="Content\sliki\Register-icon.png" />
     <Content Include="Content\sliki\search-icon-2.png" />
     <Content Include="Content\sliki\zorka.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -633,6 +637,8 @@
       <BrowseToURL>~/home/index/Views/Home/Contact.cshtml</BrowseToURL>
     </Content>
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Add.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
