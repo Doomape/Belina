@@ -127,7 +127,7 @@ body {
 }
 
 div#left_top p, div#right_top p, div#left_middle p, div#right_middle p,#add_product p {
-    font-size: 13px;
+    font-size: 15px;
     float: left;
     width: 238px;
     margin-left: 10px;
@@ -148,6 +148,7 @@ legend {
     text-align: center;
     border: 2px solid gray;
     color: blue;
+    font-size: 17px;
     font-weight: bold;
     background-color: rgba(128, 128, 128, 0.14);
     width: 200px;

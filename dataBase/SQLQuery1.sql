@@ -29,3 +29,12 @@ SET Products.product_description = N'База 1(а) наменета за ...и 
 WHERE Products.product_name like N'Вебер деко поликолор  голд  база 1(А) 8/1';
 
 =========end 21==========
+
+
+========26.05.2013=============
+
+ALTER TABLE Attributes ALTER COLUMN attribute_id INT NULL;
+ALTER TABLE Attributes ALTER COLUMN company_id INT NULL;
+ALTER TABLE Attributes ALTER COLUMN [type_id] INT NULL;
+
+=========end 21=================
