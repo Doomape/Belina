@@ -7,17 +7,11 @@
     <Schema Namespace="BelinaModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="BelinaModelStoreContainer">
           <EntitySet Name="Administrator" EntityType="BelinaModel.Store.Administrator" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Attributes" EntityType="BelinaModel.Store.Attributes" store:Type="Tables" store:Schema="dbo" store:Name="Attributes">
-            <DefiningQuery>SELECT 
-      [Attributes].[company_id] AS [company_id], 
-      [Attributes].[type_id] AS [type_id], 
-      [Attributes].[attribute_id] AS [attribute_id], 
-      [Attributes].[attribute_name] AS [attribute_name]
-      FROM [dbo].[Attributes] AS [Attributes]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="Attributes" EntityType="BelinaModel.Store.Attributes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Class" EntityType="BelinaModel.Store.Class" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company" EntityType="BelinaModel.Store.Company" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company_Class" EntityType="BelinaModel.Store.Company_Class" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Store.Product_Attribute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Products" EntityType="BelinaModel.Store.Products" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="sysdiagrams" EntityType="BelinaModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Type" EntityType="BelinaModel.Store.Type" store:Type="Tables" Schema="dbo" />
@@ -32,19 +26,12 @@
           <Property Name="user_pass" Type="varbinary(max)" Nullable="false" />
           <Property Name="user_email" Type="nvarchar" Nullable="false" MaxLength="255" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Belina.dbo.Attributes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
         <EntityType Name="Attributes">
           <Key>
-            <PropertyRef Name="company_id" />
-            <PropertyRef Name="type_id" />
             <PropertyRef Name="attribute_id" />
           </Key>
-          <Property Name="company_id" Type="int" Nullable="false" />
-          <Property Name="type_id" Type="int" Nullable="false" />
           <Property Name="attribute_id" Type="int" Nullable="false" />
-          <Property Name="attribute_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="attribute_name" Type="nvarchar" Nullable="false" MaxLength="255" />
         </EntityType>
         <EntityType Name="Class">
           <Key>
@@ -66,6 +53,15 @@
           </Key>
           <Property Name="company_id" Type="int" />
           <Property Name="class_id" Type="int" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Product_Attribute">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="company_id" Type="int" />
+          <Property Name="type_id" Type="int" />
+          <Property Name="attribute_id" Type="int" Nullable="false" />
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Products">
@@ -100,7 +96,6 @@
           <Property Name="type_id" Type="int" Nullable="false" />
           <Property Name="type_name" Type="nvarchar" Nullable="false" MaxLength="255" />
           <Property Name="class_id" Type="int" />
-          <Property Name="class_name" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Type_Company">
           <Key>
@@ -115,7 +110,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="BelinaModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="BelinaEntities2" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Attributes" EntityType="BelinaModel.Attributes" />
           <EntitySet Name="Class" EntityType="BelinaModel.Class" />
           <EntitySet Name="Company" EntityType="BelinaModel.Company" />
           <EntitySet Name="Company_Class" EntityType="BelinaModel.Company_Class" />
@@ -124,18 +118,9 @@
           <EntitySet Name="Type_Company" EntityType="BelinaModel.Type_Company" />
           <EntitySet Name="Administrator" EntityType="BelinaModel.Administrator" />
           <EntitySet Name="sysdiagrams" EntityType="BelinaModel.sysdiagrams" />
+          <EntitySet Name="Attributes" EntityType="BelinaModel.Attributes" />
+          <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Product_Attribute" />
         </EntityContainer>
-        <EntityType Name="Attributes">
-          <Key>
-            <PropertyRef Name="company_id" />
-            <PropertyRef Name="type_id" />
-            <PropertyRef Name="attribute_id" />
-          </Key>
-          <Property Name="company_id" Type="Int32" Nullable="false" />
-          <Property Name="type_id" Type="Int32" Nullable="false" />
-          <Property Name="attribute_id" Type="Int32" Nullable="false" />
-          <Property Name="attribute_name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="class_id" />
@@ -180,7 +165,6 @@
           <Property Name="type_id" Type="Int32" Nullable="false" />
           <Property Name="type_name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
           <Property Type="Int32" Name="class_id" Nullable="true" />
-          <Property Type="String" Name="class_name" MaxLength="255" FixedLength="false" Unicode="true" Nullable="true" />
         </EntityType>
         <EntityType Name="Type_Company">
           <Key>
@@ -209,22 +193,28 @@
           <Property Type="Int32" Name="version" />
           <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <EntityType Name="Attributes">
+          <Key>
+            <PropertyRef Name="attribute_id" />
+          </Key>
+          <Property Type="Int32" Name="attribute_id" Nullable="false" />
+          <Property Type="String" Name="attribute_name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Product_Attribute">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="company_id" />
+          <Property Type="Int32" Name="type_id" />
+          <Property Type="Int32" Name="attribute_id" Nullable="false" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="BelinaModelStoreContainer" CdmEntityContainer="BelinaEntities2">
-          <EntitySetMapping Name="Attributes">
-            <EntityTypeMapping TypeName="BelinaModel.Attributes">
-              <MappingFragment StoreEntitySet="Attributes">
-                <ScalarProperty Name="company_id" ColumnName="company_id" />
-                <ScalarProperty Name="type_id" ColumnName="type_id" />
-                <ScalarProperty Name="attribute_id" ColumnName="attribute_id" />
-                <ScalarProperty Name="attribute_name" ColumnName="attribute_name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Class">
             <EntityTypeMapping TypeName="BelinaModel.Class">
               <MappingFragment StoreEntitySet="Class">
@@ -269,7 +259,6 @@
           <EntitySetMapping Name="Type">
             <EntityTypeMapping TypeName="BelinaModel.Type">
               <MappingFragment StoreEntitySet="Type">
-                <ScalarProperty Name="class_name" ColumnName="class_name" />
                 <ScalarProperty Name="class_id" ColumnName="class_id" />
                 <ScalarProperty Name="type_id" ColumnName="type_id" />
                 <ScalarProperty Name="type_name" ColumnName="type_name" />
@@ -303,6 +292,24 @@
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
                 <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attributes">
+            <EntityTypeMapping TypeName="BelinaModel.Attributes">
+              <MappingFragment StoreEntitySet="Attributes">
+                <ScalarProperty Name="attribute_name" ColumnName="attribute_name" />
+                <ScalarProperty Name="attribute_id" ColumnName="attribute_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Attribute">
+            <EntityTypeMapping TypeName="BelinaModel.Product_Attribute">
+              <MappingFragment StoreEntitySet="Product_Attribute">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="attribute_id" ColumnName="attribute_id" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

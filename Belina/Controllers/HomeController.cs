@@ -23,23 +23,27 @@ namespace Belina.Controllers
         {
             IList<Class> classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).Distinct().ToList();
             return Json(classes, JsonRequestBehavior.AllowGet);
+          
         }
 
         public JsonResult getTypes(string className)
         {
             IList<String> allTypes = (from type in db.Type
-                                      where type.class_name == className
-                                      orderby type.type_name
-                                      select type.type_name).Distinct().ToList();
+                                       from classes in db.Class
+                                         where classes.class_name == className && type.class_id == classes.class_id
+                                          orderby type.type_name
+                                          select type.type_name).Distinct().ToList();
             return Json(allTypes, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult getCompanies(string className, string typeName)
         {
-            IList<String> companies = (from company in db.Company
+            IList<String> companies = (from classes in db.Class
+                                       from company in db.Company
                                        from type in db.Type
                                        from type_company in db.Type_Company
-                                       where company.company_id == type_company.company_id && type_company.type_id == type.type_id && type.class_name == className
+                                       where company.company_id == type_company.company_id && type_company.type_id == type.type_id && classes.class_name == className
+                                       && type.class_id == classes.class_id
                                        && type.type_name == typeName
                                        orderby company.company_name
                                        select company.company_name).Distinct().ToList();
@@ -55,14 +59,16 @@ namespace Belina.Controllers
                                 from types in db.Type
                                 from product in db.Products
                                 from a in db.Attributes
+                                from ap in db.Product_Attribute
                                 where
 
                                 classes.class_id == product.class_id &&
                                 company.company_id == product.company_id &&
                                 types.type_id == product.type_id &&
-                                a.type_id == types.type_id &&
-                                a.company_id == company.company_id &&
-                                a.attribute_id == product.attribute_id &&
+                                a.attribute_id == ap.attribute_id &&
+                                ap.type_id == types.type_id &&
+                                ap.company_id == company.company_id &&
+                                ap.attribute_id == product.attribute_id &&
 
                                 company.company_name == companyName &&
                                 classes.class_name == className &&
@@ -94,14 +100,16 @@ namespace Belina.Controllers
                                          from types in db.Type
                                          from product in db.Products
                                          from a in db.Attributes
+                                         from ap in db.Product_Attribute
                                          where
 
                                          classes.class_id == product.class_id &&
                                          company.company_id == product.company_id &&
                                          types.type_id == product.type_id &&
-                                         a.type_id == types.type_id &&
-                                         a.company_id == company.company_id &&
-                                         a.attribute_id == product.attribute_id &&
+                                         a.attribute_id == ap.attribute_id &&
+                                         ap.type_id == types.type_id &&
+                                         ap.company_id == company.company_id &&
+                                         ap.attribute_id == product.attribute_id &&
 
                                          company.company_name == companyName &&
                                          classes.class_name == className &&
@@ -128,15 +136,19 @@ namespace Belina.Controllers
         }
         public JsonResult getByClass(string className)
         {
-            var Types = (from type in db.Type
-                                      where type.class_name == className
+            var Types = (from classes in db.Class
+                            from type in db.Type
+                             where classes.class_name == className && type.class_id == classes.class_id
                                       orderby type.type_name
                                       select type.type_name).Distinct().ToList();
 
-            var Attributes = (from types in db.Type
-                               from attributes in db.Attributes
-                                where types.class_name == className && attributes.type_id == types.type_id
-                                  select attributes.attribute_name).Distinct().ToList();
+            var Attributes = (from classes in db.Class
+                              from types in db.Type
+                               from a in db.Attributes
+                                from ap in db.Product_Attribute
+                                 where classes.class_name == className && a.attribute_id == ap.attribute_id && ap.type_id == types.type_id
+                                 && types.class_id == classes.class_id
+                                  select a.attribute_name).Distinct().ToList();
 
             var Companies = (from classes in db.Class
                              from cc in db.Company_Class
@@ -152,22 +164,30 @@ namespace Belina.Controllers
         }
         public JsonResult getAttributesbyClassType(string className, string typeName)
         {
-            List<string> attributes = (from type in db.Type
-                                       from attribute in db.Attributes
-                                       where type.class_name == className && type.type_name == typeName &&
-                                             type.type_id == attribute.type_id
-                                       select attribute.attribute_name).Distinct().ToList();
+            List<string> attributes = (from classes in db.Class
+                                          from type in db.Type
+                                       from a in db.Attributes
+                                       from ap in db.Product_Attribute
+                                       where
+                                        a.attribute_id == ap.attribute_id &&
+                                        classes.class_name == className && type.type_name == typeName &&
+                                        type.type_id == ap.type_id && type.class_id == classes.class_id
+                                       select a.attribute_name).Distinct().ToList();
             return Json(attributes, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getCompanybyClassTypeAttribute(string className, string typeName, string attributeName)
         {
-            List<string> companies = (from company in db.Company
+            List<string> companies = (from classes in db.Class
+                           from company in db.Company
                            from tc in db.Type_Company
                            from type in db.Type
-                           from attr in db.Attributes
+                           from a in db.Attributes
+                           from ap in db.Product_Attribute
                            where
-                           company.company_id == tc.company_id && tc.type_id == type.type_id && company.company_id == attr.company_id &&
-                           type.type_id == attr.type_id && type.class_name == className && type.type_name == typeName && attr.attribute_name == attributeName
+                           a.attribute_id == ap.attribute_id &&
+                           company.company_id == tc.company_id && tc.type_id == type.type_id && company.company_id == ap.company_id &&
+                           type.type_id == ap.type_id && classes.class_name == className && type.type_name == typeName && a.attribute_name == attributeName
+                           && type.class_id == classes.class_id
                            select company.company_name).ToList();
             return Json(companies, JsonRequestBehavior.AllowGet);
         }

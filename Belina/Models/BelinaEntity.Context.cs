@@ -33,5 +33,6 @@ namespace Belina.Models
         public DbSet<Type> Type { get; set; }
         public DbSet<Type_Company> Type_Company { get; set; }
         public DbSet<Administrator> Administrator { get; set; }
+        public DbSet<Product_Attribute> Product_Attribute { get; set; }
     }
 }

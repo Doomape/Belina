@@ -12,9 +12,11 @@ namespace Belina.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Attributes
+    public partial class Product_Attribute
     {
+        public Nullable<int> company_id { get; set; }
+        public Nullable<int> type_id { get; set; }
         public int attribute_id { get; set; }
-        public string attribute_name { get; set; }
+        public int id { get; set; }
     }
 }

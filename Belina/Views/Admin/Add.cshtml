@@ -14,7 +14,7 @@
 <body>
 
     <div id="add_product">
-        <form action="">
+        <form id="product" action="">
             <fieldset style="width: 900px;">
                 <legend>Производ</legend>
                 <input id="productName" style="float: left" type="text">
@@ -77,54 +77,75 @@
     <div style="clear: both"></div>  
     <div> <p style="margin-left: 10px;">Внесување на нови атрибути кои ќе се однесуваат за некој <span style="color:blue;font-weight:bold">производ ↑ </span></p></div>
     <div id="left_top">
-        <form action="">
             <fieldset style="width: 400px;">
                 <legend>Класа</legend>
                 <input id="className" style="float: left" type="text">
                 <p>Пример: Бои и лакови, железарија..</p>
                 <div style="clear: both"></div>
-                <input type="submit" value="внеси">
-            </fieldset>
-        </form>
+                <button id="class" type="button">Внеси</button>
+            </fieldset>  
     </div>
 
     <div id="right_top">
-        <form action="">
             <fieldset style="width: 400px;">
                 <legend>Тип</legend>
                 <input id="typeName" style="float: left" type="text">
                 <p>Пример: Внатрешни ѕидови, подлоги, разредувачи..</p>
                 <div style="clear: both"></div>
-                <input type="submit" value="внеси">
+                 <button id="type" type="button">Внеси</button>
                 <div style="clear: both"></div>
             </fieldset>
-        </form>
     </div>
 
     <div id="left_middle">
-        <form action="">
             <fieldset style="width: 400px;">
                 <legend>Производител</legend>
                 <input id="companyName" style="float: left" type="text">
                 <p>Пример: Крафт, Ренко..</p>
                 <div style="clear: both"></div>
-                <input type="submit" value="внеси">
+                <button id="company" type="button">Внеси</button>
             </fieldset>
-        </form>
     </div>
 
     <div id="right_middle">
-        <form action="">
             <fieldset style="width: 400px;">
                 <legend>Специфична карактеристика</legend>
                 <input id="attributeName" style="float: left" type="text">
                 <p>Пример: Декоративни, Дисперзии, Латекси</p>
                 <div style="clear: both"></div>
-                <input type="submit" value="внеси">
+                <button id="attribute" type="button">Внеси</button>
             </fieldset>
-        </form>
     </div>
+<script type="text/javascript">
 
+        $('#class').click(function () {
+            debugger;
+            var className = $('#className').val();
+            $.ajax({
+                url: "/Admin/insertClasses",
+                type: "GET",
+                data: { className: className },
+                success: function (result) {
+                    debugger;
+                    alert(result);
+                }
+            });
+        });
+        $('#type').click(function () {
+            debugger;
+            var typeName = $('#typeName').val();
+            $.ajax({
+                url: "/Admin/insertType",
+                type: "GET",
+                data: { typeName: typeName },
+                success: function (result) {
+                    debugger;
+                    alert(result);
+                }
+            });
+        });
+
+</script>
     
 
 </body>

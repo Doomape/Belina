@@ -37,4 +37,32 @@ ALTER TABLE Attributes ALTER COLUMN attribute_id INT NULL;
 ALTER TABLE Attributes ALTER COLUMN company_id INT NULL;
 ALTER TABLE Attributes ALTER COLUMN [type_id] INT NULL;
 
-=========end 21=================
+
+sp_rename 'Attributes','Product_Attribute';
+
+CREATE TABLE Attributes
+(
+attribute_id int NOT NULL PRIMARY KEY,
+attribute_name nvarchar(255) NOT NULL
+)
+
+
+
+INSERT INTO Attributes
+SELECT Distinct Product_Attribute.attribute_id, Product_Attribute.attribute_name
+FROM Product_Attribute
+WHERE Product_Attribute.attribute_name IS NOT NULL
+
+ALTER TABLE Product_Attribute DROP COLUMN attribute_name
+
+
+ALTER TABLE Product_Attribute
+ADD id INT IDENTITY
+
+ALTER TABLE Product_Attribute
+ADD CONSTRAINT PK_Product_Attribute
+PRIMARY KEY(id)
+
+ALTER TABLE Type DROP COLUMN class_name
+
+=========end 26=================
