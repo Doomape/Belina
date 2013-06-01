@@ -66,3 +66,10 @@ PRIMARY KEY(id)
 ALTER TABLE Type DROP COLUMN class_name
 
 =========end 26=================
+
+
+============29.05.2013==============
+
+Vo Product_Attrubte da se vidat koi se so attribute_id = 1070100.
+
+===========end 29===================

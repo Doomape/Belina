@@ -257,6 +257,8 @@
     <Content Include="Content\grid\codebase\calendar\img\calx.gif" />
     <Content Include="Content\grid\codebase\calendar\license.txt" />
     <Content Include="Content\grid\codebase\calendar\YAHOO.js" />
+    <Content Include="Content\grid\codebase\dhtmlxcombo.css" />
+    <Content Include="Content\grid\codebase\dhtmlxcombo.js" />
     <Content Include="Content\grid\codebase\dhtmlxcommon.js" />
     <Content Include="Content\grid\codebase\dhtmlxgrid.css" />
     <Content Include="Content\grid\codebase\dhtmlxgrid.js" />
@@ -271,6 +273,9 @@
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_grid.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_link.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_tree.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxcombo_extra.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxcombo_group.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxcombo_whp.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_deprecated.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_drag.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_export.js" />
@@ -291,12 +296,18 @@
     <Content Include="Content\grid\codebase\imgs\ar_right_abs.gif" />
     <Content Include="Content\grid\codebase\imgs\ar_right_abs_dis.gif" />
     <Content Include="Content\grid\codebase\imgs\ar_right_dis.gif" />
+    <Content Include="Content\grid\codebase\imgs\bg_selection.gif" />
     <Content Include="Content\grid\codebase\imgs\blanc.gif" />
     <Content Include="Content\grid\codebase\imgs\blank.gif" />
     <Content Include="Content\grid\codebase\imgs\combo_select.gif" />
     <Content Include="Content\grid\codebase\imgs\combo_select_dhx_black.gif" />
     <Content Include="Content\grid\codebase\imgs\combo_select_dhx_blue.gif" />
     <Content Include="Content\grid\codebase\imgs\combo_select_dhx_skyblue.gif" />
+    <Content Include="Content\grid\codebase\imgs\combo_select_dhx_terrace.gif" />
+    <Content Include="Content\grid\codebase\imgs\combo_select_dhx_web.gif" />
+    <Content Include="Content\grid\codebase\imgs\combo_select_dis_dhx_skyblue.gif" />
+    <Content Include="Content\grid\codebase\imgs\combo_select_dis_dhx_terrace.gif" />
+    <Content Include="Content\grid\codebase\imgs\combo_select_dis_dhx_web.gif" />
     <Content Include="Content\grid\codebase\imgs\csh_bluebooks\blanc.gif" />
     <Content Include="Content\grid\codebase\imgs\csh_bluebooks\blank.gif" />
     <Content Include="Content\grid\codebase\imgs\csh_bluebooks\folder.gif" />

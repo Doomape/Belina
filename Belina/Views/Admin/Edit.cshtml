@@ -9,11 +9,57 @@
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="@Url.Content("~/Content/Admin.css")" type="text/css" />
     <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
+     <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxgrid.css">
+     <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxcombo.css">
+     <script src="/Content/grid/codebase/dhtmlxcommon.js"></script>
+     <script src="/Content/grid/codebase/dhtmlxgrid.js"></script>
+    <script src="/Content/grid/codebase/dhtmlxcombo.js"></script>
+     <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
     <title>Edit</title>
 </head>
 <body>
-    <div>
-        Edit
-    </div>
+    
+	<div id="mygrid_container" style="width:1026px;height:500px"></div>
+
+
+    <script>
+        var mygrid;
+        $(document).ready(function () {
+           
+            $.ajax({
+                url: "/Admin/XMLForProducts",
+                dataType: "json",
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    debugger;
+                    initgrid();
+                    
+                    mygrid.init();
+                    
+             mygrid.parse(result, "xml");
+                  //  mygrid.loadXML("/Content/ibam.xml");
+                }
+            });
+
+        });
+
+        function initgrid() {
+            mygrid = new dhtmlXGridObject('mygrid_container');
+            mygrid.setImagePath("/Content/grid/codebase/imgs/");
+            mygrid.setSkin("light");
+            mygrid.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                debugger;
+               
+                if (stage == 2) {
+                    //prati ajax coper eden nvalue e novata vrednost!!!!!!!!!!!!!!!!!!!!!!!!!!
+                   // mygrid.cellById(rId, cInd).setValue(nValue);
+                    
+                   // alert(nValue);
+                }
+            });
+
+        }
+    </script>
 </body>
 </html>

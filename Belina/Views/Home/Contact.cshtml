@@ -16,9 +16,10 @@
              mygrid.setHeader("Model,Qty");//,Price
              mygrid.setInitWidths("600,280");
              mygrid.setColAlign("left,right,right");
-             mygrid.setColTypes("ro,ed,ch");
+             mygrid.setColTypes("ed,ed,ch");
              mygrid.setSkin("light");
              mygrid.setColSorting("str,int");
+           
           //   mygrid.enableAutoHeight(true);
           //   mygrid.setSizes();
            //  mygrid.setTabOrder("1,2,3,4");
@@ -31,7 +32,7 @@
                  data: {},
                  success: function (result) {
                      for (var x = 0; x < result.length; x++) {
-                         mygrid.addRow(x, ['<a href="">' + result[x].class_name + '</a>', result[x].class_id]);
+                         mygrid.addRow(x, ['<select><option>' + result[x].class_name + '</option></select>', result[x].class_id]);
                      }
                  }
              });
