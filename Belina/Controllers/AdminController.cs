@@ -9,6 +9,8 @@ using Belina.Models;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 
 namespace Belina.Controllers
 {
@@ -201,7 +203,7 @@ namespace Belina.Controllers
 
         public JsonResult XMLForProducts()
         {
-            string[] column_names = { "Производ", "Класа", "Тип",  "Производител",  "Специфична карактеристика" };
+            string[] column_names = { "Производ", "Класа", "Тип",  "Производител",  "Специфична карактеристика", "Детален опис", "Фотографија" };
             XDocument doc = new XDocument();
             XElement rows = new XElement("rows");
 
@@ -261,6 +263,18 @@ namespace Belina.Controllers
                     }
                     head.Add(column);
                 }
+                if (column_names[5] == columnName)
+                {
+                    column = new XElement("column", new XAttribute("type", "txt"),
+                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
+                    head.Add(column);
+                }
+                if (column_names[6] == columnName)
+                {
+                    column = new XElement("column", new XAttribute("type", "imf"),
+                    new XAttribute("width", "20"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
+                    head.Add(column);
+                }
             }
             rows.Add(head);
             XElement row;
@@ -269,6 +283,8 @@ namespace Belina.Controllers
             XElement cell3;
             XElement cell4;
             XElement cell5;
+            XElement cell6;
+            XElement cell7;
             var products = (from product in db.Products 
                               from classes in db.Class
                                 from company in db.Company
@@ -279,7 +295,8 @@ namespace Belina.Controllers
                                     product.company_id == company.company_id &&
                                     product.type_id == type.type_id &&
                                     product.attribute_id == attribute.attribute_id
-            select new { product.product_name, product.product_id, classes.class_name, type.type_name, company.company_name, attribute.attribute_name }).ToList();
+                                     select new { product.product_name, product.product_id, classes.class_name, type.type_name,
+                                        company.company_name, attribute.attribute_name, product.product_description,  product.product_image}).ToList();
             foreach (var prod in products)
             {
                 row = new XElement("row", new XAttribute("id", prod.product_id));
@@ -288,14 +305,24 @@ namespace Belina.Controllers
                 cell3 = new XElement("cell", new XText(prod.type_name));
                 cell4 = new XElement("cell", new XText(prod.company_name));
                 cell5 = new XElement("cell", new XText(prod.attribute_name));
+                if (prod.product_description != null)
+                {
+                    cell6 = new XElement("cell", new XText(prod.product_description));
+                }
+                else
+                {
+                    cell6 = new XElement("cell", new XText("/"));
+                }
+                cell7 = new XElement("cell", new XText(prod.product_image));
                 row.Add(cell);
                 row.Add(cell2);
                 row.Add(cell3);
                 row.Add(cell4);
                 row.Add(cell5);
+                row.Add(cell6);
+                row.Add(cell7);
                 rows.Add(row);
             }
-
             doc.Add(rows);
             return Json(doc.ToString(), JsonRequestBehavior.AllowGet);
         }
