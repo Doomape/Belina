@@ -11,6 +11,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using Belina.Helpers;
 
 namespace Belina.Controllers
 {
@@ -200,8 +201,8 @@ namespace Belina.Controllers
 
             return Json("Успешно додавање на нов производ", JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult XMLForProducts()
+        
+        public LargeJsonResult XMLForProducts()
         {
             string[] column_names = { "Производ", "Класа", "Тип",  "Производител",  "Специфична карактеристика", "Детален опис", "Фотографија" };
             XDocument doc = new XDocument();
@@ -271,7 +272,7 @@ namespace Belina.Controllers
                 }
                 if (column_names[6] == columnName)
                 {
-                    column = new XElement("column", new XAttribute("type", "imf"),
+                    column = new XElement("column", new XAttribute("type", "img"),
                     new XAttribute("width", "20"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
                     head.Add(column);
                 }
@@ -324,7 +325,8 @@ namespace Belina.Controllers
                 rows.Add(row);
             }
             doc.Add(rows);
-            return Json(doc.ToString(), JsonRequestBehavior.AllowGet);
+            return new LargeJsonResult() { Data = doc.ToString(), MaxJsonLength = int.MaxValue, JsonRequestBehavior = System.Web.Mvc.JsonRequestBehavior.AllowGet };
+
         }
     }
 }
