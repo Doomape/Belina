@@ -346,11 +346,12 @@ namespace Belina.Controllers
             XElement head = new XElement("head");
 
             XElement column;
-            column = new XElement("column", new XAttribute("type", "ed"),
+            column = new XElement("column", new XAttribute("type", "ed"), new XAttribute("align", "left"),
                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Класи"));
             head.Add(column);
-            column = new XElement("column", new XAttribute("type", "ed"),
+            column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Избриши"));
+
             head.Add(column);
             rows.Add(head);
             XElement row;
@@ -361,7 +362,7 @@ namespace Belina.Controllers
             {
                 row = new XElement("row", new XAttribute("id", classes.class_id));
                 cell = new XElement("cell", new XText(classes.class_name));
-                cell2 = new XElement("cell", new XText("Ili check box ili link so f-ja()"));
+                cell2 = new XElement("cell", 0);
                 row.Add(cell);
                 row.Add(cell2);
                 rows.Add(row);

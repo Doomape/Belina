@@ -116,8 +116,21 @@
             mygrid_classes.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_classes.setSkin("light");
             mygrid_classes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+
+                debugger;
+                if (stage == 0) {
+                    switch (mygrid_classes.cellById(rId, cInd).getValue()) {
+                        case "0":
+                            mygrid_classes.cellById(rId, cInd).setChecked(true);
+                            break;
+                        case "1":
+                            mygrid_classes.cellById(rId, cInd).setChecked(false);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 if (stage == 2) {
-                    debugger;
                     $.ajax({
                         url: "/Admin/updateClasses",
                         dataType: "json",
@@ -129,7 +142,9 @@
                     });
                 }
             });
-            mygrid_classes.attachEvent("onCheck", function (rId, cInd, state) { });
+            mygrid_classes.attachEvent("onCheck", function (rId, cInd, state) {
+                console.log('checkbox on click detected');
+            });
         }
 
         function init_Types_grid() {
