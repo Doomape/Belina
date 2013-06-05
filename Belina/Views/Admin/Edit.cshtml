@@ -9,56 +9,183 @@
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="@Url.Content("~/Content/Admin.css")" type="text/css" />
     <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
-     <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxgrid.css">
-     <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxcombo.css">
-     <script src="/Content/grid/codebase/dhtmlxcommon.js"></script>
-     <script src="/Content/grid/codebase/dhtmlxgrid.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxgrid.css">
+    <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxcombo.css">
+    <script src="/Content/grid/codebase/dhtmlxcommon.js"></script>
+    <script src="/Content/grid/codebase/dhtmlxgrid.js"></script>
     <script src="/Content/grid/codebase/dhtmlxcombo.js"></script>
-     <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
+    <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
     <title>Edit</title>
 </head>
 <body>
-    
-	<div id="mygrid_container" style="width:1026px;height:500px"></div>
+
+    <div id="product_container" style="width: 1026px; height: 500px"></div>
+
+    <div id="class_container" style="width: 257px; height: 300px; margin-top: 30px; margin-bottom: 50px; float: left"></div>
+
+    <div id="type_container" style="width: 230px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
+
+    <div id="attribute_container" style="width: 230px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
+   
+     <div id="company_container" style="width: 230px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
 
 
     <script>
-        var mygrid;
+        var mygrid_classes;
+        var mygrid_types;
+        var mygrid_attributes;
+        var mygrid_companies;
+        var mygrid_products;
         $(document).ready(function () {
-           
+
             $.ajax({
                 url: "/Admin/XMLForProducts",
                 dataType: "json",
                 type: "GET",
                 data: {},
                 success: function (result) {
-                    debugger;
-                    initgrid();
-                    
-                    mygrid.init();
-                    
-             mygrid.parse(result, "xml");
-                  //  mygrid.loadXML("/Content/ibam.xml");
+                    init_Product_grid();
+                    mygrid_products.init();
+                    // mygrid_products.parse(result, "xml");
                 }
             });
 
+            $.ajax({
+                url: "/Admin/XMLForClasses",
+                dataType: "json",
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    init_Classes_grid();
+                    mygrid_classes.init();
+                    mygrid_classes.parse(result, "xml");
+                }
+            });
+
+            $.ajax({
+                url: "/Admin/XMLForTypes",
+                dataType: "json",
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    init_Types_grid();
+                    mygrid_types.init();
+                    mygrid_types.parse(result, "xml");
+                }
+            });
+
+            $.ajax({
+                url: "/Admin/XMLForAttributes",
+                dataType: "json",
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    init_Attributes_grid();
+                    mygrid_attributes.init();
+                    mygrid_attributes.parse(result, "xml");
+                }
+            });
+
+            $.ajax({
+                url: "/Admin/XMLForCompanies",
+                dataType: "json",
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    init_Companies_grid();
+                    mygrid_companies.init();
+                    mygrid_companies.parse(result, "xml");
+                }
+            });
         });
 
-        function initgrid() {
-            mygrid = new dhtmlXGridObject('mygrid_container');
-            mygrid.setImagePath("/Content/grid/codebase/imgs/");
-            mygrid.setSkin("light");
-            mygrid.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
-              //  debugger;
-               
+        function init_Product_grid() {
+            mygrid_products = new dhtmlXGridObject('product_container');
+            mygrid_products.setImagePath("/Content/grid/codebase/imgs/");
+            mygrid_products.setSkin("light");
+            mygrid_products.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
                 if (stage == 2) {
                     //prati ajax coper eden nvalue e novata vrednost!!!!!!!!!!!!!!!!!!!!!!!!!!
-                   // mygrid.cellById(rId, cInd).setValue(nValue);
-                    
-                   // alert(nValue);
+                    // mygrid.cellById(rId, cInd).setValue(nValue);
+                    // alert(nValue);
                 }
             });
+        }
+        function init_Classes_grid() {
+            mygrid_classes = new dhtmlXGridObject('class_container');
+            mygrid_classes.setImagePath("/Content/grid/codebase/imgs/");
+            mygrid_classes.setSkin("light");
+            mygrid_classes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                if (stage == 2) {
+                    debugger;
+                    $.ajax({
+                        url: "/Admin/updateClasses",
+                        dataType: "json",
+                        type: "POST",
+                        data: { old_className: oValue, new_className: nValue },
+                        success: function (result) {
+                            mygrid_classes.cellById(rId, cInd).setValue(nValue);
+                        }
+                    });
+                }
+            });
+            mygrid_classes.attachEvent("onCheck", function (rId, cInd, state) { });
+        }
 
+        function init_Types_grid() {
+            mygrid_types = new dhtmlXGridObject('type_container');
+            mygrid_types.setImagePath("/Content/grid/codebase/imgs/");
+            mygrid_types.setSkin("light");
+            mygrid_types.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                if (stage == 2) {
+                    $.ajax({
+                        url: "/Admin/updateTypes",
+                        dataType: "json",
+                        type: "POST",
+                        data: { old_typeName: oValue, new_typeName: nValue },
+                        success: function (result) {
+                            mygrid_types.cellById(rId, cInd).setValue(nValue);
+                        }
+                    });
+                }
+            });
+        }
+
+        function init_Attributes_grid() {
+            mygrid_attributes = new dhtmlXGridObject('attribute_container');
+            mygrid_attributes.setImagePath("/Content/grid/codebase/imgs/");
+            mygrid_attributes.setSkin("light");
+            mygrid_attributes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                if (stage == 2) {
+                    $.ajax({
+                        url: "/Admin/updateAttributes",
+                        dataType: "json",
+                        type: "POST",
+                        data: { old_attributeName: oValue, new_attributeName: nValue },
+                        success: function (result) {
+                            mygrid_attributes.cellById(rId, cInd).setValue(nValue);
+                        }
+                    });
+                }
+            });
+        }
+        function init_Companies_grid() {
+            mygrid_companies = new dhtmlXGridObject('company_container');
+            mygrid_companies.setImagePath("/Content/grid/codebase/imgs/");
+            mygrid_companies.setSkin("light");
+            mygrid_companies.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                if (stage == 2) {
+                    $.ajax({
+                        url: "/Admin/updateCompanies",
+                        dataType: "json",
+                        type: "POST",
+                        data: { old_companyName: oValue, new_companyName: nValue },
+                        success: function (result) {
+                            mygrid_companies.cellById(rId, cInd).setValue(nValue);
+                        }
+                    });
+                }
+            });
         }
     </script>
 </body>

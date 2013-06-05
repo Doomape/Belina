@@ -73,3 +73,31 @@ ALTER TABLE Type DROP COLUMN class_name
 Vo Product_Attrubte da se vidat koi se so attribute_id = 1070100.
 
 ===========end 29===================
+
+
+
+
+================03.06.2013 Stored procedure=====================
+
+CREATE procedure [dbo].[AllProducts](@sort_col nvarchar(600), @sort_dir varchar(4), @start int, @end int) as
+begin
+  EXEC('WITH T AS
+(
+    SELECT product_name,company_name,class_name,type_name,attribute_name,product_description,product_discount,product_promotion,product_image,
+    ROW_NUMBER() OVER (order by '+@sort_col+' '+@sort_dir+') AS RowNumber
+    FROM Products,Class,Company,Type,Attributes 
+	where 
+	Products.company_id=Company.company_id and 
+	Products.class_id=Class.class_id and
+	Products.type_id=Type.type_id and
+	Products.attribute_id=Attributes.attribute_id
+) 
+SELECT * 
+FROM T 
+WHERE RowNumber between '+@start+' and '+@end
+)
+end
+go
+
+exec dbo.[AllProducts] 'product_name','asc',1,50
+================end 03=====================

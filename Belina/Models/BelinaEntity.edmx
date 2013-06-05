@@ -105,6 +105,12 @@
           <Property Name="type_id" Type="int" />
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
+        <Function Name="AllProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sort_col" Type="nvarchar" Mode="In" />
+          <Parameter Name="sort_dir" Type="varchar" Mode="In" />
+          <Parameter Name="start" Type="int" Mode="In" />
+          <Parameter Name="end" Type="int" Mode="In" />
+        </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -120,6 +126,12 @@
           <EntitySet Name="sysdiagrams" EntityType="BelinaModel.sysdiagrams" />
           <EntitySet Name="Attributes" EntityType="BelinaModel.Attributes" />
           <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Product_Attribute" />
+          <FunctionImport Name="AllProducts">
+            <Parameter Name="sort_col" Mode="In" Type="String" />
+            <Parameter Name="sort_dir" Mode="In" Type="String" />
+            <Parameter Name="start" Mode="In" Type="Int32" />
+            <Parameter Name="end" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -313,6 +325,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AllProducts" FunctionName="BelinaModel.Store.AllProducts" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

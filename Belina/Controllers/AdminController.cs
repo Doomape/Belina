@@ -18,13 +18,11 @@ namespace Belina.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-        //
-        // GET: /Admin/
         BelinaEntities2 db = new BelinaEntities2();
 
         public ActionResult Index()
         {
-
+           
             return View();
         }
         public ActionResult Add(HttpPostedFileBase file)
@@ -35,7 +33,7 @@ namespace Belina.Controllers
         {
             return View();
         }
-
+        #region Insert new Classes
         public JsonResult insertClasses(string className)
         {
             IList<String> existRow = (from x in db.Class where x.class_name == className select x.class_name).Distinct().ToList();
@@ -54,6 +52,8 @@ namespace Belina.Controllers
                 return Json("Класа е внесена.", JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+        #region Insert new Types
         public JsonResult insertType(string typeName)
         {
             IList<String> existRow = (from x in db.Type where x.type_name == typeName select x.type_name).Distinct().ToList();
@@ -73,6 +73,8 @@ namespace Belina.Controllers
                 return Json("Типот е внесен.", JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+        #region Insert new Companies
         public JsonResult insertCompany(string companyName)
         {
             IList<String> existRow = (from x in db.Company where x.company_name == companyName select x.company_name).Distinct().ToList();
@@ -92,6 +94,8 @@ namespace Belina.Controllers
                 return Json("Производителот е внесен.", JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+        #region Insert new Attributes
         public JsonResult insertAttribute(string attributeName)
         {
             IList<String> existRow = (from x in db.Attributes where x.attribute_name == attributeName select x.attribute_name).Distinct().ToList();
@@ -111,6 +115,8 @@ namespace Belina.Controllers
                 return Json("Специфичната карактеристика е внесена.", JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+        #region Get product Dependencies
         public JsonResult productDependencies()
         {
             var classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x.class_name).Distinct().ToList();
@@ -124,6 +130,8 @@ namespace Belina.Controllers
             res.Add("companies", companies);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+        #region Insert new product
         public JsonResult insertProduct(HttpPostedFileBase file, string productName, string allClasses, string allTypes,string allAttributes, string allCompanies, string productDecription, string discount, string promotion)
         {
             Products products = new Products();
@@ -201,7 +209,8 @@ namespace Belina.Controllers
 
             return Json("Успешно додавање на нов производ", JsonRequestBehavior.AllowGet);
         }
-        
+       #endregion
+        #region Generate XML for Products
         public LargeJsonResult XMLForProducts()
         {
             string[] column_names = { "Производ", "Класа", "Тип",  "Производител",  "Специфична карактеристика", "Детален опис", "Фотографија" };
@@ -212,7 +221,7 @@ namespace Belina.Controllers
 
             XElement column;
 
-            var Dbclasses = (from x in db.Class select x.class_name).Distinct().ToList();
+            var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x.class_name).Distinct().ToList();
             var Dbtypes = (from x in db.Type select x.type_name).Distinct().ToList();
             var Dbcompanies = (from x in db.Company select x.company_name).Distinct().ToList();
             var Dbattributes = (from x in db.Attributes select x.attribute_name).Distinct().ToList();
@@ -273,7 +282,7 @@ namespace Belina.Controllers
                 if (column_names[6] == columnName)
                 {
                     column = new XElement("column", new XAttribute("type", "img"),
-                    new XAttribute("width", "20"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
+                    new XAttribute("width", "200"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
                     head.Add(column);
                 }
             }
@@ -321,12 +330,170 @@ namespace Belina.Controllers
                 row.Add(cell4);
                 row.Add(cell5);
                 row.Add(cell6);
-                row.Add(cell7);
+            //    row.Add(cell7);
                 rows.Add(row);
             }
             doc.Add(rows);
             return new LargeJsonResult() { Data = doc.ToString(), MaxJsonLength = int.MaxValue, JsonRequestBehavior = System.Web.Mvc.JsonRequestBehavior.AllowGet };
-
         }
+        #endregion
+        #region Generate XML for Classes
+        public JsonResult XMLForClasses()
+        {
+            XDocument doc = new XDocument();
+            XElement rows = new XElement("rows");
+
+            XElement head = new XElement("head");
+
+            XElement column;
+            column = new XElement("column", new XAttribute("type", "ed"),
+                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Класи"));
+            head.Add(column);
+            column = new XElement("column", new XAttribute("type", "ed"),
+                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Избриши"));
+            head.Add(column);
+            rows.Add(head);
+            XElement row;
+            XElement cell;
+            XElement cell2;
+            var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).Distinct().ToList();
+            foreach (var classes in Dbclasses)
+            {
+                row = new XElement("row", new XAttribute("id", classes.class_id));
+                cell = new XElement("cell", new XText(classes.class_name));
+                cell2 = new XElement("cell", new XText("Ili check box ili link so f-ja()"));
+                row.Add(cell);
+                row.Add(cell2);
+                rows.Add(row);
+            }
+            doc.Add(rows);
+            return Json(doc.ToString(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region Generate XML for Types
+        public JsonResult XMLForTypes()
+        {
+            XDocument doc = new XDocument();
+            XElement rows = new XElement("rows");
+
+            XElement head = new XElement("head");
+
+            XElement column;
+            column = new XElement("column", new XAttribute("type", "ed"),
+                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Типови"));
+            head.Add(column);
+            rows.Add(head);
+            XElement row;
+            XElement cell;
+            var Dbtypes = (from x in db.Type select x).Distinct().ToList();
+            foreach (var type in Dbtypes)
+            {
+                row = new XElement("row", new XAttribute("id", type.type_id));
+                cell = new XElement("cell", new XText(type.type_name));
+                row.Add(cell);
+                rows.Add(row);
+            }
+            doc.Add(rows);
+            return Json(doc.ToString(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region Generate XML for Attrbutes
+        public JsonResult XMLForAttributes()
+        {
+            XDocument doc = new XDocument();
+            XElement rows = new XElement("rows");
+
+            XElement head = new XElement("head");
+
+            XElement column;
+            column = new XElement("column", new XAttribute("type", "ed"),
+                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Специфични карактеристики"));
+            head.Add(column);
+            rows.Add(head);
+            XElement row;
+            XElement cell;
+            var Dbattribute = (from x in db.Attributes select x).Distinct().ToList();
+            foreach (var attribute in Dbattribute)
+            {
+                row = new XElement("row", new XAttribute("id", attribute.attribute_id));
+                cell = new XElement("cell", new XText(attribute.attribute_name));
+                row.Add(cell);
+                rows.Add(row);
+            }
+            doc.Add(rows);
+            return Json(doc.ToString(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region Generate XML for Companies
+        public JsonResult XMLForCompanies()
+        {
+            XDocument doc = new XDocument();
+            XElement rows = new XElement("rows");
+
+            XElement head = new XElement("head");
+
+            XElement column;
+            column = new XElement("column", new XAttribute("type", "ed"),
+                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Производители"));
+            head.Add(column);
+            rows.Add(head);
+            XElement row;
+            XElement cell;
+            var Dbcompany = (from x in db.Company select x).Distinct().ToList();
+            foreach (var company in Dbcompany)
+            {
+                row = new XElement("row", new XAttribute("id", company.company_id));
+                cell = new XElement("cell", new XText(company.company_name));
+                row.Add(cell);
+                rows.Add(row);
+            }
+            doc.Add(rows);
+            return Json(doc.ToString(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region update Classes
+        public JsonResult updateClasses(string old_className,string new_className)
+        {
+            Class classObj = (from x in db.Class
+                       where x.class_name == old_className
+                       select x).First();
+            classObj.class_name = new_className;
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region update Types
+        public JsonResult updateTypes(string old_typeName, string new_typeName)
+        {
+            Belina.Models.Type typeObj = (from x in db.Type
+                             where x.type_name == old_typeName
+                             select x).First();
+            typeObj.type_name = new_typeName;
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region update Attributes
+        public JsonResult updateAttributes(string old_attributeName, string new_attributeName)
+        {
+            Attributes attributeObj = (from x in db.Attributes
+                                       where x.attribute_name == old_attributeName
+                                          select x).First();
+            attributeObj.attribute_name = new_attributeName;
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region update Companies
+        public JsonResult updateCompanies(string old_companyName, string new_companyName)
+        {
+            Company companyObj = (from x in db.Company
+                                  where x.company_name == old_companyName
+                                       select x).First();
+            companyObj.company_name = new_companyName;
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }
