@@ -496,5 +496,20 @@ namespace Belina.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
+        public JsonResult deleteClasses(string objClasses)
+        {
+            int[] classes_id = new int[objClasses.Split(',').Length];
+            for (int i = 0; i < objClasses.Split(',').Length; i++)
+            {
+                classes_id[i] = Convert.ToInt32(objClasses.Split(',')[i]);
+            }
+            var x = (from p in db.Class where classes_id.Contains(p.class_id) select p).ToList();
+            foreach(var a in x)
+            {
+            db.Class.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
     }
 }

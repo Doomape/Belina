@@ -16,18 +16,26 @@
     <script src="/Content/grid/codebase/dhtmlxcombo.js"></script>
     <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
     <title>Edit</title>
+    <style>
+        a {
+            font-family: Tahoma,Arial,Helvetica,serif;
+            font-size: 12px;
+            color: #058cb6;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 
     <div id="product_container" style="width: 1026px; height: 500px"></div>
 
-    <div id="class_container" style="width: 257px; height: 300px; margin-top: 30px; margin-bottom: 50px; float: left"></div>
+    <div id="class_container" style="width: 500px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
+    <div style="position: absolute; margin-top: 340px; margin-left: 12px;"><a onclick="delete_r_class()" href="javascript:void(0)">Избриши ги селектираните класи</a></div>
+    <div id="type_container" style="width: 500px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
 
-    <div id="type_container" style="width: 230px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
+    <div id="attribute_container" style="width: 500px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; margin-left: 10px; float: left"></div>
 
-    <div id="attribute_container" style="width: 230px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
-   
-     <div id="company_container" style="width: 230px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
+    <div id="company_container" style="width: 500px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
 
 
     <script>
@@ -117,7 +125,7 @@
             mygrid_classes.setSkin("light");
             mygrid_classes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
 
-                debugger;
+                //    debugger;
                 if (stage == 0) {
                     switch (mygrid_classes.cellById(rId, cInd).getValue()) {
                         case "0":
@@ -131,18 +139,20 @@
                     }
                 }
                 if (stage == 2) {
+                    debugger;
                     $.ajax({
                         url: "/Admin/updateClasses",
                         dataType: "json",
                         type: "POST",
                         data: { old_className: oValue, new_className: nValue },
-                        success: function (result) {
+                        success: function (result) {      
                             mygrid_classes.cellById(rId, cInd).setValue(nValue);
                         }
                     });
                 }
             });
             mygrid_classes.attachEvent("onCheck", function (rId, cInd, state) {
+                debugger;
                 console.log('checkbox on click detected');
             });
         }
@@ -201,6 +211,26 @@
                     });
                 }
             });
+        }
+
+        function delete_r_class() {
+            if (mygrid_classes.getCheckedRows(1).length > 0) {
+                if (confirm('Избриши ' + mygrid_classes.getCheckedRows(1).split(",").length + ' редови ?')) {
+
+                    $.ajax({
+                        url: "/Admin/deleteClasses",
+                        dataType: "json",
+                        type: "POST",
+                        data: { objClasses: mygrid_classes.getCheckedRows(1)},
+                        success: function (result) {
+                            debugger;
+                            for (var i = 0; i < mygrid_classes.getCheckedRows(1).split(",").length; i++) {
+                                mygrid_classes.deleteRow(mygrid_classes.getCheckedRows(1).split(",")[i]);
+                            }
+                        }
+                    });
+                }
+            }
         }
     </script>
 </body>
