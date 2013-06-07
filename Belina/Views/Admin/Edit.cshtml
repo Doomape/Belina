@@ -196,7 +196,7 @@
             mygrid_classes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
 
                 //    debugger;
-                if (stage == 0) {
+                if (stage == 0 && cInd == 1) {
                     switch (mygrid_classes.cellById(rId, cInd).getValue()) {
                         case "0":
                             mygrid_classes.cellById(rId, cInd).setChecked(true);
@@ -247,7 +247,7 @@
             mygrid_types.setSkin("light");
             mygrid_types.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
                 
-                if (stage == 0) {
+                if (stage == 0 && cInd == 1) {
                     switch (mygrid_types.cellById(rId, cInd).getValue()) {
                         case "0":
                             mygrid_types.cellById(rId, cInd).setChecked(true);
@@ -295,7 +295,8 @@
             mygrid_attributes.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_attributes.setSkin("light");
             mygrid_attributes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
-                if (stage == 0) {
+                debugger;
+                if (stage == 0 && cInd==1) {
                     switch (mygrid_attributes.cellById(rId, cInd).getValue()) {
                         case "0":
                             mygrid_attributes.cellById(rId, cInd).setChecked(true);
@@ -389,8 +390,7 @@
             }
         }
         
-        
-        
+
     </script>
 </body>
 </html>
