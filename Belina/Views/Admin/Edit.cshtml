@@ -17,25 +17,95 @@
     <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
     <title>Edit</title>
     <style>
+        body {
+        padding-bottom:250px;
+        }
         a {
             font-family: Tahoma,Arial,Helvetica,serif;
             font-size: 12px;
             color: #058cb6;
             text-decoration: none;
         }
+
+        #product_container {
+            width: 1026px;
+            height: 500px;
+        }
+
+        #class_container {
+            width: 500px;
+            height: 300px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            margin-left: 10px;
+            float: left;
+        }
+
+        #delete_class {
+            position: absolute;
+            margin-top: 340px;
+            margin-left: 270px;
+        }
+
+        #type_container {
+            width: 500px;
+            height: 300px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            margin-left: 10px;
+            float: left;
+        }
+
+        #delete_type {
+            position: absolute;
+            margin-top: 340px;
+            margin-left: 790px;
+        }
+
+        #attribute_container {
+            width: 500px;
+            height: 300px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            margin-left: 10px;
+            margin-left: 10px;
+            float: left;
+        }
+
+        #delete_attribute {
+            position: absolute;
+            margin-top: 726px;
+            margin-left: 222px;
+        }
+
+        #company_container {
+            width: 500px;
+            height: 300px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            margin-left: 10px;
+            float: left;
+        }
+
+        #delete_company {
+            position: absolute;
+            margin-top: 725px;
+            margin-left: 755px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="product_container" style="width: 1026px; height: 500px"></div>
+    <div id="product_container"></div>
 
-    <div id="class_container" style="width: 500px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
-    <div style="position: absolute; margin-top: 340px; margin-left: 12px;"><a onclick="delete_r_class()" href="javascript:void(0)">Избриши ги селектираните класи</a></div>
-    <div id="type_container" style="width: 500px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
-
-    <div id="attribute_container" style="width: 500px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; margin-left: 10px; float: left"></div>
-
-    <div id="company_container" style="width: 500px; height: 300px; margin-top: 30px; margin-bottom: 50px; margin-left: 10px; float: left"></div>
+    <div id="class_container"></div>
+    <div id="delete_class"><a onclick="delete_class_row()" href="javascript:void(0)">Избриши ги селектираните класи</a></div>
+    <div id="type_container"></div>
+    <div id="delete_type"><a onclick="delete_type_row()" href="javascript:void(0)">Избриши ги селектираните типови</a></div>
+    <div id="attribute_container"></div>
+    <div id="delete_attribute"><a onclick="delete_attribute_row()" href="javascript:void(0)">Избриши ги селектираните спец. карактеристики</a></div>
+    <div id="company_container" style=""></div>
+    <div id="delete_company"><a onclick="delete_company_row()" href="javascript:void(0)">Избриши ги селектираните производители</a></div>
 
 
     <script>
@@ -145,23 +215,50 @@
                         dataType: "json",
                         type: "POST",
                         data: { old_className: oValue, new_className: nValue },
-                        success: function (result) {      
+                        success: function (result) {
                             mygrid_classes.cellById(rId, cInd).setValue(nValue);
                         }
                     });
                 }
             });
-            mygrid_classes.attachEvent("onCheck", function (rId, cInd, state) {
-                debugger;
-                console.log('checkbox on click detected');
-            });
         }
+        function delete_class_row() {
+            if (mygrid_classes.getCheckedRows(1).length > 0) {
+                if (confirm('Избриши ' + mygrid_classes.getCheckedRows(1).split(",").length + ' редови ?')) {
 
+                    $.ajax({
+                        url: "/Admin/deleteClasses",
+                        dataType: "json",
+                        type: "POST",
+                        data: { objClasses: mygrid_classes.getCheckedRows(1) },
+                        success: function (result) {
+                            debugger;
+                            for (var i = mygrid_classes.getCheckedRows(1).split(",").length - 1; i >= 0; i--) {
+                                mygrid_classes.deleteRow(mygrid_classes.getCheckedRows(1).split(",")[i]);
+                            }
+                        }
+                    });
+                }
+            }
+        }
         function init_Types_grid() {
             mygrid_types = new dhtmlXGridObject('type_container');
             mygrid_types.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_types.setSkin("light");
             mygrid_types.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                
+                if (stage == 0) {
+                    switch (mygrid_types.cellById(rId, cInd).getValue()) {
+                        case "0":
+                            mygrid_types.cellById(rId, cInd).setChecked(true);
+                            break;
+                        case "1":
+                            mygrid_types.cellById(rId, cInd).setChecked(false);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 if (stage == 2) {
                     $.ajax({
                         url: "/Admin/updateTypes",
@@ -175,12 +272,41 @@
                 }
             });
         }
+        function delete_type_row() {
+            if (mygrid_types.getCheckedRows(1).length > 0) {
+                if (confirm('Избриши ' + mygrid_types.getCheckedRows(1).split(",").length + ' редови ?')) {
 
+                    $.ajax({
+                        url: "/Admin/deleteTypes",
+                        dataType: "json",
+                        type: "POST",
+                        data: { objTypes: mygrid_types.getCheckedRows(1) },
+                        success: function (result) {
+                            for (var i = mygrid_types.getCheckedRows(1).split(",").length - 1; i >= 0; i--) {
+                                mygrid_types.deleteRow(mygrid_types.getCheckedRows(1).split(",")[i]);
+                            }
+                        }
+                    });
+                }
+            }
+        }
         function init_Attributes_grid() {
             mygrid_attributes = new dhtmlXGridObject('attribute_container');
             mygrid_attributes.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_attributes.setSkin("light");
             mygrid_attributes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                if (stage == 0) {
+                    switch (mygrid_attributes.cellById(rId, cInd).getValue()) {
+                        case "0":
+                            mygrid_attributes.cellById(rId, cInd).setChecked(true);
+                            break;
+                        case "1":
+                            mygrid_attributes.cellById(rId, cInd).setChecked(false);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 if (stage == 2) {
                     $.ajax({
                         url: "/Admin/updateAttributes",
@@ -194,11 +320,42 @@
                 }
             });
         }
+        function delete_attribute_row() {
+            if (mygrid_attributes.getCheckedRows(1).length > 0) {
+                if (confirm('Избриши ' + mygrid_attributes.getCheckedRows(1).split(",").length + ' редови ?')) {
+
+                    $.ajax({
+                        url: "/Admin/deleteAttributes",
+                        dataType: "json",
+                        type: "POST",
+                        data: { objAttributes: mygrid_attributes.getCheckedRows(1) },
+                        success: function (result) {
+                            debugger;
+                            for (var i = mygrid_attributes.getCheckedRows(1).split(",").length - 1; i >= 0; i--) {
+                                mygrid_attributes.deleteRow(mygrid_attributes.getCheckedRows(1).split(",")[i]);
+                            }
+                        }
+                    });
+                }
+            }
+        }
         function init_Companies_grid() {
             mygrid_companies = new dhtmlXGridObject('company_container');
             mygrid_companies.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_companies.setSkin("light");
             mygrid_companies.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                if (stage == 0) {
+                    switch (mygrid_companies.cellById(rId, cInd).getValue()) {
+                        case "0":
+                            mygrid_companies.cellById(rId, cInd).setChecked(true);
+                            break;
+                        case "1":
+                            mygrid_companies.cellById(rId, cInd).setChecked(false);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 if (stage == 2) {
                     $.ajax({
                         url: "/Admin/updateCompanies",
@@ -212,26 +369,28 @@
                 }
             });
         }
-
-        function delete_r_class() {
-            if (mygrid_classes.getCheckedRows(1).length > 0) {
-                if (confirm('Избриши ' + mygrid_classes.getCheckedRows(1).split(",").length + ' редови ?')) {
+        function delete_company_row() {
+            if (mygrid_companies.getCheckedRows(1).length > 0) {
+                if (confirm('Избриши ' + mygrid_companies.getCheckedRows(1).split(",").length + ' редови ?')) {
 
                     $.ajax({
-                        url: "/Admin/deleteClasses",
+                        url: "/Admin/deleteCompanies",
                         dataType: "json",
                         type: "POST",
-                        data: { objClasses: mygrid_classes.getCheckedRows(1)},
+                        data: { objCompanies: mygrid_companies.getCheckedRows(1) },
                         success: function (result) {
                             debugger;
-                            for (var i = 0; i < mygrid_classes.getCheckedRows(1).split(",").length; i++) {
-                                mygrid_classes.deleteRow(mygrid_classes.getCheckedRows(1).split(",")[i]);
+                            for (var i = mygrid_companies.getCheckedRows(1).split(",").length - 1; i >= 0; i--) {
+                                mygrid_companies.deleteRow(mygrid_companies.getCheckedRows(1).split(",")[i]);
                             }
                         }
                     });
                 }
             }
         }
+        
+        
+        
     </script>
 </body>
 </html>

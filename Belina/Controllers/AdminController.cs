@@ -347,10 +347,10 @@ namespace Belina.Controllers
 
             XElement column;
             column = new XElement("column", new XAttribute("type", "ed"), new XAttribute("align", "left"),
-                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Класи"));
+                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Класи"));
             head.Add(column);
             column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
-                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Избриши"));
+                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Избриши"));
 
             head.Add(column);
             rows.Add(head);
@@ -381,17 +381,24 @@ namespace Belina.Controllers
 
             XElement column;
             column = new XElement("column", new XAttribute("type", "ed"),
-                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Типови"));
+                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Типови"));
+            head.Add(column);
+            column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
+                   new XAttribute("width", "230"), new XAttribute("sort", "str"), new XText("Избриши"));
+
             head.Add(column);
             rows.Add(head);
             XElement row;
             XElement cell;
+            XElement cell2;
             var Dbtypes = (from x in db.Type select x).Distinct().ToList();
             foreach (var type in Dbtypes)
             {
                 row = new XElement("row", new XAttribute("id", type.type_id));
                 cell = new XElement("cell", new XText(type.type_name));
+                cell2 = new XElement("cell", 0);
                 row.Add(cell);
+                row.Add(cell2);
                 rows.Add(row);
             }
             doc.Add(rows);
@@ -408,17 +415,24 @@ namespace Belina.Controllers
 
             XElement column;
             column = new XElement("column", new XAttribute("type", "ed"),
-                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Специфични карактеристики"));
+                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Специфични карактеристики"));
+            head.Add(column);
+            column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
+                   new XAttribute("width", "230"), new XAttribute("sort", "str"), new XText("Избриши"));
+
             head.Add(column);
             rows.Add(head);
             XElement row;
             XElement cell;
+            XElement cell2;
             var Dbattribute = (from x in db.Attributes select x).Distinct().ToList();
             foreach (var attribute in Dbattribute)
             {
                 row = new XElement("row", new XAttribute("id", attribute.attribute_id));
                 cell = new XElement("cell", new XText(attribute.attribute_name));
+                cell2 = new XElement("cell", 0);
                 row.Add(cell);
+                row.Add(cell2);
                 rows.Add(row);
             }
             doc.Add(rows);
@@ -435,17 +449,24 @@ namespace Belina.Controllers
 
             XElement column;
             column = new XElement("column", new XAttribute("type", "ed"),
-                   new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText("Производители"));
+                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Производители"));
+            head.Add(column);
+            column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
+                  new XAttribute("width", "230"), new XAttribute("sort", "str"), new XText("Избриши"));
+
             head.Add(column);
             rows.Add(head);
             XElement row;
             XElement cell;
+            XElement cell2;
             var Dbcompany = (from x in db.Company select x).Distinct().ToList();
             foreach (var company in Dbcompany)
             {
                 row = new XElement("row", new XAttribute("id", company.company_id));
                 cell = new XElement("cell", new XText(company.company_name));
+                cell2 = new XElement("cell", 0);
                 row.Add(cell);
+                row.Add(cell2);
                 rows.Add(row);
             }
             doc.Add(rows);
@@ -507,6 +528,51 @@ namespace Belina.Controllers
             foreach(var a in x)
             {
             db.Class.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteTypes(string objTypes)
+        {
+            int[] type_id = new int[objTypes.Split(',').Length];
+            for (int i = 0; i < objTypes.Split(',').Length; i++)
+            {
+                type_id[i] = Convert.ToInt32(objTypes.Split(',')[i]);
+            }
+            var x = (from p in db.Type where type_id.Contains(p.type_id) select p).ToList();
+            foreach (var a in x)
+            {
+                db.Type.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteAttributes(string objAttributes)
+        {
+            int[] attribute_id = new int[objAttributes.Split(',').Length];
+            for (int i = 0; i < objAttributes.Split(',').Length; i++)
+            {
+                attribute_id[i] = Convert.ToInt32(objAttributes.Split(',')[i]);
+            }
+            var x = (from p in db.Attributes where attribute_id.Contains(p.attribute_id) select p).ToList();
+            foreach (var a in x)
+            {
+                db.Attributes.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteCompanies(string objCompanies)
+        {
+            int[] company_id = new int[objCompanies.Split(',').Length];
+            for (int i = 0; i < objCompanies.Split(',').Length; i++)
+            {
+                company_id[i] = Convert.ToInt32(objCompanies.Split(',')[i]);
+            }
+            var x = (from p in db.Company where company_id.Contains(p.company_id) select p).ToList();
+            foreach (var a in x)
+            {
+                db.Company.Remove(a);
             }
             db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
