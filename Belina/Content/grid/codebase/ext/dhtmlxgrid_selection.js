@@ -1,9 +1,8 @@
-//v.3.6 build 130416
+//v.3.5 build 120822
 
 /*
 Copyright DHTMLX LTD. http://www.dhtmlx.com
-You allowed to use this component or parts of it under GPL terms
-To use it on other terms or get Professional edition of the component please contact us at sales@dhtmlx.com
+To use this component please contact sales@dhtmlx.com to obtain license
 */
 dhtmlXGridObject.prototype.enableBlockSelection=function(b){if(typeof this._bs_mode=="undefined"){var c=this;this.obj.onmousedown=function(b){c._bs_mode&&c._OnSelectionStart(b||event,this);return!0};this._CSVRowDelimiter=this.csv.row;this.attachEvent("onResize",function(){c._HideSelection();return!0});this.attachEvent("onGridReconstructed",function(){c._HideSelection();return!0});this.attachEvent("onFilterEnd",this._HideSelection)}if(b===!1)return this._bs_mode=!1,this._HideSelection();else this._bs_mode=
 !0};dhtmlXGridObject.prototype.forceLabelSelection=function(b){this._strictText=convertStringToBoolean(b)};dhtmlXGridObject.prototype.disableBlockSelection=function(){this.obj.onmousedown=null};
@@ -26,10 +25,9 @@ dhtmlXGridObject.prototype.pasteBlockFromClipboard=function(){var b=this.fromCli
 k=a;k<f;k++){var e=this.cells3(j,k);if(e.isDisabled())i++;else{this._onEditUndoRedo&&this._onEditUndoRedo(2,j.idd,k,b[h][i],e.getValue());if(e.combo){for(var g=e.combo.values,m=0;m<g.length;m++)if(b[h][i]==g[m]){e.setValue(e.combo.keys[m]);g=null;break}g!=null&&e.editable?e.setValue(b[h][i++]):i++}else e[e.setImage?"setLabel":"setValue"](b[h][i++]);e.cell.wasChanged=!0}}this.callEvent("onRowPaste",[j.idd]);h++}}};
 dhtmlXGridObject.prototype.getSelectedBlock=function(){return this._selectionArea?this._selectionArea:this.getSelectedRowId()!==null?{LeftTopRow:this.getSelectedRowId(),LeftTopCol:this.getSelectedCellIndex(),RightBottomRow:this.getSelectedRowId(),RightBottomCol:this.getSelectedCellIndex()}:null};
 
-//v.3.6 build 130416
+//v.3.5 build 120822
 
 /*
 Copyright DHTMLX LTD. http://www.dhtmlx.com
-You allowed to use this component or parts of it under GPL terms
-To use it on other terms or get Professional edition of the component please contact us at sales@dhtmlx.com
+To use this component please contact sales@dhtmlx.com to obtain license
 */

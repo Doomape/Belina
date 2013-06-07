@@ -12,6 +12,9 @@ namespace Belina.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
     
     public partial class BelinaEntities2 : DbContext
     {
@@ -25,7 +28,6 @@ namespace Belina.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Class> Class { get; set; }
         public DbSet<Company> Company { get; set; }
         public DbSet<Company_Class> Company_Class { get; set; }
@@ -33,6 +35,71 @@ namespace Belina.Models
         public DbSet<Type> Type { get; set; }
         public DbSet<Type_Company> Type_Company { get; set; }
         public DbSet<Administrator> Administrator { get; set; }
+        public DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Product_Attribute> Product_Attribute { get; set; }
+    
+        public virtual int AllProducts(string sort_col, string sort_dir, Nullable<int> start, Nullable<int> end)
+        {
+            var sort_colParameter = sort_col != null ?
+                new ObjectParameter("sort_col", sort_col) :
+                new ObjectParameter("sort_col", typeof(string));
+    
+            var sort_dirParameter = sort_dir != null ?
+                new ObjectParameter("sort_dir", sort_dir) :
+                new ObjectParameter("sort_dir", typeof(string));
+    
+            var startParameter = start.HasValue ?
+                new ObjectParameter("start", start) :
+                new ObjectParameter("start", typeof(int));
+    
+            var endParameter = end.HasValue ?
+                new ObjectParameter("end", end) :
+                new ObjectParameter("end", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AllProducts", sort_colParameter, sort_dirParameter, startParameter, endParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spCountProducts(string sort_col, string sort_dir, string filters)
+        {
+            var sort_colParameter = sort_col != null ?
+                new ObjectParameter("sort_col", sort_col) :
+                new ObjectParameter("sort_col", typeof(string));
+    
+            var sort_dirParameter = sort_dir != null ?
+                new ObjectParameter("sort_dir", sort_dir) :
+                new ObjectParameter("sort_dir", typeof(string));
+    
+            var filtersParameter = filters != null ?
+                new ObjectParameter("filters", filters) :
+                new ObjectParameter("filters", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spCountProducts", sort_colParameter, sort_dirParameter, filtersParameter);
+        }
+    
+        public virtual ObjectResult<spGetProducts_Result> spGetProducts(string sort_col, string sort_dir, Nullable<int> start, Nullable<int> num, string filters)
+        {
+            var sort_colParameter = sort_col != null ?
+                new ObjectParameter("sort_col", sort_col) :
+                new ObjectParameter("sort_col", typeof(string));
+    
+            var sort_dirParameter = sort_dir != null ?
+                new ObjectParameter("sort_dir", sort_dir) :
+                new ObjectParameter("sort_dir", typeof(string));
+    
+            var startParameter = start.HasValue ?
+                new ObjectParameter("start", start) :
+                new ObjectParameter("start", typeof(int));
+    
+            var numParameter = num.HasValue ?
+                new ObjectParameter("num", num) :
+                new ObjectParameter("num", typeof(int));
+    
+            var filtersParameter = filters != null ?
+                new ObjectParameter("filters", filters) :
+                new ObjectParameter("filters", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetProducts_Result>("spGetProducts", sort_colParameter, sort_dirParameter, startParameter, numParameter, filtersParameter);
+        }
     }
 }

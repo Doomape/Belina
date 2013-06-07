@@ -1,9 +1,8 @@
-//v.3.6 build 130416
+//v.3.5 build 120822
 
 /*
 Copyright DHTMLX LTD. http://www.dhtmlx.com
-You allowed to use this component or parts of it under GPL terms
-To use it on other terms or get Professional edition of the component please contact us at sales@dhtmlx.com
+To use this component please contact sales@dhtmlx.com to obtain license
 */
 dhtmlXGridObject.prototype.enableSmartRendering=function(b,a,d){arguments.length>2&&(a&&!this.rowsBuffer[a-1]&&(this.rowsBuffer[a-1]=0),a=d);this._srnd=convertStringToBoolean(b);this._srdh=this._srdh||20;this._dpref=a||0};dhtmlXGridObject.prototype.enablePreRendering=function(b){this._srnd_pr=parseInt(b||50)};
 dhtmlXGridObject.prototype.forceFullLoading=function(b,a){for(var d=0;d<this.rowsBuffer.length;d++)if(!this.rowsBuffer[d]){var c=b||this.rowsBuffer.length-d;if(this.callEvent("onDynXLS",[d,c])){var e=this;this.load(this.xmlFileUrl+getUrlSymbol(this.xmlFileUrl)+"posStart="+d+"&count="+c,function(){window.setTimeout(function(){e.forceFullLoading(b,a)},100)},this._data_type)}return}a&&a.call(this)};dhtmlXGridObject.prototype.setAwaitedRowHeight=function(b){this._srdh=parseInt(b)};
@@ -17,10 +16,9 @@ dhtmlXGridObject.prototype._add_from_buffer=function(b){var a=this.render_row(b)
 -e[1]+f,0));break}}};dhtmlXGridObject.prototype._update_fillers=function(b,a,d){var c=this._fillers[b];c[1]+=a;c[0]+=d;c[1]?(c[2].firstChild.style.height=parseFloat(c[2].firstChild.style.height)+a*this._srdh+"px",this.callEvent("onUpdateFiller",[c[2]])):(this.callEvent("onRemoveFiller",[c[2]]),c[2].parentNode.removeChild(c[2]),this._fillers.splice(b,1))};
 dhtmlXGridObject.prototype._insert_before=function(b,a,d){d.parentNode.insertBefore(a,d);this.rowsCol[b]=a;this.callEvent("onRowInserted",[a,null,d,"before"])};dhtmlXGridObject.prototype._insert_after=function(b,a,d){d.nextSibling?d.parentNode.insertBefore(a,d.nextSibling):d.parentNode.appendChild(a);this.rowsCol[b]=a;this.callEvent("onRowInserted",[a,null,d,"after"])};
 
-//v.3.6 build 130416
+//v.3.5 build 120822
 
 /*
 Copyright DHTMLX LTD. http://www.dhtmlx.com
-You allowed to use this component or parts of it under GPL terms
-To use it on other terms or get Professional edition of the component please contact us at sales@dhtmlx.com
+To use this component please contact sales@dhtmlx.com to obtain license
 */

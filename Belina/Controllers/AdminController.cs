@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using Belina.Helpers;
+using System.Text;
 
 namespace Belina.Controllers
 {
@@ -211,82 +212,81 @@ namespace Belina.Controllers
         }
        #endregion
         #region Generate XML for Products
-        public LargeJsonResult XMLForProducts()
+        public ActionResult XMLForProducts(int orderbyindex, string direction, string fil, string dontPos = "0", string posStart = "0", string count = "50")
         {
-            string[] column_names = { "Производ", "Класа", "Тип",  "Производител",  "Специфична карактеристика", "Детален опис", "Фотографија" };
-            XDocument doc = new XDocument();
-            XElement rows = new XElement("rows");
+            string[] column_names = { "Производ", "Класа", "Тип",  "Производител",  "Специфична карактеристика", "Детален опис" };
+            string[] columns = { "product_name", "class_name", "type_name", "company_name", "attribute_name", "product_description" };
 
-            XElement head = new XElement("head");
+            if (direction == "des") direction = "desc";
 
-            XElement column;
+            string filters = String.Concat(Enumerable.Repeat("#text_filter,", 6));
+            string filters_sql = "";
 
-            var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x.class_name).Distinct().ToList();
-            var Dbtypes = (from x in db.Type select x.type_name).Distinct().ToList();
-            var Dbcompanies = (from x in db.Company select x.company_name).Distinct().ToList();
-            var Dbattributes = (from x in db.Attributes select x.attribute_name).Distinct().ToList();
-            foreach (var columnName in column_names)
+            //generating the sql query
+            var splitted_filters = fil.Split(new string[] { ";;;" }, StringSplitOptions.None);
+            var i=0;
+            foreach (var filter in splitted_filters)
             {
-                if (column_names[0] == columnName)
+                if(filter!="")
+                    filters_sql += " and " + columns[i] + " like N'%"+filter+"%'";
+
+                i++;
+            }
+
+            int products_count = 0;
+            if (filters_sql != "")
+            {
+                //products_count = (int)(from x in db.spCountIngredients(columns[orderbyindex], direction, filters_sql, -1) select x).FirstOrDefault();
+            }
+            else
+            {
+                products_count = (from x in db.Products select x).Count();
+            }
+
+            List<spGetProducts_Result> products = new List<spGetProducts_Result>();
+            products = (from x in db.spGetProducts(columns[orderbyindex], direction, int.Parse(posStart), 50, filters_sql) select x).ToList();
+
+            if (string.IsNullOrEmpty(posStart))
+                posStart = "0";
+
+            XDocument xdoc = new XDocument();
+
+            XElement root = new XElement("rows", new XAttribute("total_count", products_count.ToString()), new XAttribute("pos", posStart));
+            XElement head = new XElement("head");
+            if (posStart == "0" && dontPos != "1")
+            {
+                root.Add(head);
+            }
+
+            if (posStart == "0")
+            {
+                XElement beforeinit = new XElement("afterInit");
+                XElement call = new XElement("call", new XAttribute("command", "attachHeader"));
+                XElement param = new XElement("param", new XText(filters));
+                call.Add(param);
+                beforeinit.Add(call);
+                head.Add(beforeinit);
+                XElement column;
+                string width = "205";
+                int counter = 0;
+                foreach (string c in columns)
                 {
-                    column = new XElement("column", new XAttribute("type", "ed"),
-                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XText(columnName));
-                    head.Add(column);
-                }
-                if (column_names[1] == columnName)
-                {
-                    column = new XElement("column", new XAttribute("type", "coro"),
-                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
-                    foreach (var Dbclass in Dbclasses)
+
+                    switch (c)
                     {
-                        column.Add(new XElement("option", new XAttribute("value", Dbclass), new XText(Dbclass)));
+                        case "Производ":
+                            column = new XElement("column", new XAttribute("type", "ed"), new XAttribute("width", "205"), new XAttribute("sort", "server"), new XText(column_names[counter]));
+                            head.Add(column);
+                            break;
+                        default:
+                            column = new XElement("column", new XAttribute("type", "coro"), new XAttribute("width", "205"), new XAttribute("sort", "server"), new XText(column_names[counter]));
+                            head.Add(column);
+                            break;
                     }
-                    head.Add(column);
-                }
-                if (column_names[2] == columnName)
-                {
-                    column = new XElement("column", new XAttribute("type", "coro"),
-                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
-                    foreach (var type in Dbtypes)
-                    {
-                        column.Add(new XElement("option", new XAttribute("value", type), new XText(type)));
-                    }
-                    head.Add(column);
-                }
-                if (column_names[3] == columnName)
-                {
-                    column = new XElement("column", new XAttribute("type", "coro"),
-                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
-                    foreach (var Dbcompany in Dbcompanies)
-                    {
-                        column.Add(new XElement("option", new XAttribute("value", Dbcompany), new XText(Dbcompany)));
-                    }
-                    head.Add(column);
-                }
-                if (column_names[4] == columnName)
-                {
-                    column = new XElement("column", new XAttribute("type", "coro"),
-                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
-                    foreach (var Dbattribute in Dbattributes)
-                    {
-                        column.Add(new XElement("option", new XAttribute("value", Dbattribute), new XText(Dbattribute)));
-                    }
-                    head.Add(column);
-                }
-                if (column_names[5] == columnName)
-                {
-                    column = new XElement("column", new XAttribute("type", "txt"),
-                    new XAttribute("width", "205"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
-                    head.Add(column);
-                }
-                if (column_names[6] == columnName)
-                {
-                    column = new XElement("column", new XAttribute("type", "img"),
-                    new XAttribute("width", "200"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
-                    head.Add(column);
+                    counter++;
                 }
             }
-            rows.Add(head);
+
             XElement row;
             XElement cell;
             XElement cell2;
@@ -294,19 +294,6 @@ namespace Belina.Controllers
             XElement cell4;
             XElement cell5;
             XElement cell6;
-            XElement cell7;
-            var products = (from product in db.Products 
-                              from classes in db.Class
-                                from company in db.Company
-                                 from type in db.Type
-                                  from attribute in db.Attributes
-                                  where
-                                    product.class_id == classes.class_id &&
-                                    product.company_id == company.company_id &&
-                                    product.type_id == type.type_id &&
-                                    product.attribute_id == attribute.attribute_id
-                                     select new { product.product_name, product.product_id, classes.class_name, type.type_name,
-                                        company.company_name, attribute.attribute_name, product.product_description,  product.product_image}).ToList();
             foreach (var prod in products)
             {
                 row = new XElement("row", new XAttribute("id", prod.product_id));
@@ -323,18 +310,16 @@ namespace Belina.Controllers
                 {
                     cell6 = new XElement("cell", new XText("/"));
                 }
-                cell7 = new XElement("cell", new XText(prod.product_image));
                 row.Add(cell);
                 row.Add(cell2);
                 row.Add(cell3);
                 row.Add(cell4);
                 row.Add(cell5);
                 row.Add(cell6);
-            //    row.Add(cell7);
-                rows.Add(row);
+                root.Add(row);
             }
-            doc.Add(rows);
-            return new LargeJsonResult() { Data = doc.ToString(), MaxJsonLength = int.MaxValue, JsonRequestBehavior = System.Web.Mvc.JsonRequestBehavior.AllowGet };
+            xdoc.Add(root);
+            return Content(xdoc.ToString(), "text/xml", Encoding.UTF8);
         }
         #endregion
         #region Generate XML for Classes

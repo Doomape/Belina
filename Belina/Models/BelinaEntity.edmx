@@ -105,11 +105,17 @@
           <Property Name="type_id" Type="int" />
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
-        <Function Name="AllProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="sort_col" Type="nvarchar" Mode="In" />
+        <Function Name="spCountProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sort_col" Type="varchar" Mode="In" />
+          <Parameter Name="sort_dir" Type="varchar" Mode="In" />
+          <Parameter Name="filters" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="spGetProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sort_col" Type="varchar" Mode="In" />
           <Parameter Name="sort_dir" Type="varchar" Mode="In" />
           <Parameter Name="start" Type="int" Mode="In" />
-          <Parameter Name="end" Type="int" Mode="In" />
+          <Parameter Name="num" Type="int" Mode="In" />
+          <Parameter Name="filters" Type="nvarchar" Mode="In" />
         </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -131,6 +137,18 @@
             <Parameter Name="sort_dir" Mode="In" Type="String" />
             <Parameter Name="start" Mode="In" Type="Int32" />
             <Parameter Name="end" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spCountProducts" ReturnType="Collection(Int32)">
+            <Parameter Name="sort_col" Mode="In" Type="String" />
+            <Parameter Name="sort_dir" Mode="In" Type="String" />
+            <Parameter Name="filters" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetProducts" ReturnType="Collection(BelinaModel.spGetProducts_Result)">
+            <Parameter Name="sort_col" Mode="In" Type="String" />
+            <Parameter Name="sort_dir" Mode="In" Type="String" />
+            <Parameter Name="start" Mode="In" Type="Int32" />
+            <Parameter Name="num" Mode="In" Type="Int32" />
+            <Parameter Name="filters" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Class">
@@ -221,6 +239,19 @@
           <Property Type="Int32" Name="attribute_id" Nullable="false" />
           <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
+        <ComplexType Name="spGetProducts_Result">
+          <Property Type="Int32" Name="row_num" Nullable="true" />
+          <Property Type="Int32" Name="product_id" Nullable="true" />
+          <Property Type="String" Name="product_name" Nullable="true" />
+          <Property Type="String" Name="company_name" Nullable="true" />
+          <Property Type="String" Name="class_name" Nullable="true" />
+          <Property Type="String" Name="type_name" Nullable="true" />
+          <Property Type="String" Name="attribute_name" Nullable="true" />
+          <Property Type="String" Name="product_description" Nullable="true" />
+          <Property Type="String" Name="product_discount" Nullable="true" />
+          <Property Type="String" Name="product_promotion" Nullable="true" />
+          <Property Type="String" Name="product_image" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -325,7 +356,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="AllProducts" FunctionName="BelinaModel.Store.AllProducts" />
+          <FunctionImportMapping FunctionImportName="spCountProducts" FunctionName="BelinaModel.Store.spCountProducts" />
+          <FunctionImportMapping FunctionImportName="spGetProducts" FunctionName="BelinaModel.Store.spGetProducts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BelinaModel.spGetProducts_Result">
+                <ScalarProperty Name="row_num" ColumnName="row_num" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="company_name" ColumnName="company_name" />
+                <ScalarProperty Name="class_name" ColumnName="class_name" />
+                <ScalarProperty Name="type_name" ColumnName="type_name" />
+                <ScalarProperty Name="attribute_name" ColumnName="attribute_name" />
+                <ScalarProperty Name="product_description" ColumnName="product_description" />
+                <ScalarProperty Name="product_discount" ColumnName="product_discount" />
+                <ScalarProperty Name="product_promotion" ColumnName="product_promotion" />
+                <ScalarProperty Name="product_image" ColumnName="product_image" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

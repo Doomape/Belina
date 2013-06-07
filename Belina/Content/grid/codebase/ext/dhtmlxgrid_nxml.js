@@ -1,9 +1,8 @@
-//v.3.6 build 130416
+//v.3.5 build 120822
 
 /*
 Copyright DHTMLX LTD. http://www.dhtmlx.com
-You allowed to use this component or parts of it under GPL terms
-To use it on other terms or get Professional edition of the component please contact us at sales@dhtmlx.com
+To use this component please contact sales@dhtmlx.com to obtain license
 */
 dhtmlXGridObject.prototype.loadCSVFile=function(b,d){this.load(b,d,"csv")};dhtmlXGridObject.prototype.enableCSVAutoID=function(b){this._csvAID=convertStringToBoolean(b)};dhtmlXGridObject.prototype.enableCSVHeader=function(b){this._csvHdr=convertStringToBoolean(b)};dhtmlXGridObject.prototype.setCSVDelimiter=function(b){this.csv.cell=b};dhtmlXGridObject.prototype._csvAID=!0;dhtmlXGridObject.prototype.loadCSVString=function(b){this.parse(b,"csv")};
 dhtmlXGridObject.prototype.serializeToCSV=function(b){this.editStop();this._agetm=this._mathSerialization?"getMathValue":this._strictText||b?"getTitle":"getValue";var d=[];if(this._csvHdr)for(var c=1;c<this.hdr.rows.length;c++){for(var e=[],a=0;a<this._cCount;a++)(!this._srClmn||this._srClmn[a])&&e.push(this.getColumnLabel(a,c-1));d.push(this.csvParser.str(e,this.csv.cell,this.csv.row))}for(var a=0,i=this.rowsBuffer.length;a<i;a++){var f=this._serializeRowToCVS(null,a);f!=""&&d.push(f)}return this.csvParser.block(d,
@@ -31,10 +30,9 @@ if(!window.clipboardData)window.clipboardData={_make:function(){var b=Components
 setData:function(b,d){try{netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")}catch(c){return dhtmlxError.throwError("Clipboard","Access to clipboard denied",[b,d]),""}if(!this._make())return!1;this._p[2].data=d;this._p[1].setTransferData("text/unicode",this._p[2],d.length*2);var e=Components.interfaces.nsIClipboard;this._p[0].setData(this._p[1],null,e.kGlobalClipboard)},getData:function(b){try{netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")}catch(d){return dhtmlxError.throwError("Clipboard",
 "Access to clipboard denied",[b]),""}if(!this._make())return!1;this._p[0].getData(this._p[1],this._p[0].kGlobalClipboard);var c={},e={};try{this._p[1].getTransferData("text/unicode",e,c)}catch(a){return""}e&&(e=e.value.QueryInterface(Components.interfaces.nsISupportsString));return e?e.data.substring(0,c.value/2):""}};
 
-//v.3.6 build 130416
+//v.3.5 build 120822
 
 /*
 Copyright DHTMLX LTD. http://www.dhtmlx.com
-You allowed to use this component or parts of it under GPL terms
-To use it on other terms or get Professional edition of the component please contact us at sales@dhtmlx.com
+To use this component please contact sales@dhtmlx.com to obtain license
 */

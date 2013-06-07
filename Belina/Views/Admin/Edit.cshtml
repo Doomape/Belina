@@ -11,10 +11,12 @@
     <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
     <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxgrid.css">
     <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxcombo.css">
+    <link rel="STYLESHEET" type="text/css" href="/Content/grid/dhtmlx.css">
     <script src="/Content/grid/codebase/dhtmlxcommon.js"></script>
     <script src="/Content/grid/codebase/dhtmlxgrid.js"></script>
     <script src="/Content/grid/codebase/dhtmlxcombo.js"></script>
     <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
+    <script src="/Content/grid/dhtmlx.js"></script>
     <title>Edit</title>
     <style>
         body {
@@ -68,7 +70,6 @@
             margin-top: 30px;
             margin-bottom: 50px;
             margin-left: 10px;
-            margin-left: 10px;
             float: left;
         }
 
@@ -114,19 +115,13 @@
         var mygrid_attributes;
         var mygrid_companies;
         var mygrid_products;
-        $(document).ready(function () {
+        var ing_grid_sort_index=0;
+        var ing_grid_sort_dir="asc";
+        var ing_grid_filters = "";
 
-            $.ajax({
-                url: "/Admin/XMLForProducts",
-                dataType: "json",
-                type: "GET",
-                data: {},
-                success: function (result) {
-                    init_Product_grid();
-                    mygrid_products.init();
-                    // mygrid_products.parse(result, "xml");
-                }
-            });
+        $(document).ready(function () {
+            
+            loadProductsGrid();
 
             $.ajax({
                 url: "/Admin/XMLForClasses",
@@ -176,17 +171,56 @@
                 }
             });
         });
+        var gridColumnIndex;
+        var gridSortingDirection;
 
         function init_Product_grid() {
+
             mygrid_products = new dhtmlXGridObject('product_container');
             mygrid_products.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_products.setSkin("light");
-            mygrid_products.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
-                if (stage == 2) {
-                    //prati ajax coper eden nvalue e novata vrednost!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    // mygrid.cellById(rId, cInd).setValue(nValue);
-                    // alert(nValue);
-                }
+            mygrid_products.enableSmartRendering(true);
+            mygrid_products.isLoaded = false;
+            mygrid_products.setAwaitedRowHeight(21);
+
+            mygrid_products.attachEvent("onBeforeSorting", function (ind, type, direction) {
+                
+                    if (gridColumnIndex != ind) 
+                    {
+                        gridColumnIndex = ind;
+                        gridSortingDirection = direction;
+                    } 
+                    else 
+                    {
+                        if (gridSortingDirection == "asc") 
+                        {
+                            direction = "desc";
+                        } 
+                        else 
+                        {
+                            direction = "asc";
+                        }
+                        gridSortingDirection = direction;
+                    }
+                    ing_grid_sort_index = ind;
+                    ing_grid_sort_dir = direction;
+                    mygrid_products.clearAll();
+                    mygrid_products.loadXML("/Admin/XMLForProducts?orderbyindex=" + ind + "&dontPos=1&direction=" + direction + '&fil=' + ing_grid_filters, function () {
+                    });
+                    mygrid_products.setSortImgState(true, ing_grid_sort_index, ing_grid_sort_dir);
+            });
+
+            mygrid_products.attachEvent("onFilterStart", function (indexes, values) {
+
+                var filters = values;
+                filters = filters.join(';;;');
+                ing_grid_filters = filters;
+                mygrid_products.clearAll();
+                //debugger;
+                mygrid_products.loadXML("/Admin/XMLForProducts?orderbyindex=" + ing_grid_sort_index + "&dontPos=1&direction=" + ing_grid_sort_dir + "&fil=" + filters, function () {
+                });
+
+                return false;
             });
         }
         function init_Classes_grid() {
@@ -390,6 +424,28 @@
             }
         }
         
+
+        function loadProductsGrid() {
+
+            $("#product_container").empty();
+            init_Product_grid();
+            mygrid_products.isLoaded = true;
+            //grid.clearAll();
+
+            mygrid_products.init();
+            mygrid_products.loadXML("/Admin/XMLForProducts?orderbyindex=" + ing_grid_sort_index + "&direction=" + ing_grid_sort_dir + '&fil=' + ing_grid_filters, function () {
+
+                if (mygrid_products.filters != undefined) {
+                    var fil = ing_grid_filters.split(';;;');
+                    for (var i = 0; i < mygrid_products.filters.length; i++) {
+                        if (fil[i] == undefined)
+                            fil[i] = '';
+                        mygrid_products.filters[i][0].value = fil[i];
+                    }
+                }
+                try { mygrid_products.setSortImgState(true, ing_grid_sort_index, ing_grid_sort_dir); } catch (err) { }
+            });
+        }
 
     </script>
 </body>

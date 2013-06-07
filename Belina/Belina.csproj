@@ -232,6 +232,9 @@
     <Compile Include="Models\Product_Attribute.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetProducts_Result.cs">
+      <DependentUpon>BelinaEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
@@ -258,37 +261,68 @@
     <Content Include="Content\grid\codebase\calendar\img\calx.gif" />
     <Content Include="Content\grid\codebase\calendar\license.txt" />
     <Content Include="Content\grid\codebase\calendar\YAHOO.js" />
-    <Content Include="Content\grid\codebase\dhtmlxcombo.css" />
-    <Content Include="Content\grid\codebase\dhtmlxcombo.js" />
     <Content Include="Content\grid\codebase\dhtmlxcommon.js" />
+    <Content Include="Content\grid\codebase\dhtmlxcommon_debug.js" />
     <Content Include="Content\grid\codebase\dhtmlxgrid.css" />
     <Content Include="Content\grid\codebase\dhtmlxgrid.js" />
     <Content Include="Content\grid\codebase\dhtmlxgridcell.js" />
     <Content Include="Content\grid\codebase\dhtmlxgrid_skins.css" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_calc.css" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_3but.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_acheck.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_calck.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_calendar.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_clist.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_cntr.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_combo.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_context.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_dec.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_dhxcalendar.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_grid.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_limit.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_link.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_liveedit.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_mro.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_passw.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_ra_str.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_sub_row.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_time.js" />
     <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_tree.js" />
-    <Content Include="Content\grid\codebase\ext\dhtmlxcombo_extra.js" />
-    <Content Include="Content\grid\codebase\ext\dhtmlxcombo_group.js" />
-    <Content Include="Content\grid\codebase\ext\dhtmlxcombo_whp.js" />
+    <Content Include="Content\grid\codebase\excells\dhtmlxgrid_excell_wbut.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_data.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_deprecated.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_drag.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_export.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_fast.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_filter.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_form.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_group.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_hextra.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_hmenu.css" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_hmenu.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_json.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_keymap_access.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_keymap_excel.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_keymap_extra.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_markers.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_math.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_mcol.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_nxml.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_over.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_pgn.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_pgn_bricks.css" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_pivot.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_post.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_rowspan.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_selection.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_splt.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_srnd.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_ssc.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_start.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlxgrid_undo.js" />
     <Content Include="Content\grid\codebase\ext\dhtmlxgrid_validation.js" />
+    <Content Include="Content\grid\codebase\ext\dhtmlx_extdrag.css" />
+    <Content Include="Content\grid\codebase\ext\dhtmlx_extdrag.js" />
     <Content Include="Content\grid\codebase\imgs\ar_left.gif" />
     <Content Include="Content\grid\codebase\imgs\ar_left_abs.gif" />
     <Content Include="Content\grid\codebase\imgs\ar_left_abs_dis.gif" />
@@ -297,18 +331,12 @@
     <Content Include="Content\grid\codebase\imgs\ar_right_abs.gif" />
     <Content Include="Content\grid\codebase\imgs\ar_right_abs_dis.gif" />
     <Content Include="Content\grid\codebase\imgs\ar_right_dis.gif" />
-    <Content Include="Content\grid\codebase\imgs\bg_selection.gif" />
     <Content Include="Content\grid\codebase\imgs\blanc.gif" />
     <Content Include="Content\grid\codebase\imgs\blank.gif" />
     <Content Include="Content\grid\codebase\imgs\combo_select.gif" />
     <Content Include="Content\grid\codebase\imgs\combo_select_dhx_black.gif" />
     <Content Include="Content\grid\codebase\imgs\combo_select_dhx_blue.gif" />
     <Content Include="Content\grid\codebase\imgs\combo_select_dhx_skyblue.gif" />
-    <Content Include="Content\grid\codebase\imgs\combo_select_dhx_terrace.gif" />
-    <Content Include="Content\grid\codebase\imgs\combo_select_dhx_web.gif" />
-    <Content Include="Content\grid\codebase\imgs\combo_select_dis_dhx_skyblue.gif" />
-    <Content Include="Content\grid\codebase\imgs\combo_select_dis_dhx_terrace.gif" />
-    <Content Include="Content\grid\codebase\imgs\combo_select_dis_dhx_web.gif" />
     <Content Include="Content\grid\codebase\imgs\csh_bluebooks\blanc.gif" />
     <Content Include="Content\grid\codebase\imgs\csh_bluebooks\blank.gif" />
     <Content Include="Content\grid\codebase\imgs\csh_bluebooks\folder.gif" />
@@ -452,6 +480,8 @@
     <Content Include="Content\grid\codebase\skins\dhtmlxgrid_dhx_skyblue.css" />
     <Content Include="Content\grid\codebase\skins\dhtmlxgrid_dhx_terrace.css" />
     <Content Include="Content\grid\codebase\skins\dhtmlxgrid_dhx_web.css" />
+    <Content Include="Content\grid\dhtmlx.css" />
+    <Content Include="Content\grid\dhtmlx.js" />
     <Content Include="Content\sliki\alfa7.png" />
     <Content Include="Content\sliki\belinaLogo5.png" />
     <Content Include="Content\sliki\belinka.png" />
@@ -603,6 +633,15 @@
       <DependentUpon>BelinaEntity.edmx</DependentUpon>
       <LastGenOutput>BelinaEntity.cs</LastGenOutput>
     </Content>
+    <Content Include="Content\grid\codebase\imgs\csh_bluebooks\Thumbs.db" />
+    <Content Include="Content\grid\codebase\imgs\dhxgrid_dhx_black\Thumbs.db" />
+    <Content Include="Content\grid\codebase\imgs\dhxgrid_dhx_blue\Thumbs.db" />
+    <Content Include="Content\grid\codebase\imgs\dhxgrid_dhx_skyblue\Thumbs.db" />
+    <Content Include="Content\grid\codebase\imgs\dhxgrid_dhx_web\Thumbs.db" />
+    <Content Include="Content\grid\codebase\imgs\dhxgrid_glassy_blue\Thumbs.db" />
+    <Content Include="Content\grid\codebase\imgs\icons_books\Thumbs.db" />
+    <Content Include="Content\grid\codebase\imgs\icons_greenfolders\Thumbs.db" />
+    <Content Include="Content\grid\codebase\imgs\Thumbs.db" />
     <None Include="Properties\PublishProfiles\belina.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
