@@ -214,8 +214,8 @@ namespace Belina.Controllers
         #region Generate XML for Products
         public ActionResult XMLForProducts(int orderbyindex, string direction, string fil, string dontPos = "0", string posStart = "0", string count = "50")
         {
-            string[] column_names = { "Производ", "Класа", "Тип",  "Производител",  "Специфична карактеристика", "Детален опис" };
-            string[] columns = { "product_name", "class_name", "type_name", "company_name", "attribute_name", "product_description" };
+            string[] column_names = { "Производ", "Класа", "Тип", "Производител", "Специфична карактеристика", "Детален опис", "Фотографија" };
+            string[] columns = { "product_name", "class_name", "type_name", "company_name", "attribute_name", "product_description", "product_image" };
 
             if (direction == "des") direction = "desc";
 
@@ -236,7 +236,7 @@ namespace Belina.Controllers
             int products_count = 0;
             if (filters_sql != "")
             {
-                //products_count = (int)(from x in db.spCountIngredients(columns[orderbyindex], direction, filters_sql, -1) select x).FirstOrDefault();
+                products_count = (int)(from x in db.spCountProducts(columns[orderbyindex], direction, filters_sql) select x).FirstOrDefault();
             }
             else
             {
@@ -248,7 +248,7 @@ namespace Belina.Controllers
 
             if (string.IsNullOrEmpty(posStart))
                 posStart = "0";
-
+            
             XDocument xdoc = new XDocument();
 
             XElement root = new XElement("rows", new XAttribute("total_count", products_count.ToString()), new XAttribute("pos", posStart));
@@ -267,21 +267,70 @@ namespace Belina.Controllers
                 beforeinit.Add(call);
                 head.Add(beforeinit);
                 XElement column;
-                string width = "205";
                 int counter = 0;
-                foreach (string c in columns)
+                var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x.class_name).Distinct().ToList();
+                var Dbtypes = (from x in db.Type select x.type_name).Distinct().ToList();
+                var Dbcompanies = (from x in db.Company select x.company_name).Distinct().ToList();
+                var Dbattributes = (from x in db.Attributes select x.attribute_name).Distinct().ToList();
+                foreach (var columnName in column_names)
                 {
-
-                    switch (c)
+                    if (column_names[0] == columnName)
                     {
-                        case "Производ":
-                            column = new XElement("column", new XAttribute("type", "ed"), new XAttribute("width", "205"), new XAttribute("sort", "server"), new XText(column_names[counter]));
-                            head.Add(column);
-                            break;
-                        default:
-                            column = new XElement("column", new XAttribute("type", "coro"), new XAttribute("width", "205"), new XAttribute("sort", "server"), new XText(column_names[counter]));
-                            head.Add(column);
-                            break;
+                        column = new XElement("column", new XAttribute("type", "ed"),
+                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        head.Add(column);
+                    }
+                    if (column_names[1] == columnName)
+                    {
+                        column = new XElement("column", new XAttribute("type", "coro"),
+                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        foreach (var Dbclass in Dbclasses)
+                        {
+                            column.Add(new XElement("option", new XAttribute("value", Dbclass), new XText(Dbclass)));
+                        }
+                        head.Add(column);
+                    }
+                    if (column_names[2] == columnName)
+                    {
+                        column = new XElement("column", new XAttribute("type", "coro"),
+                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        foreach (var type in Dbtypes)
+                        {
+                            column.Add(new XElement("option", new XAttribute("value", type), new XText(type)));
+                        }
+                        head.Add(column);
+                    }
+                    if (column_names[3] == columnName)
+                    {
+                        column = new XElement("column", new XAttribute("type", "coro"),
+                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        foreach (var Dbcompany in Dbcompanies)
+                        {
+                            column.Add(new XElement("option", new XAttribute("value", Dbcompany), new XText(Dbcompany)));
+                        }
+                        head.Add(column);
+                    }
+                    if (column_names[4] == columnName)
+                    {
+                        column = new XElement("column", new XAttribute("type", "coro"),
+                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        foreach (var Dbattribute in Dbattributes)
+                        {
+                            column.Add(new XElement("option", new XAttribute("value", Dbattribute), new XText(Dbattribute)));
+                        }
+                        head.Add(column);
+                    }
+                    if (column_names[5] == columnName)
+                    {
+                        column = new XElement("column", new XAttribute("type", "txt"),
+                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        head.Add(column);
+                    }
+                    if (column_names[6] == columnName)
+                    {
+                        column = new XElement("column", new XAttribute("type", "ro"),
+                        new XAttribute("width", "550%"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
+                        head.Add(column);
                     }
                     counter++;
                 }
@@ -294,6 +343,7 @@ namespace Belina.Controllers
             XElement cell4;
             XElement cell5;
             XElement cell6;
+            XElement cell7;
             foreach (var prod in products)
             {
                 row = new XElement("row", new XAttribute("id", prod.product_id));
@@ -310,12 +360,14 @@ namespace Belina.Controllers
                 {
                     cell6 = new XElement("cell", new XText("/"));
                 }
+                cell7 = new XElement("cell", new XText("<form><input type='file'></input> <progress></progress><button type='button'>Внеси</button></form>"));
                 row.Add(cell);
                 row.Add(cell2);
                 row.Add(cell3);
                 row.Add(cell4);
                 row.Add(cell5);
                 row.Add(cell6);
+                row.Add(cell7);
                 root.Add(row);
             }
             xdoc.Add(root);

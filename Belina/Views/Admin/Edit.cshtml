@@ -20,8 +20,10 @@
     <title>Edit</title>
     <style>
         body {
-        padding-bottom:250px;
+            padding-bottom: 250px;
+            width: 100%;
         }
+
         a {
             font-family: Tahoma,Arial,Helvetica,serif;
             font-size: 12px;
@@ -30,16 +32,17 @@
         }
 
         #product_container {
-            width: 1026px;
+            width: 90%;
             height: 500px;
+            margin: auto;
         }
 
         #class_container {
-            width: 500px;
+            width: 45%;
             height: 300px;
             margin-top: 30px;
             margin-bottom: 50px;
-            margin-left: 10px;
+           
             float: left;
         }
 
@@ -50,7 +53,7 @@
         }
 
         #type_container {
-            width: 500px;
+            width: 45%;
             height: 300px;
             margin-top: 30px;
             margin-bottom: 50px;
@@ -65,11 +68,11 @@
         }
 
         #attribute_container {
-            width: 500px;
+            width: 45%;
             height: 300px;
             margin-top: 30px;
             margin-bottom: 50px;
-            margin-left: 10px;
+         
             float: left;
         }
 
@@ -80,11 +83,11 @@
         }
 
         #company_container {
-            width: 500px;
+            width: 45%;
             height: 300px;
             margin-top: 30px;
             margin-bottom: 50px;
-            margin-left: 10px;
+          
             float: left;
         }
 
@@ -98,16 +101,12 @@
 <body>
 
     <div id="product_container"></div>
-
+    <div style="margin:auto;width:90%">
     <div id="class_container"></div>
-    <div id="delete_class"><a onclick="delete_class_row()" href="javascript:void(0)">Избриши ги селектираните класи</a></div>
     <div id="type_container"></div>
-    <div id="delete_type"><a onclick="delete_type_row()" href="javascript:void(0)">Избриши ги селектираните типови</a></div>
     <div id="attribute_container"></div>
-    <div id="delete_attribute"><a onclick="delete_attribute_row()" href="javascript:void(0)">Избриши ги селектираните спец. карактеристики</a></div>
     <div id="company_container" style=""></div>
-    <div id="delete_company"><a onclick="delete_company_row()" href="javascript:void(0)">Избриши ги селектираните производители</a></div>
-
+    </div>
 
     <script>
         var mygrid_classes;
@@ -115,12 +114,12 @@
         var mygrid_attributes;
         var mygrid_companies;
         var mygrid_products;
-        var ing_grid_sort_index=0;
-        var ing_grid_sort_dir="asc";
+        var ing_grid_sort_index = 0;
+        var ing_grid_sort_dir = "asc";
         var ing_grid_filters = "";
 
         $(document).ready(function () {
-            
+
             loadProductsGrid();
 
             $.ajax({
@@ -184,30 +183,26 @@
             mygrid_products.setAwaitedRowHeight(21);
 
             mygrid_products.attachEvent("onBeforeSorting", function (ind, type, direction) {
-                
-                    if (gridColumnIndex != ind) 
-                    {
-                        gridColumnIndex = ind;
-                        gridSortingDirection = direction;
-                    } 
-                    else 
-                    {
-                        if (gridSortingDirection == "asc") 
-                        {
-                            direction = "desc";
-                        } 
-                        else 
-                        {
-                            direction = "asc";
-                        }
-                        gridSortingDirection = direction;
+
+                if (gridColumnIndex != ind) {
+                    gridColumnIndex = ind;
+                    gridSortingDirection = direction;
+                }
+                else {
+                    if (gridSortingDirection == "asc") {
+                        direction = "desc";
                     }
-                    ing_grid_sort_index = ind;
-                    ing_grid_sort_dir = direction;
-                    mygrid_products.clearAll();
-                    mygrid_products.loadXML("/Admin/XMLForProducts?orderbyindex=" + ind + "&dontPos=1&direction=" + direction + '&fil=' + ing_grid_filters, function () {
-                    });
-                    mygrid_products.setSortImgState(true, ing_grid_sort_index, ing_grid_sort_dir);
+                    else {
+                        direction = "asc";
+                    }
+                    gridSortingDirection = direction;
+                }
+                ing_grid_sort_index = ind;
+                ing_grid_sort_dir = direction;
+                mygrid_products.clearAll();
+                mygrid_products.loadXML("/Admin/XMLForProducts?orderbyindex=" + ind + "&dontPos=1&direction=" + direction + '&fil=' + ing_grid_filters, function () {
+                });
+                mygrid_products.setSortImgState(true, ing_grid_sort_index, ing_grid_sort_dir);
             });
 
             mygrid_products.attachEvent("onFilterStart", function (indexes, values) {
@@ -227,6 +222,7 @@
             mygrid_classes = new dhtmlXGridObject('class_container');
             mygrid_classes.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_classes.setSkin("light");
+            mygrid_classes.attachFooter(",<div><a onclick='delete_class_row()' href='javascript:void(0)'>Избриши ги селектираните класи</a></div>");
             mygrid_classes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
 
                 //    debugger;
@@ -279,8 +275,10 @@
             mygrid_types = new dhtmlXGridObject('type_container');
             mygrid_types.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_types.setSkin("light");
+            mygrid_types.attachFooter(",<div><a onclick='delete_type_row()' href='javascript:void(0)'>Избриши ги селектираните типови</a></div>");
+
             mygrid_types.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
-                
+
                 if (stage == 0 && cInd == 1) {
                     switch (mygrid_types.cellById(rId, cInd).getValue()) {
                         case "0":
@@ -328,9 +326,10 @@
             mygrid_attributes = new dhtmlXGridObject('attribute_container');
             mygrid_attributes.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_attributes.setSkin("light");
+            mygrid_attributes.attachFooter(",<div><a onclick='delete_attribute_row()' href='javascript:void(0)'>Избриши ги селектираните спец. карактеристики</a></div>");
             mygrid_attributes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
                 debugger;
-                if (stage == 0 && cInd==1) {
+                if (stage == 0 && cInd == 1) {
                     switch (mygrid_attributes.cellById(rId, cInd).getValue()) {
                         case "0":
                             mygrid_attributes.cellById(rId, cInd).setChecked(true);
@@ -378,6 +377,7 @@
             mygrid_companies = new dhtmlXGridObject('company_container');
             mygrid_companies.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_companies.setSkin("light");
+            mygrid_companies.attachFooter(",<div><a onclick='delete_company_row()' href='javascript:void(0)'>Избриши ги селектираните производители</a></div>");
             mygrid_companies.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
                 if (stage == 0) {
                     switch (mygrid_companies.cellById(rId, cInd).getValue()) {
@@ -423,7 +423,7 @@
                 }
             }
         }
-        
+
 
         function loadProductsGrid() {
 
@@ -446,7 +446,9 @@
                 try { mygrid_products.setSortImgState(true, ing_grid_sort_index, ing_grid_sort_dir); } catch (err) { }
             });
         }
-
+        function do_some() {
+            alert("ebi se");
+        }
     </script>
 </body>
 </html>
