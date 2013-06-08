@@ -360,7 +360,7 @@ namespace Belina.Controllers
                 {
                     cell6 = new XElement("cell", new XText("/"));
                 }
-                cell7 = new XElement("cell", new XText("<form><input type='file'></input> <progress></progress><button type='button'>Внеси</button></form>"));
+                cell7 = new XElement("cell", new XText("<form><input type='file'></input><progress></progress><br/><button class='button_row' type='button' onclick='do_some(" + prod.product_id + ")'>Внеси</button></form>"));
                 row.Add(cell);
                 row.Add(cell2);
                 row.Add(cell3);

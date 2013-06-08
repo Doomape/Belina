@@ -126,6 +126,7 @@
 
         $(document).ready(function () {
 
+
             loadProductsGrid();
 
             $.ajax({
@@ -466,9 +467,13 @@
                 try { mygrid_products.setSortImgState(true, ing_grid_sort_index, ing_grid_sort_dir); } catch (err) { }
             });
         }
-        function do_some() {
-            alert("ebi se");
+
+        function do_some(e) {
+         //   alert("ebi se");
+            alert(mygrid_products.getColIndexById(e));
+
         }
+        
     </script>
 </body>
 </html>
