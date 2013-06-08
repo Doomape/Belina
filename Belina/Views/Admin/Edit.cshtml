@@ -17,6 +17,7 @@
     <script src="/Content/grid/codebase/dhtmlxcombo.js"></script>
     <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
     <script src="/Content/grid/dhtmlx.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ajaxloader.js")" type="text/javascript"></script>
     <title>Edit</title>
     <style>
         body {
@@ -95,6 +96,11 @@
             position: absolute;
             margin-top: 725px;
             margin-left: 755px;
+        }
+
+         #product_containerLoadingMask {
+            background: #333 url(/Content/sliki/jquery.ajaxLoader.gif) no-repeat 50% 50%;
+            opacity: .6;
         }
     </style>
 </head>
@@ -181,6 +187,8 @@
             mygrid_products.enableSmartRendering(true);
             mygrid_products.isLoaded = false;
             mygrid_products.setAwaitedRowHeight(21);
+            mygrid_products.enablePreRendering(50);
+
 
             mygrid_products.attachEvent("onBeforeSorting", function (ind, type, direction) {
 
@@ -216,6 +224,18 @@
                 });
 
                 return false;
+            });
+
+            mygrid_products.attachEvent("onXLS", function () {
+                $('#product_containerLoadingMask').remove();
+                $('<div id="product_containerLoadingMask" style="width:' + $('#product_container').width() + 'px; height:' + $('#product_container').height() + 'px; position:absolute; top:0px; left:76px; z-index:1000000000;"></div>').appendTo($('#product_container'));
+                $loadingMaskGrid = $("#product_containerLoadingMask");
+                $loadingMaskGrid.ajaxLoader();
+            });
+
+            mygrid_products.attachEvent("onXLE", function () {
+                $loadingMaskGrid.ajaxLoaderRemove();
+                $loadingMaskGrid.remove();
             });
         }
         function init_Classes_grid() {

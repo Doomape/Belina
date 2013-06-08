@@ -518,6 +518,7 @@
     <Content Include="Content\sliki\green-arrow-left-2.png" />
     <Content Include="Content\sliki\green-arrow-right-2.png" />
     <Content Include="Content\sliki\header_bg_6.png" />
+    <Content Include="Content\sliki\jquery.ajaxLoader.gif" />
     <Content Include="Content\sliki\kraft.png" />
     <Content Include="Content\sliki\kraft\drvo\20121115172632_reflect_ECO_velatura_aqua.jpg" />
     <Content Include="Content\sliki\kraft\drvo\2012112711513_reflect_ECO_wood_aqua.jpg" />
@@ -649,6 +650,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery.ajaxloader.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
