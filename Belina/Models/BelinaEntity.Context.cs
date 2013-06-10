@@ -38,7 +38,7 @@ namespace Belina.Models
         public DbSet<sysdiagrams> sysdiagrams { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Product_Attribute> Product_Attribute { get; set; }
-    
+        public DbSet<Class_Type> Class_Type { get; set; }
         public virtual int AllProducts(string sort_col, string sort_dir, Nullable<int> start, Nullable<int> end)
         {
             var sort_colParameter = sort_col != null ?

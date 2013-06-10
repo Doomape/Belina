@@ -22,7 +22,7 @@
     <style>
         body {
             padding-bottom: 250px;
-            width: 100%;
+            width: 99%;
         }
 
         a {
@@ -33,7 +33,7 @@
         }
 
         #product_container {
-            width: 90%;
+            width: 91%;
             height: 500px;
             margin: auto;
         }
@@ -185,11 +185,42 @@
             mygrid_products = new dhtmlXGridObject('product_container');
             mygrid_products.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_products.setSkin("light");
+            mygrid_products.attachFooter("<div><a onclick='delete_product_row()' href='javascript:void(0)'>Избриши</a></div>");
+
             mygrid_products.enableSmartRendering(true);
             mygrid_products.isLoaded = false;
             mygrid_products.setAwaitedRowHeight(21);
             mygrid_products.enablePreRendering(50);
 
+            debugger;
+
+            mygrid_products.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+
+                    debugger;
+                if (stage == 0 && cInd == 0) {
+                    switch (mygrid_products.cellById(rId, cInd).getValue()) {
+                        case "0":
+                            mygrid_products.cellById(rId, cInd).setChecked(true);
+                            break;
+                        case "1":
+                            mygrid_products.cellById(rId, cInd).setChecked(false);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (stage == 2 && cInd >= 1 && cInd <= 6) {
+                    $.ajax({
+                        url: "/Admin/updateProducts",
+                        dataType: "json",
+                        type: "POST",
+                        data: { old_Name: oValue, new_Name: nValue, row_id: rId, product_column: cInd },
+                        success: function (result) {
+                            mygrid_products.cellById(rId, cInd).setValue(nValue);
+                        }
+                    });
+                }
+            });
 
             mygrid_products.attachEvent("onBeforeSorting", function (ind, type, direction) {
 
@@ -229,7 +260,7 @@
 
             mygrid_products.attachEvent("onXLS", function () {
                 $('#product_containerLoadingMask').remove();
-                $('<div id="product_containerLoadingMask" style="width:' + $('#product_container').width() + 'px; height:' + $('#product_container').height() + 'px; position:absolute; top:0px; left:76px; z-index:1000000000;"></div>').appendTo($('#product_container'));
+                $('<div id="product_containerLoadingMask" style="width:' + $('#product_container').width() + 'px; height:' + $('#product_container').height() + 'px; position:absolute; top:0px; left:78px; z-index:1000000000;"></div>').appendTo($('#product_container'));
                 $loadingMaskGrid = $("#product_containerLoadingMask");
                 $loadingMaskGrid.ajaxLoader();
             });
@@ -274,8 +305,8 @@
             });
         }
         function delete_class_row() {
-            if (mygrid_classes.getCheckedRows(1).length > 0) {
-                if (confirm('Избриши ' + mygrid_classes.getCheckedRows(1).split(",").length + ' редови ?')) {
+            if (mygrid_classes.getCheckedRows(1).split(",").length > 0) {
+                if (confirm('Избриши ' + mygrid_classes.getCheckedRows(1).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
                         url: "/Admin/deleteClasses",
@@ -326,8 +357,8 @@
             });
         }
         function delete_type_row() {
-            if (mygrid_types.getCheckedRows(1).length > 0) {
-                if (confirm('Избриши ' + mygrid_types.getCheckedRows(1).split(",").length + ' редови ?')) {
+            if (mygrid_types.getCheckedRows(1).split(",").length > 0) {
+                if (confirm('Избриши ' + mygrid_types.getCheckedRows(1).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
                         url: "/Admin/deleteTypes",
@@ -376,8 +407,8 @@
             });
         }
         function delete_attribute_row() {
-            if (mygrid_attributes.getCheckedRows(1).length > 0) {
-                if (confirm('Избриши ' + mygrid_attributes.getCheckedRows(1).split(",").length + ' редови ?')) {
+            if (mygrid_attributes.getCheckedRows(1).split(",").length > 0) {
+                if (confirm('Избриши ' + mygrid_attributes.getCheckedRows(1).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
                         url: "/Admin/deleteAttributes",
@@ -426,8 +457,8 @@
             });
         }
         function delete_company_row() {
-            if (mygrid_companies.getCheckedRows(1).length > 0) {
-                if (confirm('Избриши ' + mygrid_companies.getCheckedRows(1).split(",").length + ' редови ?')) {
+            if (mygrid_companies.getCheckedRows(1).split(",").length > 0) {
+                if (confirm('Избриши ' + mygrid_companies.getCheckedRows(1).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
                         url: "/Admin/deleteCompanies",
@@ -444,7 +475,26 @@
                 }
             }
         }
+        function delete_product_row() {
+         //   alert(mygrid_products.getCheckedRows(0).split(",").length);
+            if (mygrid_products.getCheckedRows(0).split(",").length > 0) {
+                if (confirm('Избриши ' + mygrid_products.getCheckedRows(0).split(",").length + ' ред/ови ?')) {
 
+                    $.ajax({
+                        url: "/Admin/deleteProducts",
+                        dataType: "json",
+                        type: "POST",
+                        data: { objProducts: mygrid_products.getCheckedRows(0) },
+                        success: function (result) {
+                            debugger;
+                            for (var i = mygrid_products.getCheckedRows(0).split(",").length - 1; i >= 0; i--) {
+                                mygrid_products.deleteRow(mygrid_products.getCheckedRows(0).split(",")[i]);
+                            }
+                        }
+                    });
+                }
+            }
+        }
 
         function loadProductsGrid() {
 
@@ -468,9 +518,11 @@
             });
         }
 
-        function do_some(e) {
+        function uploadPhoto(rowId) {
          //   alert("ebi se");
-            alert(mygrid_products.getColIndexById(e));
+            var rowAttr = mygrid_products.cells(rowId, 1).getValue();
+            debugger;
+            alert(rowAttr);
 
         }
         

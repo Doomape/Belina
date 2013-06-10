@@ -9,6 +9,7 @@
           <EntitySet Name="Administrator" EntityType="BelinaModel.Store.Administrator" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Attributes" EntityType="BelinaModel.Store.Attributes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Class" EntityType="BelinaModel.Store.Class" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Class_Type" EntityType="BelinaModel.Store.Class_Type" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company" EntityType="BelinaModel.Store.Company" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company_Class" EntityType="BelinaModel.Store.Company_Class" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Store.Product_Attribute" store:Type="Tables" Schema="dbo" />
@@ -39,6 +40,14 @@
           </Key>
           <Property Name="class_id" Type="int" Nullable="false" />
           <Property Name="class_name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Class_Type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="class_id" Type="int" />
+          <Property Name="type_id" Type="int" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -95,7 +104,6 @@
           </Key>
           <Property Name="type_id" Type="int" Nullable="false" />
           <Property Name="type_name" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="class_id" Type="int" />
         </EntityType>
         <EntityType Name="Type_Company">
           <Key>
@@ -126,18 +134,11 @@
           <EntitySet Name="Company" EntityType="BelinaModel.Company" />
           <EntitySet Name="Company_Class" EntityType="BelinaModel.Company_Class" />
           <EntitySet Name="Products" EntityType="BelinaModel.Products" />
-          <EntitySet Name="Type" EntityType="BelinaModel.Type" />
           <EntitySet Name="Type_Company" EntityType="BelinaModel.Type_Company" />
           <EntitySet Name="Administrator" EntityType="BelinaModel.Administrator" />
           <EntitySet Name="sysdiagrams" EntityType="BelinaModel.sysdiagrams" />
           <EntitySet Name="Attributes" EntityType="BelinaModel.Attributes" />
           <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Product_Attribute" />
-          <FunctionImport Name="AllProducts">
-            <Parameter Name="sort_col" Mode="In" Type="String" />
-            <Parameter Name="sort_dir" Mode="In" Type="String" />
-            <Parameter Name="start" Mode="In" Type="Int32" />
-            <Parameter Name="end" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="spCountProducts" ReturnType="Collection(Int32)">
             <Parameter Name="sort_col" Mode="In" Type="String" />
             <Parameter Name="sort_dir" Mode="In" Type="String" />
@@ -150,7 +151,9 @@
             <Parameter Name="num" Mode="In" Type="Int32" />
             <Parameter Name="filters" Mode="In" Type="String" />
           </FunctionImport>
-        </EntityContainer>
+          <EntitySet Name="Class_Type" EntityType="BelinaModel.Class_Type" />
+          <EntitySet Name="Type" EntityType="BelinaModel.Type" />
+          </EntityContainer>
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="class_id" />
@@ -187,14 +190,6 @@
           <Property Type="String" Name="product_promotion" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="product_discount" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="product_image" MaxLength="250" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Type">
-          <Key>
-            <PropertyRef Name="type_id" />
-          </Key>
-          <Property Name="type_id" Type="Int32" Nullable="false" />
-          <Property Name="type_name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Type="Int32" Name="class_id" Nullable="true" />
         </EntityType>
         <EntityType Name="Type_Company">
           <Key>
@@ -252,7 +247,22 @@
           <Property Type="String" Name="product_promotion" Nullable="true" />
           <Property Type="String" Name="product_image" Nullable="true" />
         </ComplexType>
-      </Schema>
+        <EntityType Name="Class_Type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="class_id" />
+          <Property Type="Int32" Name="type_id" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="type_id" />
+          </Key>
+          <Property Type="Int32" Name="type_id" Nullable="false" />
+          <Property Type="String" Name="type_name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -296,15 +306,6 @@
                 <ScalarProperty Name="type_id" ColumnName="type_id" />
                 <ScalarProperty Name="attribute_id" ColumnName="attribute_id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Type">
-            <EntityTypeMapping TypeName="BelinaModel.Type">
-              <MappingFragment StoreEntitySet="Type">
-                <ScalarProperty Name="class_id" ColumnName="class_id" />
-                <ScalarProperty Name="type_id" ColumnName="type_id" />
-                <ScalarProperty Name="type_name" ColumnName="type_name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -374,7 +375,24 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="Class_Type">
+            <EntityTypeMapping TypeName="BelinaModel.Class_Type">
+              <MappingFragment StoreEntitySet="Class_Type">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type">
+            <EntityTypeMapping TypeName="BelinaModel.Type">
+              <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="type_name" ColumnName="type_name" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

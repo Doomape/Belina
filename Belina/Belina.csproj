@@ -219,6 +219,9 @@
     <Compile Include="Models\Class.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Class_Type.cs">
+      <DependentUpon>BelinaEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Company.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
@@ -643,6 +646,7 @@
     <Content Include="Content\grid\codebase\imgs\icons_books\Thumbs.db" />
     <Content Include="Content\grid\codebase\imgs\icons_greenfolders\Thumbs.db" />
     <Content Include="Content\grid\codebase\imgs\Thumbs.db" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\belina.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />

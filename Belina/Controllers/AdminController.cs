@@ -23,7 +23,7 @@ namespace Belina.Controllers
 
         public ActionResult Index()
         {
-           
+
             return View();
         }
         public ActionResult Add(HttpPostedFileBase file)
@@ -41,7 +41,7 @@ namespace Belina.Controllers
 
             if (existRow.Count > 0)
             {
-                return Json("Класата веќе постои..среќа што сме бесконечно пописмени од инфопроект па не дозволуваме вакви глупости.", JsonRequestBehavior.AllowGet);
+                return Json("Класата " + className + " веќе постои..среќа што сме бесконечно пописмени од инфопроект па не дозволуваме вакви глупости.", JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -50,7 +50,7 @@ namespace Belina.Controllers
                 classObj.class_name = className;
                 db.Class.Add(classObj);
                 db.SaveChanges();
-                return Json("Класа е внесена.", JsonRequestBehavior.AllowGet);
+                return Json("Класата " + className + " е внесена.", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -61,17 +61,17 @@ namespace Belina.Controllers
 
             if (existRow.Count > 0)
             {
-                return Json("Типот веќе постои..среќа што сме бесконечно пописмени од инфопроект па не дозволуваме вакви глупости.", JsonRequestBehavior.AllowGet);
+                return Json("Типот " + typeName + " веќе постои..среќа што сме бесконечно пописмени од инфопроект па не дозволуваме вакви глупости.", JsonRequestBehavior.AllowGet);
             }
             else
             {
                 Belina.Models.Type typeObj = new Belina.Models.Type();
-               
+
                 typeObj.type_id = (from x in db.Type select x.type_id).Max() + 1;
                 typeObj.type_name = typeName;
                 db.Type.Add(typeObj);
                 db.SaveChanges();
-                return Json("Типот е внесен.", JsonRequestBehavior.AllowGet);
+                return Json("Типот " + typeName + " е внесен.", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -82,7 +82,7 @@ namespace Belina.Controllers
 
             if (existRow.Count > 0)
             {
-                return Json("Типот веќе постои..среќа што сме бесконечно пописмени од инфопроект па не дозволуваме вакви глупости.", JsonRequestBehavior.AllowGet);
+                return Json("Производителот " + companyName + " веќе постои..среќа што сме бесконечно пописмени од инфопроект па не дозволуваме вакви глупости.", JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -92,7 +92,7 @@ namespace Belina.Controllers
                 companyObj.company_name = companyName;
                 db.Company.Add(companyObj);
                 db.SaveChanges();
-                return Json("Производителот е внесен.", JsonRequestBehavior.AllowGet);
+                return Json("Производителот " + companyName + " е внесен.", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -103,7 +103,7 @@ namespace Belina.Controllers
 
             if (existRow.Count > 0)
             {
-                return Json("Специфичната карактеристика веќе постои..среќа што сме бесконечно пописмени од инфопроект па не дозволуваме вакви глупости.", JsonRequestBehavior.AllowGet);
+                return Json("Специфичната карактеристика " + attributeName + " веќе постои..среќа што сме бесконечно пописмени од инфопроект па не дозволуваме вакви глупости.", JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -113,7 +113,7 @@ namespace Belina.Controllers
                 attrObj.attribute_name = attributeName;
                 db.Attributes.Add(attrObj);
                 db.SaveChanges();
-                return Json("Специфичната карактеристика е внесена.", JsonRequestBehavior.AllowGet);
+                return Json("Специфичната карактеристика " + attributeName + " е внесена.", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -126,24 +126,24 @@ namespace Belina.Controllers
             var companies = (from x in db.Company select x.company_name).Distinct().ToList();
             Dictionary<String, List<String>> res = new Dictionary<string, List<String>>();
             res.Add("classes", classes);
-            res.Add("types",types);
-            res.Add("attributes",attributes);
+            res.Add("types", types);
+            res.Add("attributes", attributes);
             res.Add("companies", companies);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
         #endregion
         #region Insert new product
-        public JsonResult insertProduct(HttpPostedFileBase file, string productName, string allClasses, string allTypes,string allAttributes, string allCompanies, string productDecription, string discount, string promotion)
+        public JsonResult insertProduct(HttpPostedFileBase file, string productName, string allClasses, string allTypes, string allAttributes, string allCompanies, string productDecription, string discount, string promotion)
         {
             Products products = new Products();
             Company_Class c_c = new Company_Class();
             Type_Company t_c = new Type_Company();
             Product_Attribute p_a = new Product_Attribute();
-            
+            Class_Type class_type = new Class_Type();
             var classID = (from x in db.Class where x.class_name == allClasses select x).First<Class>().class_id;
-            var typeID = (from x in db.Type where x.type_name == allTypes select x).First<Belina.Models.Type>().type_id;
             var companyID = (from x in db.Company where x.company_name == allCompanies select x).First<Company>().company_id;
-            var attributeID=(from x in db.Attributes where x.attribute_name == allAttributes select x).First<Belina.Models.Attributes>().attribute_id;
+            var attributeID = (from x in db.Attributes where x.attribute_name == allAttributes select x).First<Belina.Models.Attributes>().attribute_id;
+            var typeID = (from x in db.Type where x.type_name == allTypes select x).First<Belina.Models.Type>().type_id;
 
             products.product_name = productName;
             products.class_id = classID;
@@ -157,7 +157,7 @@ namespace Belina.Controllers
             {
                 Directory.CreateDirectory(Server.MapPath("~/Content/companies/" + allCompanies));
             }
-            if (file.FileName != null || file.FileName != "")
+            if (file != null)
             {
                 if (System.IO.File.Exists(Server.MapPath("~/Content/companies/" + allCompanies + "/" + file.FileName)))
                 {
@@ -171,17 +171,17 @@ namespace Belina.Controllers
                     products.product_image = "/Content/companies/" + allCompanies + "/" + file.FileName;
                 }
             }
-            else
+            if (file == null)
             {
-                products.product_image = "/Content/belinaLogo5.png";
+                products.product_image = "/Content/sliki/belinaLogo5.png";
             }
 
             db.Products.Add(products);
 
-            var existCompany_Class=(from x in db.Company_Class where x.class_id==classID && x.company_id==companyID select x).Count();
+            var existCompany_Class = (from x in db.Company_Class where x.class_id == classID && x.company_id == companyID select x).Count();
             var existType_Company = (from x in db.Type_Company where x.company_id == companyID && x.type_id == typeID select x).Count();
-            var existProduct_Attribute = (from x in db.Product_Attribute where x.attribute_id== attributeID && x.company_id == companyID && x.type_id == typeID select x).Count();
-
+            var existProduct_Attribute = (from x in db.Product_Attribute where x.attribute_id == attributeID && x.company_id == companyID && x.type_id == typeID select x).Count();
+            var existClass_Type = (from x in db.Class_Type where x.class_id == classID && x.type_id == typeID select x).Count();
             if (existCompany_Class == 0)
             {
                 c_c.class_id = classID;
@@ -205,30 +205,37 @@ namespace Belina.Controllers
                 p_a.type_id = typeID;
                 db.Product_Attribute.Add(p_a);
             }
-            
+
+            if (existClass_Type == 0)
+            {
+                class_type.class_id = classID;
+                class_type.type_id = typeID;
+                db.Class_Type.Add(class_type);
+            }
+
             db.SaveChanges();
 
             return Json("Успешно додавање на нов производ", JsonRequestBehavior.AllowGet);
         }
-       #endregion
+        #endregion
         #region Generate XML for Products
         public ActionResult XMLForProducts(int orderbyindex, string direction, string fil, string dontPos = "0", string posStart = "0", string count = "50")
         {
-            string[] column_names = { "Производ", "Класа", "Тип", "Производител", "Специфична карактеристика", "Детален опис", "Фотографија" };
+            string[] column_names = { "Избриши", "Производ", "Класа", "Тип", "Производител", "Специфична карактеристика", "Детален опис", "Фотографија" };
             string[] columns = { "product_name", "class_name", "type_name", "company_name", "attribute_name", "product_description", "product_image" };
 
             if (direction == "des") direction = "desc";
+            string filters = filters = String.Concat(Enumerable.Repeat(",#text_filter", 6));
 
-            string filters = String.Concat(Enumerable.Repeat("#text_filter,", 6));
             string filters_sql = "";
 
             //generating the sql query
             var splitted_filters = fil.Split(new string[] { ";;;" }, StringSplitOptions.None);
-            var i=0;
+            var i = 0;
             foreach (var filter in splitted_filters)
             {
-                if(filter!="")
-                    filters_sql += " and " + columns[i] + " like N'%"+filter+"%'";
+                if (filter != "")
+                    filters_sql += " and " + columns[i] + " like N'%" + filter + "%'";
 
                 i++;
             }
@@ -248,11 +255,12 @@ namespace Belina.Controllers
 
             if (string.IsNullOrEmpty(posStart))
                 posStart = "0";
-            
+
             XDocument xdoc = new XDocument();
 
             XElement root = new XElement("rows", new XAttribute("total_count", products_count.ToString()), new XAttribute("pos", posStart));
             XElement head = new XElement("head");
+
             if (posStart == "0" && dontPos != "1")
             {
                 root.Add(head);
@@ -276,31 +284,37 @@ namespace Belina.Controllers
                 {
                     if (column_names[0] == columnName)
                     {
-                        column = new XElement("column", new XAttribute("type", "ed"),
-                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
+                       new XAttribute("width", "65%"), new XAttribute("sort", "str"), new XText(columnName));
                         head.Add(column);
                     }
                     if (column_names[1] == columnName)
                     {
+                        column = new XElement("column", new XAttribute("type", "ed"),
+                       new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        head.Add(column);
+                    }
+                    if (column_names[2] == columnName)
+                    {
                         column = new XElement("column", new XAttribute("type", "coro"),
-                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                       new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
                         foreach (var Dbclass in Dbclasses)
                         {
                             column.Add(new XElement("option", new XAttribute("value", Dbclass), new XText(Dbclass)));
                         }
                         head.Add(column);
                     }
-                    if (column_names[2] == columnName)
+                    if (column_names[3] == columnName)
                     {
                         column = new XElement("column", new XAttribute("type", "coro"),
-                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                       new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
                         foreach (var type in Dbtypes)
                         {
                             column.Add(new XElement("option", new XAttribute("value", type), new XText(type)));
                         }
                         head.Add(column);
                     }
-                    if (column_names[3] == columnName)
+                    if (column_names[4] == columnName)
                     {
                         column = new XElement("column", new XAttribute("type", "coro"),
                         new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
@@ -310,7 +324,7 @@ namespace Belina.Controllers
                         }
                         head.Add(column);
                     }
-                    if (column_names[4] == columnName)
+                    if (column_names[5] == columnName)
                     {
                         column = new XElement("column", new XAttribute("type", "coro"),
                         new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
@@ -320,16 +334,16 @@ namespace Belina.Controllers
                         }
                         head.Add(column);
                     }
-                    if (column_names[5] == columnName)
-                    {
-                        column = new XElement("column", new XAttribute("type", "txt"),
-                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
-                        head.Add(column);
-                    }
                     if (column_names[6] == columnName)
                     {
+                        column = new XElement("column", new XAttribute("type", "txt"),
+                                             new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
+                        head.Add(column);
+                    }
+                    if (column_names[7] == columnName)
+                    {
                         column = new XElement("column", new XAttribute("type", "ro"),
-                        new XAttribute("width", "550%"), new XAttribute("sort", "str"), new XAttribute("id", "last"), new XText(columnName));
+                         new XAttribute("width", "130%"), new XAttribute("sort", "server"), new XAttribute("id", "last"), new XText(columnName));
                         head.Add(column);
                     }
                     counter++;
@@ -344,23 +358,26 @@ namespace Belina.Controllers
             XElement cell5;
             XElement cell6;
             XElement cell7;
+            XElement cell8;
             foreach (var prod in products)
             {
                 row = new XElement("row", new XAttribute("id", prod.product_id));
-                cell = new XElement("cell", new XText(prod.product_name));
-                cell2 = new XElement("cell", new XText(prod.class_name));
-                cell3 = new XElement("cell", new XText(prod.type_name));
-                cell4 = new XElement("cell", new XText(prod.company_name));
-                cell5 = new XElement("cell", new XText(prod.attribute_name));
+                cell = new XElement("cell", 0);
+                cell2 = new XElement("cell", new XText(prod.product_name));
+                cell3 = new XElement("cell", new XText(prod.class_name));
+                cell4 = new XElement("cell", new XText(prod.type_name));
+                cell5 = new XElement("cell", new XText(prod.company_name));
+                cell6 = new XElement("cell", new XText(prod.attribute_name));
                 if (prod.product_description != null)
                 {
-                    cell6 = new XElement("cell", new XText(prod.product_description));
+                    cell7 = new XElement("cell", new XText(prod.product_description));
                 }
                 else
                 {
-                    cell6 = new XElement("cell", new XText("/"));
+                    cell7 = new XElement("cell", new XText("/"));
                 }
-                cell7 = new XElement("cell", new XText("<form><input type='file'></input><progress></progress><br/><button class='button_row' type='button' onclick='do_some(" + prod.product_id + ")'>Внеси</button></form>"));
+                cell8 = new XElement("cell", new XText("<form><input type='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + prod.product_id + ")'>Внеси</button></form>"));
+
                 row.Add(cell);
                 row.Add(cell2);
                 row.Add(cell3);
@@ -368,6 +385,7 @@ namespace Belina.Controllers
                 row.Add(cell5);
                 row.Add(cell6);
                 row.Add(cell7);
+                row.Add(cell8);
                 root.Add(row);
             }
             xdoc.Add(root);
@@ -511,11 +529,11 @@ namespace Belina.Controllers
         }
         #endregion
         #region update Classes
-        public JsonResult updateClasses(string old_className,string new_className)
+        public JsonResult updateClasses(string old_className, string new_className)
         {
             Class classObj = (from x in db.Class
-                       where x.class_name == old_className
-                       select x).First();
+                              where x.class_name == old_className
+                              select x).First();
             classObj.class_name = new_className;
             db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
@@ -525,8 +543,8 @@ namespace Belina.Controllers
         public JsonResult updateTypes(string old_typeName, string new_typeName)
         {
             Belina.Models.Type typeObj = (from x in db.Type
-                             where x.type_name == old_typeName
-                             select x).First();
+                                          where x.type_name == old_typeName
+                                          select x).First();
             typeObj.type_name = new_typeName;
             db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
@@ -537,7 +555,7 @@ namespace Belina.Controllers
         {
             Attributes attributeObj = (from x in db.Attributes
                                        where x.attribute_name == old_attributeName
-                                          select x).First();
+                                       select x).First();
             attributeObj.attribute_name = new_attributeName;
             db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
@@ -548,7 +566,7 @@ namespace Belina.Controllers
         {
             Company companyObj = (from x in db.Company
                                   where x.company_name == old_companyName
-                                       select x).First();
+                                  select x).First();
             companyObj.company_name = new_companyName;
             db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
@@ -562,9 +580,9 @@ namespace Belina.Controllers
                 classes_id[i] = Convert.ToInt32(objClasses.Split(',')[i]);
             }
             var x = (from p in db.Class where classes_id.Contains(p.class_id) select p).ToList();
-            foreach(var a in x)
+            foreach (var a in x)
             {
-            db.Class.Remove(a);
+                db.Class.Remove(a);
             }
             db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
@@ -612,6 +630,44 @@ namespace Belina.Controllers
                 db.Company.Remove(a);
             }
             db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult deleteProducts(string objProducts)
+        {
+            int[] product_id = new int[objProducts.Split(',').Length];
+            for (int i = 0; i < objProducts.Split(',').Length; i++)
+            {
+                product_id[i] = Convert.ToInt32(objProducts.Split(',')[i]);
+            }
+            var x = (from p in db.Products where product_id.Contains(p.product_id) select p).ToList();
+            foreach (var a in x)
+            {
+                db.Products.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult updateProducts(string old_Name, string new_Name, int row_id, int product_column)
+        {
+            Products productObj = (from x in db.Products
+                                   where x.product_id == row_id
+                                   select x).First();
+            switch (product_column)
+            {
+                case 1:
+                    productObj.product_name = new_Name;
+                    break;
+                case 2:
+                    Class classes = (from x in db.Class where new_Name.Contains(x.class_name) select x).First();
+                    productObj.class_id = classes.class_id;
+                    break;
+                default:
+                    break;
+            }
+            db.SaveChanges();
+
             return Json("", JsonRequestBehavior.AllowGet);
         }
     }

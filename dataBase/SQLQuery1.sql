@@ -150,3 +150,33 @@ go
 
 --exec dbo.spCountProducts 'product_name','desc',N' and product_name like N''%шуб%'''
 ================end 03=====================
+
+
+
+
+================09.06 Added new table================
+
+CREATE TABLE Class_Type
+(
+class_id int NULL,
+type_id int NULL
+)
+
+ALTER TABLE Class_Type
+ADD id INT IDENTITY
+
+ALTER TABLE Class_Type
+ADD CONSTRAINT PK_Class_Type
+PRIMARY KEY(id)
+
+
+
+INSERT INTO Class_Type
+SELECT Distinct Type.class_id, Type.type_id
+FROM Type
+WHERE Type.type_id IS NOT NULL
+
+
+ALTER TABLE Type DROP COLUMN class_id
+
+==============end 09.06========================
