@@ -180,3 +180,31 @@ WHERE Type.type_id IS NOT NULL
 ALTER TABLE Type DROP COLUMN class_id
 
 ==============end 09.06========================
+
+
+==============11.06 changed column type on dependencies tables==========
+
+
+ALTER TABLE Class_Type
+ALTER COLUMN type_id int NOT NULL
+
+ALTER TABLE Class_Type
+ALTER COLUMN class_id int NOT NULL
+
+ALTER TABLE Company_Class
+ALTER COLUMN class_id int NOT NULL
+
+ALTER TABLE Company_Class
+ALTER COLUMN company_id int NOT NULL
+
+ALTER TABLE Product_Attribute
+ALTER COLUMN company_id int NOT NULL
+
+ALTER TABLE Product_Attribute
+ALTER COLUMN type_id int NOT NULL
+
+ALTER TABLE Type_Company
+ALTER COLUMN type_id int NOT NULL
+
+ALTER TABLE Type_Company
+ALTER COLUMN company_id int NOT NULL

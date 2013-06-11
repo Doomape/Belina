@@ -6,16 +6,16 @@
     <edmx:Diagrams>
       <Diagram DiagramId="6c5a8db99cee498a9030d4e6e6a7c0b2" Name="Diagram1" ZoomLevel="99">
         <EntityTypeShape EntityType="BelinaModel.Class" Width="1.5" PointX="0.5" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BelinaModel.Company" Width="1.5" PointX="4.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BelinaModel.Company_Class" Width="1.75" PointX="2.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BelinaModel.Company" Width="1.5" PointX="4.125" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BelinaModel.Products" Width="1.75" PointX="6.125" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BelinaModel.Type_Company" Width="1.5" PointX="6" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BelinaModel.Administrator" Width="1.5" PointX="12.125" PointY="1.5" />
         <EntityTypeShape EntityType="BelinaModel.sysdiagrams" Width="1.5" PointX="12.125" PointY="3.875" />
         <EntityTypeShape EntityType="BelinaModel.Attributes" Width="1.5" PointX="9.875" PointY="4.75" />
-        <EntityTypeShape EntityType="BelinaModel.Product_Attribute" Width="1.5" PointX="8.125" PointY="3.5" />
-        <EntityTypeShape EntityType="BelinaModel.Class_Type" Width="1.5" PointX="4.125" PointY="3.25" />
-        <EntityTypeShape EntityType="BelinaModel.Type" Width="1.5" PointX="7.875" PointY="0.875" />
+        <EntityTypeShape EntityType="BelinaModel.Type" Width="1.5" PointX="7.75" PointY="0.625" />
+        <EntityTypeShape EntityType="BelinaModel.Class_Type" Width="1.5" PointX="4.125" PointY="2.625" />
+        <EntityTypeShape EntityType="BelinaModel.Company_Class" Width="1.5" PointX="2.375" PointY="0.875" />
+        <EntityTypeShape EntityType="BelinaModel.Product_Attribute" Width="1.5" PointX="8.125" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BelinaModel.Type_Company" Width="1.5" PointX="6" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

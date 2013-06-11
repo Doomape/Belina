@@ -26,7 +26,7 @@ namespace Belina.Controllers
 
             return View();
         }
-        public ActionResult Add(HttpPostedFileBase file)
+        public ActionResult Add()
         {
             return View();
         }
@@ -34,6 +34,7 @@ namespace Belina.Controllers
         {
             return View();
         }
+
         #region Insert new Classes
         public JsonResult insertClasses(string className)
         {
@@ -115,21 +116,6 @@ namespace Belina.Controllers
                 db.SaveChanges();
                 return Json("Специфичната карактеристика " + attributeName + " е внесена.", JsonRequestBehavior.AllowGet);
             }
-        }
-        #endregion
-        #region Get product Dependencies
-        public JsonResult productDependencies()
-        {
-            var classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x.class_name).Distinct().ToList();
-            var types = (from x in db.Type select x.type_name).Distinct().ToList();
-            var attributes = (from x in db.Attributes select x.attribute_name).Distinct().ToList();
-            var companies = (from x in db.Company select x.company_name).Distinct().ToList();
-            Dictionary<String, List<String>> res = new Dictionary<string, List<String>>();
-            res.Add("classes", classes);
-            res.Add("types", types);
-            res.Add("attributes", attributes);
-            res.Add("companies", companies);
-            return Json(res, JsonRequestBehavior.AllowGet);
         }
         #endregion
         #region Insert new product
@@ -218,6 +204,23 @@ namespace Belina.Controllers
             return Json("Успешно додавање на нов производ", JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        #region Get product Dependencies
+        public JsonResult productDependencies()
+        {
+            var classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x.class_name).Distinct().ToList();
+            var types = (from x in db.Type select x.type_name).Distinct().ToList();
+            var attributes = (from x in db.Attributes select x.attribute_name).Distinct().ToList();
+            var companies = (from x in db.Company select x.company_name).Distinct().ToList();
+            Dictionary<String, List<String>> res = new Dictionary<string, List<String>>();
+            res.Add("classes", classes);
+            res.Add("types", types);
+            res.Add("attributes", attributes);
+            res.Add("companies", companies);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
         #region Generate XML for Products
         public ActionResult XMLForProducts(int orderbyindex, string direction, string fil, string dontPos = "0", string posStart = "0", string count = "50")
         {
@@ -528,6 +531,7 @@ namespace Belina.Controllers
             return Json(doc.ToString(), JsonRequestBehavior.AllowGet);
         }
         #endregion
+
         #region update Classes
         public JsonResult updateClasses(string old_className, string new_className)
         {
@@ -572,83 +576,7 @@ namespace Belina.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
-        public JsonResult deleteClasses(string objClasses)
-        {
-            int[] classes_id = new int[objClasses.Split(',').Length];
-            for (int i = 0; i < objClasses.Split(',').Length; i++)
-            {
-                classes_id[i] = Convert.ToInt32(objClasses.Split(',')[i]);
-            }
-            var x = (from p in db.Class where classes_id.Contains(p.class_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Class.Remove(a);
-            }
-            db.SaveChanges();
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult deleteTypes(string objTypes)
-        {
-            int[] type_id = new int[objTypes.Split(',').Length];
-            for (int i = 0; i < objTypes.Split(',').Length; i++)
-            {
-                type_id[i] = Convert.ToInt32(objTypes.Split(',')[i]);
-            }
-            var x = (from p in db.Type where type_id.Contains(p.type_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Type.Remove(a);
-            }
-            db.SaveChanges();
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult deleteAttributes(string objAttributes)
-        {
-            int[] attribute_id = new int[objAttributes.Split(',').Length];
-            for (int i = 0; i < objAttributes.Split(',').Length; i++)
-            {
-                attribute_id[i] = Convert.ToInt32(objAttributes.Split(',')[i]);
-            }
-            var x = (from p in db.Attributes where attribute_id.Contains(p.attribute_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Attributes.Remove(a);
-            }
-            db.SaveChanges();
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult deleteCompanies(string objCompanies)
-        {
-            int[] company_id = new int[objCompanies.Split(',').Length];
-            for (int i = 0; i < objCompanies.Split(',').Length; i++)
-            {
-                company_id[i] = Convert.ToInt32(objCompanies.Split(',')[i]);
-            }
-            var x = (from p in db.Company where company_id.Contains(p.company_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Company.Remove(a);
-            }
-            db.SaveChanges();
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult deleteProducts(string objProducts)
-        {
-            int[] product_id = new int[objProducts.Split(',').Length];
-            for (int i = 0; i < objProducts.Split(',').Length; i++)
-            {
-                product_id[i] = Convert.ToInt32(objProducts.Split(',')[i]);
-            }
-            var x = (from p in db.Products where product_id.Contains(p.product_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Products.Remove(a);
-            }
-            db.SaveChanges();
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
-
+        #region update Products
         public JsonResult updateProducts(string old_Name, string new_Name, int row_id, int product_column)
         {
             Products productObj = (from x in db.Products
@@ -670,5 +598,152 @@ namespace Belina.Controllers
 
             return Json("", JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+        #region delete Classes
+        public JsonResult deleteClasses(string objClasses)
+        {
+            int[] classes_id = new int[objClasses.Split(',').Length];
+            for (int i = 0; i < objClasses.Split(',').Length; i++)
+            {
+                classes_id[i] = Convert.ToInt32(objClasses.Split(',')[i]);
+            }
+            var x = (from p in db.Class where classes_id.Contains(p.class_id) select p).ToList();
+            foreach (var a in x)
+            {
+                db.Class.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region delete Types
+        public JsonResult deleteTypes(string objTypes)
+        {
+            int[] type_id = new int[objTypes.Split(',').Length];
+            for (int i = 0; i < objTypes.Split(',').Length; i++)
+            {
+                type_id[i] = Convert.ToInt32(objTypes.Split(',')[i]);
+            }
+            var x = (from p in db.Type where type_id.Contains(p.type_id) select p).ToList();
+            foreach (var a in x)
+            {
+                db.Type.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region delete Attributes
+        public JsonResult deleteAttributes(string objAttributes)
+        {
+            int[] attribute_id = new int[objAttributes.Split(',').Length];
+            for (int i = 0; i < objAttributes.Split(',').Length; i++)
+            {
+                attribute_id[i] = Convert.ToInt32(objAttributes.Split(',')[i]);
+            }
+            var x = (from p in db.Attributes where attribute_id.Contains(p.attribute_id) select p).ToList();
+            foreach (var a in x)
+            {
+                db.Attributes.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region delete Companies
+        public JsonResult deleteCompanies(string objCompanies)
+        {
+            int[] company_id = new int[objCompanies.Split(',').Length];
+            for (int i = 0; i < objCompanies.Split(',').Length; i++)
+            {
+                company_id[i] = Convert.ToInt32(objCompanies.Split(',')[i]);
+            }
+            var x = (from p in db.Company where company_id.Contains(p.company_id) select p).ToList();
+            foreach (var a in x)
+            {
+                db.Company.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region delete Products
+        public JsonResult deleteProducts(string objProducts)
+        {
+            int rowLenght = objProducts.Split(',').Length;
+            int[] product_id = new int[rowLenght];
+            for (int i = 0; i < objProducts.Split(',').Length; i++)
+            {
+                product_id[i] = Convert.ToInt32(objProducts.Split(',')[i]);
+            }
+            var products = (from p in db.Products where product_id.Contains(p.product_id) select p).ToList();
+
+            int[] classID = new int[rowLenght];
+            int[] typeID = new int[rowLenght];
+            int[] companyID = new int[rowLenght];
+            int[] attributeID = new int[rowLenght];
+            int count_class_type;
+            int count_company_class;
+            int count_type_company;
+            int count_product_attribute;
+            int count_picture_url;
+
+            //get all product features and then chech their dependencies / if the dependence show only once into the product table, then that dependence should be removed
+            foreach (var a in products)
+            {
+                count_class_type = (from product in db.Products where product.class_id == a.class_id && product.type_id == a.type_id select product).Take(2).Count();
+                count_company_class = (from product in db.Products where product.company_id == a.company_id && product.class_id == a.class_id select product).Take(2).Count();
+                count_type_company = (from product in db.Products where product.type_id == a.type_id && product.company_id == a.company_id select product).Take(2).Count();
+                count_product_attribute = (from product in db.Products where product.type_id == a.type_id && product.company_id == a.company_id && product.attribute_id == a.attribute_id select product).Take(2).Count();
+                count_picture_url = (from product in db.Products where product.product_image == a.product_image select product).Take(2).Count();
+                if (count_class_type == 1)
+                {
+                    var class_type = (from cc in db.Class_Type where cc.class_id == a.class_id && cc.type_id == a.type_id select cc);
+                    foreach (var c_t in class_type)
+                    {
+                        db.Class_Type.Remove(c_t);
+                    }
+                    
+                }
+                if (count_company_class == 1)
+                {
+                    var company_class = (from cc in db.Company_Class where cc.class_id == a.class_id && cc.company_id == a.company_id select cc);
+                    foreach (var c_c in company_class)
+                    {
+                        db.Company_Class.Remove(c_c);
+                    }
+
+                }
+                if (count_type_company == 1)
+                {
+                    var type_company = (from cc in db.Type_Company where cc.type_id == a.type_id && cc.company_id == a.company_id select cc);
+                    foreach (var t_c in type_company)
+                    {
+                        db.Type_Company.Remove(t_c);
+                    }
+                }
+                if (count_product_attribute == 1)
+                {
+                    var product_attribute = (from pa in db.Product_Attribute where pa.type_id == a.type_id && pa.company_id == a.company_id && pa.attribute_id == a.attribute_id select pa);
+                    foreach (var p_a in product_attribute)
+                    {
+                        db.Product_Attribute.Remove(p_a);
+                    }
+                }
+                if (count_picture_url == 1)
+                {
+                    if (!Directory.Exists(Server.MapPath("~" + a.product_image)))
+                    {
+                        Directory.Delete(Server.MapPath("~" + a.product_image));
+                    }
+                }
+                db.Products.Remove(a);
+            }
+            db.SaveChanges();
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
     }
 }

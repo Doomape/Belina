@@ -14,8 +14,8 @@ namespace Belina.Models
     
     public partial class Company_Class
     {
-        public Nullable<int> company_id { get; set; }
-        public Nullable<int> class_id { get; set; }
+        public int company_id { get; set; }
+        public int class_id { get; set; }
         public int id { get; set; }
     }
 }

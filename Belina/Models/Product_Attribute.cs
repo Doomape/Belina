@@ -14,8 +14,8 @@ namespace Belina.Models
     
     public partial class Product_Attribute
     {
-        public Nullable<int> company_id { get; set; }
-        public Nullable<int> type_id { get; set; }
+        public int company_id { get; set; }
+        public int type_id { get; set; }
         public int attribute_id { get; set; }
         public int id { get; set; }
     }

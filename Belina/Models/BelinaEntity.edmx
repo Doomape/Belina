@@ -45,8 +45,8 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="class_id" Type="int" />
-          <Property Name="type_id" Type="int" />
+          <Property Name="class_id" Type="int" Nullable="false" />
+          <Property Name="type_id" Type="int" Nullable="false" />
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Company">
@@ -60,16 +60,16 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="company_id" Type="int" />
-          <Property Name="class_id" Type="int" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+          <Property Name="class_id" Type="int" Nullable="false" />
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Product_Attribute">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="company_id" Type="int" />
-          <Property Name="type_id" Type="int" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+          <Property Name="type_id" Type="int" Nullable="false" />
           <Property Name="attribute_id" Type="int" Nullable="false" />
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
@@ -109,8 +109,8 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="company_id" Type="int" />
-          <Property Name="type_id" Type="int" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+          <Property Name="type_id" Type="int" Nullable="false" />
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <Function Name="spCountProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -132,13 +132,10 @@
         <EntityContainer Name="BelinaEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Class" EntityType="BelinaModel.Class" />
           <EntitySet Name="Company" EntityType="BelinaModel.Company" />
-          <EntitySet Name="Company_Class" EntityType="BelinaModel.Company_Class" />
           <EntitySet Name="Products" EntityType="BelinaModel.Products" />
-          <EntitySet Name="Type_Company" EntityType="BelinaModel.Type_Company" />
           <EntitySet Name="Administrator" EntityType="BelinaModel.Administrator" />
           <EntitySet Name="sysdiagrams" EntityType="BelinaModel.sysdiagrams" />
           <EntitySet Name="Attributes" EntityType="BelinaModel.Attributes" />
-          <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Product_Attribute" />
           <FunctionImport Name="spCountProducts" ReturnType="Collection(Int32)">
             <Parameter Name="sort_col" Mode="In" Type="String" />
             <Parameter Name="sort_dir" Mode="In" Type="String" />
@@ -151,8 +148,11 @@
             <Parameter Name="num" Mode="In" Type="Int32" />
             <Parameter Name="filters" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="Class_Type" EntityType="BelinaModel.Class_Type" />
           <EntitySet Name="Type" EntityType="BelinaModel.Type" />
+          <EntitySet Name="Class_Type" EntityType="BelinaModel.Class_Type" />
+          <EntitySet Name="Company_Class" EntityType="BelinaModel.Company_Class" />
+          <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Product_Attribute" />
+          <EntitySet Name="Type_Company" EntityType="BelinaModel.Type_Company" />
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -168,14 +168,6 @@
           <Property Name="company_id" Type="Int32" Nullable="false" />
           <Property Name="company_name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
         </EntityType>
-        <EntityType Name="Company_Class">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="company_id" Type="Int32" />
-          <Property Name="class_id" Type="Int32" />
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
         <EntityType Name="Products">
           <Key>
             <PropertyRef Name="product_id" />
@@ -190,14 +182,6 @@
           <Property Type="String" Name="product_promotion" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="product_discount" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="product_image" MaxLength="250" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Type_Company">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="company_id" Type="Int32" />
-          <Property Name="type_id" Type="Int32" />
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Administrator">
           <Key>
@@ -225,15 +209,6 @@
           <Property Type="Int32" Name="attribute_id" Nullable="false" />
           <Property Type="String" Name="attribute_name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="Product_Attribute">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Type="Int32" Name="company_id" />
-          <Property Type="Int32" Name="type_id" />
-          <Property Type="Int32" Name="attribute_id" Nullable="false" />
-          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
         <ComplexType Name="spGetProducts_Result">
           <Property Type="Int32" Name="row_num" Nullable="true" />
           <Property Type="Int32" Name="product_id" Nullable="true" />
@@ -247,20 +222,45 @@
           <Property Type="String" Name="product_promotion" Nullable="true" />
           <Property Type="String" Name="product_image" Nullable="true" />
         </ComplexType>
-        <EntityType Name="Class_Type">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Type="Int32" Name="class_id" />
-          <Property Type="Int32" Name="type_id" />
-          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
         <EntityType Name="Type">
           <Key>
             <PropertyRef Name="type_id" />
           </Key>
           <Property Type="Int32" Name="type_id" Nullable="false" />
           <Property Type="String" Name="type_name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Class_Type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="class_id" Nullable="false" />
+          <Property Type="Int32" Name="type_id" Nullable="false" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Company_Class">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="company_id" Nullable="false" />
+          <Property Type="Int32" Name="class_id" Nullable="false" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Product_Attribute">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="company_id" Nullable="false" />
+          <Property Type="Int32" Name="type_id" Nullable="false" />
+          <Property Type="Int32" Name="attribute_id" Nullable="false" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Type_Company">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="company_id" Nullable="false" />
+          <Property Type="Int32" Name="type_id" Nullable="false" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -284,15 +284,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Company_Class">
-            <EntityTypeMapping TypeName="BelinaModel.Company_Class">
-              <MappingFragment StoreEntitySet="Company_Class">
-                <ScalarProperty Name="company_id" ColumnName="company_id" />
-                <ScalarProperty Name="class_id" ColumnName="class_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="BelinaModel.Products">
               <MappingFragment StoreEntitySet="Products">
@@ -306,15 +297,6 @@
                 <ScalarProperty Name="type_id" ColumnName="type_id" />
                 <ScalarProperty Name="attribute_id" ColumnName="attribute_id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Type_Company">
-            <EntityTypeMapping TypeName="BelinaModel.Type_Company">
-              <MappingFragment StoreEntitySet="Type_Company">
-                <ScalarProperty Name="company_id" ColumnName="company_id" />
-                <ScalarProperty Name="type_id" ColumnName="type_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -347,16 +329,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Product_Attribute">
-            <EntityTypeMapping TypeName="BelinaModel.Product_Attribute">
-              <MappingFragment StoreEntitySet="Product_Attribute">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="attribute_id" ColumnName="attribute_id" />
-                <ScalarProperty Name="type_id" ColumnName="type_id" />
-                <ScalarProperty Name="company_id" ColumnName="company_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spCountProducts" FunctionName="BelinaModel.Store.spCountProducts" />
           <FunctionImportMapping FunctionImportName="spGetProducts" FunctionName="BelinaModel.Store.spGetProducts">
             <ResultMapping>
@@ -375,6 +347,14 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Type">
+            <EntityTypeMapping TypeName="BelinaModel.Type">
+              <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="type_name" ColumnName="type_name" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Class_Type">
             <EntityTypeMapping TypeName="BelinaModel.Class_Type">
               <MappingFragment StoreEntitySet="Class_Type">
@@ -384,11 +364,31 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Type">
-            <EntityTypeMapping TypeName="BelinaModel.Type">
-              <MappingFragment StoreEntitySet="Type">
-                <ScalarProperty Name="type_name" ColumnName="type_name" />
+          <EntitySetMapping Name="Company_Class">
+            <EntityTypeMapping TypeName="BelinaModel.Company_Class">
+              <MappingFragment StoreEntitySet="Company_Class">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Attribute">
+            <EntityTypeMapping TypeName="BelinaModel.Product_Attribute">
+              <MappingFragment StoreEntitySet="Product_Attribute">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="attribute_id" ColumnName="attribute_id" />
                 <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type_Company">
+            <EntityTypeMapping TypeName="BelinaModel.Type_Company">
+              <MappingFragment StoreEntitySet="Type_Company">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
