@@ -208,3 +208,90 @@ ALTER COLUMN type_id int NOT NULL
 
 ALTER TABLE Type_Company
 ALTER COLUMN company_id int NOT NULL
+
+==============end 11.06==============================================
+
+
+===============13.06.2013============Delete duplicate values================
+
+
+;with C as
+(
+  select row_number() over(partition by product_name,company_id,class_id,type_id,attribute_id 
+                           order by product_name,company_id,class_id,type_id,attribute_id) as rn
+  from Products
+)
+delete C
+where rn > 1
+
+
+update Product_Attribute
+set attribute_id = (
+    select min(attribute_id)
+    from Attributes a
+    where a.attribute_name=(select attribute_name from Attributes a2 where a2.attribute_id=Product_Attribute.attribute_id)
+);
+
+update Products
+set attribute_id = (
+    select min(attribute_id)
+    from Attributes a
+    where a.attribute_name=(select attribute_name from Attributes a2 where a2.attribute_id=Products.attribute_id)
+);
+
+DELETE
+FROM Attributes
+WHERE attribute_id NOT IN
+(
+    SELECT MIN(attribute_id)
+    FROM Attributes
+    GROUP BY attribute_name
+);
+
+delete from Type_Company where id=233
+
+update Type_Company
+set type_id = (
+    select min(type_id)
+    from Type a
+    where a.type_name=(select type_name from Type a2 where a2.type_id=Type_Company.type_id)
+);
+
+update Class_Type
+set type_id = (
+    select min(type_id)
+    from Type a
+    where a.type_name=(select type_name from Type a2 where a2.type_id=Class_Type.type_id)
+);
+
+update Products
+set type_id = (
+    select min(type_id)
+    from Type a
+    where a.type_name=(select type_name from Type a2 where a2.type_id=Products.type_id)
+);
+
+
+delete from Product_Attribute where id=1885
+
+delete from Product_Attribute where id=1886
+
+update Product_Attribute
+set type_id = (
+    select min(type_id)
+    from Type a
+    where a.type_name=(select type_name from Type a2 where a2.type_id=Product_Attribute.type_id)
+);
+
+DELETE
+FROM Type
+WHERE type_id NOT IN
+(
+    SELECT MIN(type_id)
+    FROM Type
+    GROUP BY type_name
+);
+
+=========13.06.2013 end======================================
+
+

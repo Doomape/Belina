@@ -675,14 +675,10 @@ namespace Belina.Controllers
             int[] product_id = new int[rowLenght];
             for (int i = 0; i < objProducts.Split(',').Length; i++)
             {
-                product_id[i] = Convert.ToInt32(objProducts.Split(',')[i]);
+                product_id[i] = Convert.ToInt32(objProducts.Split(',')[i]);//get all checked row id's
             }
-            var products = (from p in db.Products where product_id.Contains(p.product_id) select p).ToList();
+            var products = (from p in db.Products where product_id.Contains(p.product_id) select p).ToList();//select * for all rows
 
-            int[] classID = new int[rowLenght];
-            int[] typeID = new int[rowLenght];
-            int[] companyID = new int[rowLenght];
-            int[] attributeID = new int[rowLenght];
             int count_class_type;
             int count_company_class;
             int count_type_company;
@@ -703,8 +699,7 @@ namespace Belina.Controllers
                     foreach (var c_t in class_type)
                     {
                         db.Class_Type.Remove(c_t);
-                    }
-                    
+                    }            
                 }
                 if (count_company_class == 1)
                 {
@@ -713,7 +708,6 @@ namespace Belina.Controllers
                     {
                         db.Company_Class.Remove(c_c);
                     }
-
                 }
                 if (count_type_company == 1)
                 {
@@ -733,9 +727,9 @@ namespace Belina.Controllers
                 }
                 if (count_picture_url == 1)
                 {
-                    if (!Directory.Exists(Server.MapPath("~" + a.product_image)))
+                    if (System.IO.File.Exists(Server.MapPath("~" + a.product_image)))
                     {
-                        Directory.Delete(Server.MapPath("~" + a.product_image));
+                        System.IO.File.Delete(Server.MapPath("~" + a.product_image));
                     }
                 }
                 db.Products.Remove(a);
