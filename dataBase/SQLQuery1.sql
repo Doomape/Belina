@@ -292,6 +292,14 @@ WHERE type_id NOT IN
     GROUP BY type_name
 );
 
-=========13.06.2013 end======================================
+delete from Company_Class where id=154
+
+delete from Products where product_id = 3661
+delete from Products where product_id = 3662
+delete from Products where product_id = 3663
 
 
+
+=========13.06.2013 end ======================================
+
+asdad
