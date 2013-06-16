@@ -48,7 +48,7 @@ namespace Belina.Controllers
             return Json(companies, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult getProducts(string className, string companyName, string typeName, string attributeName)
+        public JsonResult getProducts(int classID, int companyID, int typeID, string attributeName)
         {
             if (attributeName.Equals("false") || attributeName.Equals("Сите"))
             {
@@ -58,16 +58,18 @@ namespace Belina.Controllers
                                 join c in db.Class on product.class_id equals c.class_id
                                 join a in db.Attributes on product.attribute_id equals a.attribute_id
                                 where
-                                c.class_name == className && t.type_name == typeName && comp.company_name == companyName
+                                c.class_id == classID && t.type_id == typeID && comp.company_id == companyID
                                 select new
                                 {
                                     product.product_name,
                                     product.product_image,
                                     product.product_description,
-                                    a.attribute_name
+                                    a.attribute_name,
+                                    a.attribute_id
                                 }).Distinct().ToList();
 
-                var attributes = products.Select(p => p.attribute_name).Distinct().ToList();
+                var attributesName = products.Select(p => p.attribute_name).Distinct().ToList();
+                var attributesID = products.Select(p => p.attribute_id.ToString()).Distinct().ToList();
                 Dictionary<string, List<String>> res = new Dictionary<string, List<string>>();
                 List<String> productList = new List<string>();
                 foreach (var product in products)
@@ -75,7 +77,8 @@ namespace Belina.Controllers
                     productList.Add(product.product_name + "#" + product.product_image + "@" + product.product_description);
                 }
                 res.Add("products", productList);
-                res.Add("attributes", attributes);
+                res.Add("attributes", attributesName);
+                res.Add("attributesID", attributesID);
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
             if (!(attributeName.Equals("false")))
@@ -86,7 +89,7 @@ namespace Belina.Controllers
                                            join c in db.Class on products.class_id equals c.class_id
                                            join a in db.Attributes on products.attribute_id equals a.attribute_id
                                            where
-                                           c.class_name == className && t.type_name == typeName && comp.company_name == companyName && a.attribute_name == attributeName
+                                           c.class_id == classID && t.type_id == typeID && comp.company_id == companyID && a.attribute_name == attributeName
                                            select new
                                            {
                                                products.product_name,
