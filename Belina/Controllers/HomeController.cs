@@ -26,25 +26,25 @@ namespace Belina.Controllers
 
         }
 
-        public JsonResult getTypes(string className)
+        public JsonResult getTypes(int classID)
         {
-            IList<String> allTypes = (from products in db.Products
+            IList<Belina.Models.Type> allTypes = (from products in db.Products
                                       join t in db.Type on products.type_id equals t.type_id
                                       join c in db.Class on products.class_id equals c.class_id
                                       where
-                                          c.class_name == className
-                                      select t.type_name).Distinct().ToList();
+                                          c.class_id == classID
+                                      select t).Distinct().ToList();
             return Json(allTypes, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult getCompanies(string className, string typeName)
+        public JsonResult getCompanies(int classID, int typeID)
         {
-            IList<String> companies = (from products in db.Products
+            IList<Company> companies = (from products in db.Products
                                        join t in db.Type on products.type_id equals t.type_id
                                        join comp in db.Company on products.company_id equals comp.company_id
                                        join c in db.Class on products.class_id equals c.class_id
-                                       where c.class_name == className && t.type_name == typeName
-                                       select comp.company_name).Distinct().ToList();
+                                       where c.class_id == classID && t.type_id == typeID
+                                       select comp).Distinct().ToList();
             return Json(companies, JsonRequestBehavior.AllowGet);
         }
 
@@ -105,7 +105,7 @@ namespace Belina.Controllers
             }
             else return Json("Error!", JsonRequestBehavior.AllowGet);
 
-        }
+        }//
         public JsonResult getByClass(string className)
         {
             var Types = (from products in db.Products

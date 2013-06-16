@@ -105,7 +105,7 @@
                 data: {},
                 success: function (result) {
                     for (n = 0; n < result.length; n++) {
-                        $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes( \'' + result[n].class_name + '\')"'
+                        $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes( \'' + result[n].class_id + '\')"'
                             + 'class="classesLink" >' + result[n].class_name + '</a></li>');
                         $('#class').append('<option>' + result[n].class_name + '</option>');
                     }
@@ -242,7 +242,7 @@
             });
         });
 
-        function showTypes(className) {
+        function showTypes(classID) {
             $('#products_submenu h2').empty();
             $('#products_submenu h3').empty();
             $('#products_submenu ul').empty();
@@ -256,12 +256,13 @@
             $.ajax({
                 url: "/Home/getTypes",
                 type: "GET",
-                data: { className: className },
+                data: { classID: classID },
                 success: function (result) {
                     for (x = 0; x < result.length; x++) {
-                        typeName = result[x];
+                        typeName = result[x].type_name;
+                        typeID = result[x].type_id;
                         $('#right_cube').append(
-                             '<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + className + '\',\'' + typeName + '\')">'
+                             '<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + classID + '\',\'' + typeID + '\')">'
                              + '<div style="width:90px;height:80px;margin-right:10px;margin-top:5px;margin-bottom:5px;float:left;text-align:center">'
                              + '<div style="margin: auto;width: 70px;height: 40px;background-color:rgb(' + Math.floor((Math.random() * 255) + 3) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 2) + ')">'
                              + '</div>' + '<p style="font-size: 13px;margin-bottom: 0px;margin-top: 0px;">' + typeName + '</p>' + '</div></a>');
@@ -270,7 +271,7 @@
             });
         }
 
-        function showCompanies(className, typeName) {
+        function showCompanies(classID, typeID) {
             var getfirstCompany = '';
             $('#main_content').empty();
             $('#products_submenu ul').empty();
@@ -282,7 +283,7 @@
             $.ajax({
                 url: "/Home/getCompanies",
                 type: "GET",
-                data: { className: className, typeName: typeName },
+                data: { classID: classID, typeID: typeID },
                 success: function (result) {
                     for (x = 0; x < result.length; x++) {
                         getfirstCompany = result[0];
