@@ -106,55 +106,59 @@ namespace Belina.Controllers
             else return Json("Error!", JsonRequestBehavior.AllowGet);
 
         }//
-        public JsonResult getByClass(string className)
+        public JsonResult getByClass(int classid)
         {
             var Types = (from products in db.Products
                          join t in db.Type on products.type_id equals t.type_id
                          join c in db.Class on products.class_id equals c.class_id
                          where
-                             c.class_name == className
-                         select t.type_name).Distinct().ToList();
+                             c.class_id == classid
+                         select t).Distinct().ToList();
 
             var Attributes = (from products in db.Products
                               join c in db.Class on products.class_id equals c.class_id
                               join a in db.Attributes on products.attribute_id equals a.attribute_id
                               where
-                              c.class_name == className
-                              select  a.attribute_name).Distinct().ToList();
+                              c.class_id == classid
+                              select  a).Distinct().ToList();
 
 
             var Companies = (from products in db.Products
                              join c in db.Class on products.class_id equals c.class_id
                              join comp in db.Company on products.company_id equals comp.company_id
                              where
-                             c.class_name == "Бои и лакови"
-                             select comp.company_name).Distinct().ToList();
+                             c.class_id == classid
+                             select comp).Distinct().ToList();
 
             Dictionary<string, List<String>> allByOneClass = new Dictionary<string, List<string>>();
-            allByOneClass.Add("types", Types);
-            allByOneClass.Add("attributes", Attributes);
-            allByOneClass.Add("companies", Companies);
+            allByOneClass.Add("types", Types.ConvertAll(x => x.type_name));
+            allByOneClass.Add("attributes", Attributes.ConvertAll(x => x.attribute_name));
+            allByOneClass.Add("companies", Companies.ConvertAll(x => x.company_name));
+
+            allByOneClass.Add("typesid", Types.ConvertAll(x => x.type_id.ToString()));
+            allByOneClass.Add("attributesid", Attributes.ConvertAll(x => x.attribute_id.ToString()));
+            allByOneClass.Add("companiesid", Companies.ConvertAll(x => x.company_id.ToString()));
             return Json(allByOneClass, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult getAttributesbyClassType(string className, string typeName)
+        public JsonResult getAttributesbyClassType(int classID, int typeID)
         {
-            List<string> attributes = (from p in db.Products
+            List<Attributes> attributes = (from p in db.Products
                                        join t in db.Type on p.type_id equals t.type_id
                                        join c in db.Class on p.class_id equals c.class_id
                                        join a in db.Attributes on p.attribute_id equals a.attribute_id
-                                       where c.class_name == className && t.type_name == typeName
-                                        select a.attribute_name).Distinct().ToList();
+                                       where c.class_id == classID && t.type_id == typeID
+                                        select a).Distinct().ToList();
 
             return Json(attributes, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult getCompanybyClassTypeAttribute(string className, string typeName, string attributeName)
+        public JsonResult getCompanybyClassTypeAttribute(int classID, int typeID, int attributeNameID)
         {
             var companies = (from p in db.Products
                              join comp in db.Company on p.company_id equals comp.company_id
                              join t in db.Type on p.type_id equals t.type_id
                              join c in db.Class on p.class_id equals c.class_id
                              join a in db.Attributes on p.attribute_id equals a.attribute_id
-                             where c.class_name == className && t.type_name == typeName && a.attribute_name == attributeName
+                             where c.class_id == classID && t.type_id == typeID && a.attribute_id == attributeNameID
                              select comp.company_name).Distinct().ToList();
 
             return Json(companies, JsonRequestBehavior.AllowGet);

@@ -107,14 +107,14 @@
                     for (n = 0; n < result.length; n++) {
                         $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes( \'' + result[n].class_id + '\')"'
                             + 'class="classesLink" >' + result[n].class_name + '</a></li>');
-                        $('#class').append('<option>' + result[n].class_name + '</option>');
+                        $('#class').append('<option value="' + result[n].class_id + '">' + result[n].class_name + '</option>');
                     }
                 }
             });
           
 
             $("#class").change(function () {
-               classNameS = $(this).val();
+               classidS = $(this).val();
                 $('#type').empty();
                 $('#type').append('<option>Сите</option>');
                 $('#attribute').empty();
@@ -124,28 +124,34 @@
                 $.ajax({
                     url: "/Home/getByClass",
                     type: "GET",
-                    data: { className: classNameS },
+                    data: { classid: classidS },
                     success: function (result) {
                         for (x = 0; x < result.types.length; x++) {
                             typeNameS = result.types[x];
-                            $('#type').append('<option>' + typeNameS + '</option>');
+                            typeNameID = result.typesid[x];
+                            $('#type').append('<option value="' + typeNameID + '">' + typeNameS + '</option>');
                         }
                         for (x = 0; x < result.attributes.length; x++) {
                             attributeNameS = result.attributes[x];
-                            $('#attribute').append('<option>' + attributeNameS + '</option>');
+                            attributeNameID = result.attributesid[x];
+                            $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
                         }
                         for (x = 0; x < result.companies.length; x++) {
                             companyNameS = result.companies[x];
-                            $('#brand').append('<option>' + companyNameS + '</option>');
+                            companyNameID = result.companiesid[x];
+                            $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
                         }
                     }
                 });
             });
 
             $("#type").change(function () {
+                
                 typeNameS = "";
-                typeNameS=$(this).val();
-                classNameS = $('#class').val();
+                typeNameS = $(this).find('option:selected').text();
+                classNameS = $('#class :selected').text();
+                var typeNameSid = $(this).val();
+                var classNameSid = $('#class').val();
                 $('#attribute').empty();
                 $('#attribute').append('<option>Сите</option>');
                 $('#brand').empty();
@@ -154,39 +160,44 @@
                     $.ajax({
                         url: "/Home/getByClass",
                         type: "GET",
-                        data: { className: classNameS },
+                        data: { classid: classNameSid },
                         success: function (result) {
                             for (x = 0; x < result.companies.length; x++) {
                                 companyNameS = result.companies[x];
-                                $('#brand').append('<option>' + companyNameS + '</option>');
+                                companyNameID = result.companiesid[x];
+                                $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
                             }
                             for (x = 0; x < result.attributes.length; x++) {
                                 attributeNameS = result.attributes[x];
-                                $('#attribute').append('<option>' + attributeNameS + '</option>');
+                                attributeNameID = result.attributesid[x];
+                                $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
                             }
                         }
                     });
                 }
                 if (typeNameS != "Сите") {
+
                     $.ajax({
                         url: "/Home/getCompanies",
                         type: "GET",
-                        data: { className: classNameS, typeName: typeNameS },
+                        data: { classID: classNameSid, typeID: typeNameSid },
                         success: function (result) {
                             for (x = 0; x < result.length; x++) {
-                                companyNameS = result[x];
-                                $('#brand').append('<option>' + companyNameS + '</option>');
+                                companyNameS = result[x].company_name;
+                                companyNameID = result[x].company_id;
+                                $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
                             }
                         }
                     });
                     $.ajax({
                         url: "/Home/getAttributesbyClassType",
                         type: "GET",
-                        data: { className: classNameS, typeName: typeNameS },
+                        data: { classID: classNameSid, typeID: typeNameSid },
                         success: function (result) {
                             for (x = 0; x < result.length; x++) {
-                                attributeNameS = result[x];
-                                $('#attribute').append('<option>' + attributeNameS + '</option>');
+                                attributeNameS = result[x].attribute_name;
+                                attributeNameID = result[x].attribute_id;
+                                $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
                             }
                         }
                     });
@@ -196,15 +207,17 @@
             $("#attribute").change(function () {
                 $('#brand').empty();
                 $('#brand').append('<option>Сите</option>');
-                typeName = $('#type').val();
-                classNameS = $('#class').val();
-                attributeNameS = $("#attribute").val();
+                var typeNameSid = $("#type").val();
+                var classNameSid = $('#class').val();
+                var attributeNameSid = $(this).val();
+
+                attributeNameS = $("#attribute :selected").text();
                 companyNameS = "";
                 if (attributeNameS == "Сите") {
                     $.ajax({
                         url: "/Home/getCompanies",
                         type: "GET",
-                        data: { className: classNameS, typeName: typeNameS },
+                        data: { classID: classNameSid, typeID: typeNameSid },
                         success: function (result) {
                             for (x = 0; x < result.length; x++) {
                                 companyNameS = result[x];
@@ -217,7 +230,7 @@
                     $.ajax({
                         url: "/Home/getCompanybyClassTypeAttribute",
                         type: "GET",
-                        data: { className: classNameS, typeName: typeNameS, attributeName: attributeNameS },
+                        data: { classID: classNameSid, typeID: typeNameSid, attributeNameID: attributeNameSid },
                         success: function (result) {
                             for (x = 0; x < result.length; x++) {
                                 companyNameS = result[x];
