@@ -96,6 +96,7 @@
    
     <script type="text/javascript">
         var className, companyName, typeName, attributeName;
+        var classID, companyID, typeID, attributeID;
         var classNameS, companyNameS, typeNameS, attributeNameS;
         var n, x, k;
         $(document).ready(function () {
@@ -104,8 +105,9 @@
                 type: "GET",
                 data: {},
                 success: function (result) {
+                  //  debugger;
                     for (n = 0; n < result.length; n++) {
-                        $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes( \'' + result[n].class_id + '\')"'
+                        $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes(\'' + result[n].class_id + '\',\'' + result[n].class_name + '\')"'
                             + 'class="classesLink" >' + result[n].class_name + '</a></li>');
                         $('#class').append('<option>' + result[n].class_name + '</option>');
                     }
@@ -242,7 +244,8 @@
             });
         });
 
-        function showTypes(classID) {
+        function showTypes(classID, className) {
+          //  debugger;
             $('#products_submenu h2').empty();
             $('#products_submenu h3').empty();
             $('#products_submenu ul').empty();
@@ -262,7 +265,7 @@
                         typeName = result[x].type_name;
                         typeID = result[x].type_id;
                         $('#right_cube').append(
-                             '<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + classID + '\',\'' + typeID + '\')">'
+                             '<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + className + '\',\'' + typeName + '\',\'' + classID + '\',\'' + typeID + '\')">'
                              + '<div style="width:90px;height:80px;margin-right:10px;margin-top:5px;margin-bottom:5px;float:left;text-align:center">'
                              + '<div style="margin: auto;width: 70px;height: 40px;background-color:rgb(' + Math.floor((Math.random() * 255) + 3) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 2) + ')">'
                              + '</div>' + '<p style="font-size: 13px;margin-bottom: 0px;margin-top: 0px;">' + typeName + '</p>' + '</div></a>');
@@ -271,7 +274,8 @@
             });
         }
 
-        function showCompanies(classID, typeID) {
+        function showCompanies(className, typeName, classID, typeID) {
+        //    debugger;
             var getfirstCompany = '';
             $('#main_content').empty();
             $('#products_submenu ul').empty();
@@ -279,27 +283,30 @@
             $('#products_submenu h3').empty();
             $('#products_submenu h2').append(className);
             $('#products_submenu h3').append(typeName);
-            var companyName;
+            var companyName,companyID;
             $.ajax({
                 url: "/Home/getCompanies",
                 type: "GET",
                 data: { classID: classID, typeID: typeID },
                 success: function (result) {
-                    for (x = 0; x < result.length; x++) {
-                        getfirstCompany = result[0];
-                        companyName = result[x];
-                        $('#products_submenu ul').append('<li><a href="#" onclick="showProducts(\'' + className + '\',\'' + companyName + '\',\'' + typeName + '\',\'' + 'false' + '\')">' + companyName + '</a></li>');
+              //      debugger;
+                    getfirstCompany = result[0].company_id;
+                    for (x = 0; x < result.length; x++) {  
+                        companyName = result[x].company_name;
+                        companyID = result[x].company_id;
+                        $('#products_submenu ul').append('<li><a href="#" onclick="showProducts(\'' + classID + '\',\'' + companyID + '\',\'' + typeID + '\',\'' + typeName + '\',\'' + 'false' + '\')">' + companyName + '</a></li>');
                     }
-                    showProducts(className, getfirstCompany, typeName, 'false');
+                    showProducts(classID, getfirstCompany, typeID, typeName, 'false');
                     $("#products_submenu ul li a").first().css('color', 'red')
                 }
             });
         }
 
-        function showProducts(classNameF, companyNameF, typeNameF, attributeNameF) {
-            className = classNameF;
-            companyName = companyNameF;
-            typeName = typeNameF;
+        function showProducts(classIDF, companyIDF, typeIDF, typeName, attributeNameF) {
+      //      debugger;
+            classID = classIDF;
+            companyID = companyIDF;
+            typeID = typeIDF;
             $('#main_content').empty();
             var product = '<div id="products">';
             var products_scroll_left = '<div id="products_scroll_left">';
@@ -316,15 +323,16 @@
             $.ajax({
                 url: "/Home/getProducts",
                 type: "GET",
-                data: { className: classNameF, companyName: companyNameF, typeName: typeNameF, attributeName: attributeNameF },
+                data: { classID: classID, companyID: companyID, typeID: typeID, attributeName: attributeNameF },
                 success: function (result) {
-                    debugger;
+                  //  debugger;
                     if (attributeNameF == 'false') {
                         $('#products_submenu #dropDownAttributes').remove();
                         $('#products_submenu').append(dropDownAttributes);
                         $('#dropDownAttributes').append('<option value="all">Сите</option>');
                         for (k = 0; k < result.attributes.length; k++) {
-                            $('#dropDownAttributes').append('<option value=' + result.attributes[k].replace(" ", "_") + '>' + result.attributes[k] + '</option>');
+                            debugger;
+                            $('#dropDownAttributes').append('<option value=' + result.attributes[k] + '>' + result.attributes[k] + '</option>');
                         }
                     }
                     if (result.products.length > 10) {
@@ -369,6 +377,15 @@
                 }
             });
         }
+
+        $('#dropDownAttributes').live('change', function (event) {
+            $('#main_content').empty();
+            var attributeValue = $("#dropDownAttributes option:selected").text();
+            var type_name = $("#products_submenu h3").text();
+            showProducts(classID, companyID, typeID, type_name, attributeValue);
+            attributeName = attributeValue;
+        });
+
 
         function setScrolling() {
             var hidden = true;
@@ -510,12 +527,7 @@
             });
         }
 
-        $('#dropDownAttributes').live('change', function (event) {
-            $('#main_content').empty();
-            var attributeValue = $("#dropDownAttributes option:selected").text();
-            showProducts(className, companyName, typeName, attributeValue);
-            attributeName = attributeValue;
-        });
+
 
     </script>
 </body>
