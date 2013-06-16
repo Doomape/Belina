@@ -32,29 +32,19 @@ namespace Belina.Controllers
                                       join t in db.Type on products.type_id equals t.type_id
                                       join c in db.Class on products.class_id equals c.class_id
                                       where
-                                          c.class_name == "Бои и лакови"
+                                          c.class_name == className
                                       select t.type_name).Distinct().ToList();
             return Json(allTypes, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult getCompanies(string className, string typeName)
         {
-            IList<String> companies = (from classes in db.Class
-                                       from company in db.Company
-                                       from type in db.Type
-                                       from type_company in db.Type_Company
-                                       from class_type in db.Class_Type
-                                       from company_class in db.Company_Class
-                                       where company.company_id == type_company.company_id
-                                       && type_company.type_id == type.type_id
-                                       && classes.class_name == className
-                                       && classes.class_id == class_type.class_id
-                                       && type.type_id == class_type.type_id
-                                       && type.type_name == typeName &&
-                                       classes.class_id == company_class.class_id &&
-                                       company.company_id == company_class.company_id
-                                       orderby company.company_name
-                                       select company.company_name).Distinct().ToList();
+            IList<String> companies = (from products in db.Products
+                                       join t in db.Type on products.type_id equals t.type_id
+                                       join comp in db.Company on products.company_id equals comp.company_id
+                                       join c in db.Class on products.class_id equals c.class_id
+                                       where c.class_name == className && t.type_name == typeName
+                                       select comp.company_name).Distinct().ToList();
             return Json(companies, JsonRequestBehavior.AllowGet);
         }
 
@@ -62,26 +52,13 @@ namespace Belina.Controllers
         {
             if (attributeName.Equals("false") || attributeName.Equals("Сите"))
             {
-                var products = (from company in db.Company
-                                from classes in db.Class
-                                from types in db.Type
-                                from product in db.Products
-                                from a in db.Attributes
-                                from ap in db.Product_Attribute
+                var products = (from product in db.Products
+                                join t in db.Type on product.type_id equals t.type_id
+                                join comp in db.Company on product.company_id equals comp.company_id
+                                join c in db.Class on product.class_id equals c.class_id
+                                join a in db.Attributes on product.attribute_id equals a.attribute_id
                                 where
-
-                                classes.class_id == product.class_id &&
-                                company.company_id == product.company_id &&
-                                types.type_id == product.type_id &&
-                                a.attribute_id == ap.attribute_id &&
-                                ap.type_id == types.type_id &&
-                                ap.company_id == company.company_id &&
-                                ap.attribute_id == product.attribute_id &&
-
-                                company.company_name == companyName &&
-                                classes.class_name == className &&
-                                types.type_name == typeName
-                                orderby a.attribute_name
+                                c.class_name == className && t.type_name == typeName && comp.company_name == companyName
                                 select new
                                 {
                                     product.product_name,
@@ -103,32 +80,19 @@ namespace Belina.Controllers
             }
             if (!(attributeName.Equals("false")))
             {
-                var productsByAttribute = (from company in db.Company
-                                           from classes in db.Class
-                                           from types in db.Type
-                                           from product in db.Products
-                                           from a in db.Attributes
-                                           from ap in db.Product_Attribute
+                var productsByAttribute = (from products in db.Products
+                                           join t in db.Type on products.type_id equals t.type_id
+                                           join comp in db.Company on products.company_id equals comp.company_id
+                                           join c in db.Class on products.class_id equals c.class_id
+                                           join a in db.Attributes on products.attribute_id equals a.attribute_id
                                            where
-
-                                           classes.class_id == product.class_id &&
-                                           company.company_id == product.company_id &&
-                                           types.type_id == product.type_id &&
-                                           a.attribute_id == ap.attribute_id &&
-                                           ap.type_id == types.type_id &&
-                                           ap.company_id == company.company_id &&
-                                           ap.attribute_id == product.attribute_id &&
-
-                                           company.company_name == companyName &&
-                                           classes.class_name == className &&
-                                           types.type_name == typeName &&
-                                           a.attribute_name == attributeName
-                                           orderby product.product_name
+                                           c.class_name == className && t.type_name == typeName && comp.company_name == companyName && a.attribute_name == attributeName
                                            select new
                                            {
-                                               product.product_name,
-                                               product.product_image,
-                                               product.product_description
+                                               products.product_name,
+                                               products.product_image,
+                                               products.product_description
+
                                            }).Distinct().ToList();
                 Dictionary<string, List<String>> res = new Dictionary<string, List<string>>();
                 List<String> productList = new List<string>();
@@ -144,33 +108,28 @@ namespace Belina.Controllers
         }
         public JsonResult getByClass(string className)
         {
-            var Types = (from classes in db.Class
-                         from type in db.Type
-                         from class_type in db.Class_Type
-                         where classes.class_name == className
-                         && classes.class_id == class_type.class_id
-                         && type.type_id == class_type.type_id
-                         orderby type.type_name
-                         select type.type_name).Distinct().ToList();
+            var Types = (from products in db.Products
+                         join t in db.Type on products.type_id equals t.type_id
+                         join c in db.Class on products.class_id equals c.class_id
+                         where
+                             c.class_name == className
+                         select t.type_name).Distinct().ToList();
 
-            var Attributes = (from classes in db.Class
-                              from types in db.Type
-                              from a in db.Attributes
-                              from ap in db.Product_Attribute
-                              from class_type in db.Class_Type
-                              where classes.class_name == className
-                              && a.attribute_id == ap.attribute_id
-                              && ap.type_id == types.type_id
-                              && classes.class_id == class_type.class_id
-                              && types.type_id == class_type.type_id
-                              select a.attribute_name).Distinct().ToList();
+            var Attributes = (from products in db.Products
+                              join c in db.Class on products.class_id equals c.class_id
+                              join a in db.Attributes on products.attribute_id equals a.attribute_id
+                              where
+                              c.class_name == className
+                              select  a.attribute_name).Distinct().ToList();
 
-            var Companies = (from classes in db.Class
-                             from cc in db.Company_Class
-                             from company in db.Company
 
-                             where classes.class_id == cc.class_id && cc.company_id == company.company_id && classes.class_name == className
-                             select company.company_name).Distinct().ToList();
+            var Companies = (from products in db.Products
+                             join c in db.Class on products.class_id equals c.class_id
+                             join comp in db.Company on products.company_id equals comp.company_id
+                             where
+                             c.class_name == "Бои и лакови"
+                             select comp.company_name).Distinct().ToList();
+
             Dictionary<string, List<String>> allByOneClass = new Dictionary<string, List<string>>();
             allByOneClass.Add("types", Types);
             allByOneClass.Add("attributes", Attributes);
