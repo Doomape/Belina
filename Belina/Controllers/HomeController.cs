@@ -179,41 +179,25 @@ namespace Belina.Controllers
         }
         public JsonResult getAttributesbyClassType(string className, string typeName)
         {
-            List<string> attributes = (from classes in db.Class
-                                       from type in db.Type
-                                       from a in db.Attributes
-                                       from ap in db.Product_Attribute
-                                       from class_type in db.Class_Type
-                                       where
-                                        a.attribute_id == ap.attribute_id &&
-                                        classes.class_name == className && type.type_name == typeName
-                                        && type.type_id == ap.type_id
-                                        && classes.class_id == class_type.class_id
-                                        && type.type_id == class_type.type_id
-                                       select a.attribute_name).Distinct().ToList();
+            List<string> attributes = (from p in db.Products
+                                       join t in db.Type on p.type_id equals t.type_id
+                                       join c in db.Class on p.class_id equals c.class_id
+                                       join a in db.Attributes on p.attribute_id equals a.attribute_id
+                                       where c.class_name == className && t.type_name == typeName
+                                        select a.attribute_name).Distinct().ToList();
+
             return Json(attributes, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getCompanybyClassTypeAttribute(string className, string typeName, string attributeName)
         {
-            List<string> companies = (from classes in db.Class
-                                      from company in db.Company
-                                      from tc in db.Type_Company
-                                      from type in db.Type
-                                      from a in db.Attributes
-                                      from ap in db.Product_Attribute
-                                      from class_type in db.Class_Type
-                                      where
-                                      a.attribute_id == ap.attribute_id &&
-                                      company.company_id == tc.company_id
-                                      && tc.type_id == type.type_id
-                                      && company.company_id == ap.company_id
-                                      && type.type_id == ap.type_id
-                                      && classes.class_name == className
-                                      && type.type_name == typeName
-                                      && a.attribute_name == attributeName
-                                      && classes.class_id == class_type.class_id
-                                      && type.type_id == class_type.type_id
-                                      select company.company_name).ToList();
+            var companies = (from p in db.Products
+                             join comp in db.Company on p.company_id equals comp.company_id
+                             join t in db.Type on p.type_id equals t.type_id
+                             join c in db.Class on p.class_id equals c.class_id
+                             join a in db.Attributes on p.attribute_id equals a.attribute_id
+                             where c.class_name == className && t.type_name == typeName && a.attribute_name == attributeName
+                             select comp.company_name).Distinct().ToList();
+
             return Json(companies, JsonRequestBehavior.AllowGet);
         }
     }

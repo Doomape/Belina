@@ -122,10 +122,6 @@ namespace Belina.Controllers
         public JsonResult insertProduct(HttpPostedFileBase file, string productName, string allClasses, string allTypes, string allAttributes, string allCompanies, string productDecription, string discount, string promotion)
         {
             Products products = new Products();
-            Company_Class c_c = new Company_Class();
-            Type_Company t_c = new Type_Company();
-            Product_Attribute p_a = new Product_Attribute();
-            Class_Type class_type = new Class_Type();
             var classID = (from x in db.Class where x.class_name == allClasses select x).First<Class>().class_id;
             var companyID = (from x in db.Company where x.company_name == allCompanies select x).First<Company>().company_id;
             var attributeID = (from x in db.Attributes where x.attribute_name == allAttributes select x).First<Belina.Models.Attributes>().attribute_id;
@@ -163,42 +159,6 @@ namespace Belina.Controllers
             }
 
             db.Products.Add(products);
-
-            var existCompany_Class = (from x in db.Company_Class where x.class_id == classID && x.company_id == companyID select x).Count();
-            var existType_Company = (from x in db.Type_Company where x.company_id == companyID && x.type_id == typeID select x).Count();
-            var existProduct_Attribute = (from x in db.Product_Attribute where x.attribute_id == attributeID && x.company_id == companyID && x.type_id == typeID select x).Count();
-            var existClass_Type = (from x in db.Class_Type where x.class_id == classID && x.type_id == typeID select x).Count();
-            if (existCompany_Class == 0)
-            {
-                c_c.class_id = classID;
-                c_c.company_id = companyID;
-               // c_c.id = (from x in db.Company_Class select x.id).Max() + 1;
-                db.Company_Class.Add(c_c);
-            }
-
-            if (existType_Company == 0)
-            {
-                t_c.type_id = typeID;
-                t_c.company_id = companyID;
-             //   t_c.id = (from x in db.Type_Company select x.id).Max() + 1;
-                db.Type_Company.Add(t_c);
-            }
-
-            if (existProduct_Attribute == 0)
-            {
-                p_a.attribute_id = attributeID;
-                p_a.company_id = companyID;
-                p_a.type_id = typeID;
-                db.Product_Attribute.Add(p_a);
-            }
-
-            if (existClass_Type == 0)
-            {
-                class_type.class_id = classID;
-                class_type.type_id = typeID;
-                db.Class_Type.Add(class_type);
-            }
-
             db.SaveChanges();
 
             return Json("Успешно додавање на нов производ", JsonRequestBehavior.AllowGet);
@@ -678,53 +638,13 @@ namespace Belina.Controllers
                 product_id[i] = Convert.ToInt32(objProducts.Split(',')[i]);//get all checked row id's
             }
             var products = (from p in db.Products where product_id.Contains(p.product_id) select p).ToList();//select * for all rows
-
-            int count_class_type;
-            int count_company_class;
-            int count_type_company;
-            int count_product_attribute;
+            
             int count_picture_url;
-
             //get all product features and then chech their dependencies / if the dependence show only once into the product table, then that dependence should be removed
             foreach (var a in products)
             {
-                count_class_type = (from product in db.Products where product.class_id == a.class_id && product.type_id == a.type_id select product).Take(2).Count();
-                count_company_class = (from product in db.Products where product.company_id == a.company_id && product.class_id == a.class_id select product).Take(2).Count();
-                count_type_company = (from product in db.Products where product.type_id == a.type_id && product.company_id == a.company_id select product).Take(2).Count();
-                count_product_attribute = (from product in db.Products where product.type_id == a.type_id && product.company_id == a.company_id && product.attribute_id == a.attribute_id select product).Take(2).Count();
                 count_picture_url = (from product in db.Products where product.product_image == a.product_image select product).Take(2).Count();
-                if (count_class_type == 1)
-                {
-                    var class_type = (from cc in db.Class_Type where cc.class_id == a.class_id && cc.type_id == a.type_id select cc);
-                    foreach (var c_t in class_type)
-                    {
-                        db.Class_Type.Remove(c_t);
-                    }            
-                }
-                if (count_company_class == 1)
-                {
-                    var company_class = (from cc in db.Company_Class where cc.class_id == a.class_id && cc.company_id == a.company_id select cc);
-                    foreach (var c_c in company_class)
-                    {
-                        db.Company_Class.Remove(c_c);
-                    }
-                }
-                if (count_type_company == 1)
-                {
-                    var type_company = (from cc in db.Type_Company where cc.type_id == a.type_id && cc.company_id == a.company_id select cc);
-                    foreach (var t_c in type_company)
-                    {
-                        db.Type_Company.Remove(t_c);
-                    }
-                }
-                if (count_product_attribute == 1)
-                {
-                    var product_attribute = (from pa in db.Product_Attribute where pa.type_id == a.type_id && pa.company_id == a.company_id && pa.attribute_id == a.attribute_id select pa);
-                    foreach (var p_a in product_attribute)
-                    {
-                        db.Product_Attribute.Remove(p_a);
-                    }
-                }
+               
                 if (count_picture_url == 1)
                 {
                     if (System.IO.File.Exists(Server.MapPath("~" + a.product_image)))
