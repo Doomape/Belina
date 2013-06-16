@@ -119,38 +119,36 @@ namespace Belina.Controllers
         }
         #endregion
         #region Insert new product
-        public JsonResult insertProduct(HttpPostedFileBase file, string productName, string allClasses, string allTypes, string allAttributes, string allCompanies, string productDecription, string discount, string promotion)
+        public JsonResult insertProduct(HttpPostedFileBase file, string productName, int allClasses, int allTypes, int allAttributes, int allCompanies, string productDecription, string discount, string promotion)
         {
             Products products = new Products();
-            var classID = (from x in db.Class where x.class_name == allClasses select x).First<Class>().class_id;
-            var companyID = (from x in db.Company where x.company_name == allCompanies select x).First<Company>().company_id;
-            var attributeID = (from x in db.Attributes where x.attribute_name == allAttributes select x).First<Belina.Models.Attributes>().attribute_id;
-            var typeID = (from x in db.Type where x.type_name == allTypes select x).First<Belina.Models.Type>().type_id;
 
             products.product_name = productName;
-            products.class_id = classID;
-            products.type_id = typeID;
-            products.company_id = companyID;
+            products.class_id = allClasses;
+            products.type_id = allTypes;
+            products.company_id = allCompanies;
             products.product_discount = discount;
             products.product_promotion = promotion;
-            products.attribute_id = attributeID;
+            products.attribute_id = allAttributes;
 
-            if (!Directory.Exists(Server.MapPath("~/Content/companies/" + allCompanies)))
+            var company_name = (from x in db.Company where x.company_id == allCompanies select x).FirstOrDefault();
+
+            if (!Directory.Exists(Server.MapPath("~/Content/companies/" + company_name)))
             {
-                Directory.CreateDirectory(Server.MapPath("~/Content/companies/" + allCompanies));
+                Directory.CreateDirectory(Server.MapPath("~/Content/companies/" + company_name));
             }
             if (file != null)
             {
-                if (System.IO.File.Exists(Server.MapPath("~/Content/companies/" + allCompanies + "/" + file.FileName)))
+                if (System.IO.File.Exists(Server.MapPath("~/Content/companies/" + company_name + "/" + file.FileName)))
                 {
-                    products.product_image = "/Content/companies/" + allCompanies + "/" + file.FileName;
+                    products.product_image = "/Content/companies/" + company_name + "/" + file.FileName;
                 }
                 else
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath("~/Content/companies/" + allCompanies + "/"), fileName);
+                    var path = Path.Combine(Server.MapPath("~/Content/companies/" + company_name + "/"), fileName);
                     file.SaveAs(path);
-                    products.product_image = "/Content/companies/" + allCompanies + "/" + file.FileName;
+                    products.product_image = "/Content/companies/" + company_name + "/" + file.FileName;
                 }
             }
             if (file == null)
@@ -168,15 +166,22 @@ namespace Belina.Controllers
         #region Get product Dependencies
         public JsonResult productDependencies()
         {
-            var classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x.class_name).Distinct().ToList();
-            var types = (from x in db.Type select x.type_name).Distinct().ToList();
-            var attributes = (from x in db.Attributes select x.attribute_name).Distinct().ToList();
-            var companies = (from x in db.Company select x.company_name).Distinct().ToList();
+            var classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).Distinct().ToList();
+            var types = (from x in db.Type select x).Distinct().ToList();
+            var attributes = (from x in db.Attributes select x).Distinct().ToList();
+            var companies = (from x in db.Company select x).Distinct().ToList();
+           
             Dictionary<String, List<String>> res = new Dictionary<string, List<String>>();
-            res.Add("classes", classes);
-            res.Add("types", types);
-            res.Add("attributes", attributes);
-            res.Add("companies", companies);
+            res.Add("classes", classes.ConvertAll(x => x.class_name));
+            res.Add("types", types.ConvertAll(x => x.type_name));
+            res.Add("attributes", attributes.ConvertAll(x => x.attribute_name));
+            res.Add("companies", companies.ConvertAll(x => x.company_name));
+
+            res.Add("classesid", classes.ConvertAll(x => x.class_id.ToString()));
+            res.Add("typesid", types.ConvertAll(x => x.type_id.ToString()));
+            res.Add("attributesid", attributes.ConvertAll(x => x.attribute_id.ToString()));
+            res.Add("companiesid", companies.ConvertAll(x => x.company_id.ToString()));
+
             return Json(res, JsonRequestBehavior.AllowGet);
         }
         #endregion
