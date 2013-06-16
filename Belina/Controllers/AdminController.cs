@@ -172,7 +172,7 @@ namespace Belina.Controllers
             {
                 c_c.class_id = classID;
                 c_c.company_id = companyID;
-                c_c.id = (from x in db.Company_Class select x.id).Max() + 1;
+               // c_c.id = (from x in db.Company_Class select x.id).Max() + 1;
                 db.Company_Class.Add(c_c);
             }
 
@@ -180,7 +180,7 @@ namespace Belina.Controllers
             {
                 t_c.type_id = typeID;
                 t_c.company_id = companyID;
-                t_c.id = (from x in db.Type_Company select x.id).Max() + 1;
+             //   t_c.id = (from x in db.Type_Company select x.id).Max() + 1;
                 db.Type_Company.Add(t_c);
             }
 

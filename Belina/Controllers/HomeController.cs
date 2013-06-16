@@ -28,14 +28,12 @@ namespace Belina.Controllers
 
         public JsonResult getTypes(string className)
         {
-            IList<String> allTypes = (from type in db.Type
-                                      from classes in db.Class
-                                      from class_type in db.Class_Type
-                                      where classes.class_name == className &&
-                                       classes.class_id == class_type.class_id &&
-                                       type.type_id == class_type.type_id
-                                      orderby type.type_name
-                                      select type.type_name).Distinct().ToList();
+            IList<String> allTypes = (from products in db.Products
+                                      join t in db.Type on products.type_id equals t.type_id
+                                      join c in db.Class on products.class_id equals c.class_id
+                                      where
+                                          c.class_name == "Бои и лакови"
+                                      select t.type_name).Distinct().ToList();
             return Json(allTypes, JsonRequestBehavior.AllowGet);
         }
 

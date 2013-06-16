@@ -30,35 +30,10 @@ namespace Belina.Models
     
         public DbSet<Class> Class { get; set; }
         public DbSet<Company> Company { get; set; }
-        public DbSet<Company_Class> Company_Class { get; set; }
         public DbSet<Products> Products { get; set; }
-        public DbSet<Type> Type { get; set; }
-        public DbSet<Type_Company> Type_Company { get; set; }
         public DbSet<Administrator> Administrator { get; set; }
-        public DbSet<sysdiagrams> sysdiagrams { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
-        public DbSet<Product_Attribute> Product_Attribute { get; set; }
-        public DbSet<Class_Type> Class_Type { get; set; }
-        public virtual int AllProducts(string sort_col, string sort_dir, Nullable<int> start, Nullable<int> end)
-        {
-            var sort_colParameter = sort_col != null ?
-                new ObjectParameter("sort_col", sort_col) :
-                new ObjectParameter("sort_col", typeof(string));
-    
-            var sort_dirParameter = sort_dir != null ?
-                new ObjectParameter("sort_dir", sort_dir) :
-                new ObjectParameter("sort_dir", typeof(string));
-    
-            var startParameter = start.HasValue ?
-                new ObjectParameter("start", start) :
-                new ObjectParameter("start", typeof(int));
-    
-            var endParameter = end.HasValue ?
-                new ObjectParameter("end", end) :
-                new ObjectParameter("end", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AllProducts", sort_colParameter, sort_dirParameter, startParameter, endParameter);
-        }
+        public DbSet<Type> Type { get; set; }
     
         public virtual ObjectResult<Nullable<int>> spCountProducts(string sort_col, string sort_dir, string filters)
         {

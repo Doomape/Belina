@@ -317,6 +317,7 @@
                 type: "GET",
                 data: { className: classNameF, companyName: companyNameF, typeName: typeNameF, attributeName: attributeNameF },
                 success: function (result) {
+                    debugger;
                     if (attributeNameF == 'false') {
                         $('#products_submenu #dropDownAttributes').remove();
                         $('#products_submenu').append(dropDownAttributes);
@@ -372,7 +373,7 @@
             var hidden = true;
             var frame_index = 1;
             var frame_length = $(".products_frame").length;
-
+            debugger;
 
 
             $("#scroll_left").click(function () {
@@ -389,6 +390,7 @@
 
             $("#scroll_right").click(function () {
                 $('#scroll_left').css('display', 'block');
+                debugger;
                 if (frame_index < frame_length) {
                     position = "-=770px";
                     $('#products_selection').animate(

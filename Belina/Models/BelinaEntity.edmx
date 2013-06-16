@@ -9,14 +9,9 @@
           <EntitySet Name="Administrator" EntityType="BelinaModel.Store.Administrator" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Attributes" EntityType="BelinaModel.Store.Attributes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Class" EntityType="BelinaModel.Store.Class" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Class_Type" EntityType="BelinaModel.Store.Class_Type" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company" EntityType="BelinaModel.Store.Company" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Company_Class" EntityType="BelinaModel.Store.Company_Class" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Store.Product_Attribute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Products" EntityType="BelinaModel.Store.Products" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="sysdiagrams" EntityType="BelinaModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Type" EntityType="BelinaModel.Store.Type" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Type_Company" EntityType="BelinaModel.Store.Type_Company" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
         <EntityType Name="Administrator">
           <Key>
@@ -41,37 +36,12 @@
           <Property Name="class_id" Type="int" Nullable="false" />
           <Property Name="class_name" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="Class_Type">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="class_id" Type="int" Nullable="false" />
-          <Property Name="type_id" Type="int" Nullable="false" />
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-        </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="company_id" />
           </Key>
           <Property Name="company_id" Type="int" Nullable="false" />
           <Property Name="company_name" Type="nvarchar" MaxLength="255" />
-        </EntityType>
-        <EntityType Name="Company_Class">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="company_id" Type="int" Nullable="false" />
-          <Property Name="class_id" Type="int" Nullable="false" />
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="Product_Attribute">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="company_id" Type="int" Nullable="false" />
-          <Property Name="type_id" Type="int" Nullable="false" />
-          <Property Name="attribute_id" Type="int" Nullable="false" />
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -88,30 +58,12 @@
           <Property Name="product_discount" Type="nvarchar" MaxLength="250" />
           <Property Name="product_image" Type="nvarchar" MaxLength="250" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Type">
           <Key>
             <PropertyRef Name="type_id" />
           </Key>
           <Property Name="type_id" Type="int" Nullable="false" />
           <Property Name="type_name" Type="nvarchar" Nullable="false" MaxLength="255" />
-        </EntityType>
-        <EntityType Name="Type_Company">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="company_id" Type="int" Nullable="false" />
-          <Property Name="type_id" Type="int" Nullable="false" />
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <Function Name="spCountProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="sort_col" Type="varchar" Mode="In" />
@@ -134,7 +86,6 @@
           <EntitySet Name="Company" EntityType="BelinaModel.Company" />
           <EntitySet Name="Products" EntityType="BelinaModel.Products" />
           <EntitySet Name="Administrator" EntityType="BelinaModel.Administrator" />
-          <EntitySet Name="sysdiagrams" EntityType="BelinaModel.sysdiagrams" />
           <EntitySet Name="Attributes" EntityType="BelinaModel.Attributes" />
           <FunctionImport Name="spCountProducts" ReturnType="Collection(Int32)">
             <Parameter Name="sort_col" Mode="In" Type="String" />
@@ -149,10 +100,6 @@
             <Parameter Name="filters" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="Type" EntityType="BelinaModel.Type" />
-          <EntitySet Name="Class_Type" EntityType="BelinaModel.Class_Type" />
-          <EntitySet Name="Company_Class" EntityType="BelinaModel.Company_Class" />
-          <EntitySet Name="Product_Attribute" EntityType="BelinaModel.Product_Attribute" />
-          <EntitySet Name="Type_Company" EntityType="BelinaModel.Type_Company" />
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -192,16 +139,6 @@
           <Property Type="Binary" Name="user_pass" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Type="String" Name="user_email" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Type="String" Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="principal_id" Nullable="false" />
-          <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="version" />
-          <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Attributes">
           <Key>
             <PropertyRef Name="attribute_id" />
@@ -228,39 +165,6 @@
           </Key>
           <Property Type="Int32" Name="type_id" Nullable="false" />
           <Property Type="String" Name="type_name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Class_Type">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Type="Int32" Name="class_id" Nullable="false" />
-          <Property Type="Int32" Name="type_id" Nullable="false" />
-          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="Company_Class">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Type="Int32" Name="company_id" Nullable="false" />
-          <Property Type="Int32" Name="class_id" Nullable="false" />
-          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="Product_Attribute">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Type="Int32" Name="company_id" Nullable="false" />
-          <Property Type="Int32" Name="type_id" Nullable="false" />
-          <Property Type="Int32" Name="attribute_id" Nullable="false" />
-          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="Type_Company">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Type="Int32" Name="company_id" Nullable="false" />
-          <Property Type="Int32" Name="type_id" Nullable="false" />
-          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -310,17 +214,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="BelinaModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Attributes">
             <EntityTypeMapping TypeName="BelinaModel.Attributes">
               <MappingFragment StoreEntitySet="Attributes">
@@ -352,43 +245,6 @@
               <MappingFragment StoreEntitySet="Type">
                 <ScalarProperty Name="type_name" ColumnName="type_name" />
                 <ScalarProperty Name="type_id" ColumnName="type_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Class_Type">
-            <EntityTypeMapping TypeName="BelinaModel.Class_Type">
-              <MappingFragment StoreEntitySet="Class_Type">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="type_id" ColumnName="type_id" />
-                <ScalarProperty Name="class_id" ColumnName="class_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Company_Class">
-            <EntityTypeMapping TypeName="BelinaModel.Company_Class">
-              <MappingFragment StoreEntitySet="Company_Class">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="class_id" ColumnName="class_id" />
-                <ScalarProperty Name="company_id" ColumnName="company_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Product_Attribute">
-            <EntityTypeMapping TypeName="BelinaModel.Product_Attribute">
-              <MappingFragment StoreEntitySet="Product_Attribute">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="attribute_id" ColumnName="attribute_id" />
-                <ScalarProperty Name="type_id" ColumnName="type_id" />
-                <ScalarProperty Name="company_id" ColumnName="company_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Type_Company">
-            <EntityTypeMapping TypeName="BelinaModel.Type_Company">
-              <MappingFragment StoreEntitySet="Type_Company">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="type_id" ColumnName="type_id" />
-                <ScalarProperty Name="company_id" ColumnName="company_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
