@@ -219,32 +219,17 @@
     <Compile Include="Models\Class.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Class_Type.cs">
-      <DependentUpon>BelinaEntity.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Company.cs">
-      <DependentUpon>BelinaEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Company_Class.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MyMembershipProvider.cs" />
     <Compile Include="Models\Products.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Product_Attribute.cs">
-      <DependentUpon>BelinaEntity.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\spGetProducts_Result.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>BelinaEntity.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Type.cs">
-      <DependentUpon>BelinaEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Type_Company.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
