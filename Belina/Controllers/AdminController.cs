@@ -535,7 +535,7 @@ namespace Belina.Controllers
         }
         #endregion
         #region update Products
-        public void updateProducts(string old_Name, string new_Name, int row_id, int product_column)
+        public void updateProducts(string new_Name, int row_id, int product_column)
         {
             Products productObj = (from x in db.Products
                                    where x.product_id == row_id
@@ -546,15 +546,28 @@ namespace Belina.Controllers
                     productObj.product_name = new_Name;
                     break;
                 case 2:
-             //       var classID = (from x in db.Class where x.cla) select x).First();
-             //       productObj.class_id = classes.class_id;
+                    int class_id=Int32.Parse(new_Name);
+                    productObj.class_id = class_id;
+                    break;
+                case 3:
+                    int type_id = Int32.Parse(new_Name);
+                    productObj.type_id = type_id;
+                    break;
+                case 4:
+                    int company_id = Int32.Parse(new_Name);
+                    productObj.company_id = company_id;
+                    break;
+                case 5:
+                    int attribute_id = Int32.Parse(new_Name);
+                    productObj.attribute_id = attribute_id;
+                    break;
+                case 6:
+                    productObj.product_description = new_Name;
                     break;
                 default:
                     break;
             }
             db.SaveChanges();
-
-         //   return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
 
