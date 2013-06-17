@@ -220,9 +220,8 @@
                         url: "/Admin/updateProducts",
                         dataType: "json",
                         type: "POST",
-                        data: { old_Name: oValue, new_Name: nValue, row_id: rId, product_column: cInd },
+                        data: { new_Name: nValue, row_id: rId, product_column: cInd },
                         success: function (result) {
-                          //  debugger;
                             mygrid_products.cellById(rId, cInd).setValue(nValue);
                         }
                     });
