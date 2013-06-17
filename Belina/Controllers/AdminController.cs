@@ -244,10 +244,10 @@ namespace Belina.Controllers
                 head.Add(beforeinit);
                 XElement column;
                 int counter = 0;
-                var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x.class_name).Distinct().ToList();
-                var Dbtypes = (from x in db.Type select x.type_name).Distinct().ToList();
-                var Dbcompanies = (from x in db.Company select x.company_name).Distinct().ToList();
-                var Dbattributes = (from x in db.Attributes select x.attribute_name).Distinct().ToList();
+                var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).Distinct().ToList();
+                var Dbtypes = (from x in db.Type select x).Distinct().ToList();
+                var Dbcompanies = (from x in db.Company select x).Distinct().ToList();
+                var Dbattributes = (from x in db.Attributes select x).Distinct().ToList();
                 foreach (var columnName in column_names)
                 {
                     if (column_names[0] == columnName)
@@ -268,7 +268,7 @@ namespace Belina.Controllers
                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
                         foreach (var Dbclass in Dbclasses)
                         {
-                            column.Add(new XElement("option", new XAttribute("value", Dbclass), new XText(Dbclass)));
+                            column.Add(new XElement("option", new XAttribute("value", Dbclass.class_id), new XText(Dbclass.class_name)));
                         }
                         head.Add(column);
                     }
@@ -278,7 +278,7 @@ namespace Belina.Controllers
                        new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
                         foreach (var type in Dbtypes)
                         {
-                            column.Add(new XElement("option", new XAttribute("value", type), new XText(type)));
+                            column.Add(new XElement("option", new XAttribute("value", type.type_id), new XText(type.type_name)));
                         }
                         head.Add(column);
                     }
@@ -288,7 +288,7 @@ namespace Belina.Controllers
                         new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
                         foreach (var Dbcompany in Dbcompanies)
                         {
-                            column.Add(new XElement("option", new XAttribute("value", Dbcompany), new XText(Dbcompany)));
+                            column.Add(new XElement("option", new XAttribute("value", Dbcompany.company_id), new XText(Dbcompany.company_name)));
                         }
                         head.Add(column);
                     }
@@ -298,7 +298,7 @@ namespace Belina.Controllers
                         new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XText(columnName));
                         foreach (var Dbattribute in Dbattributes)
                         {
-                            column.Add(new XElement("option", new XAttribute("value", Dbattribute), new XText(Dbattribute)));
+                            column.Add(new XElement("option", new XAttribute("value", Dbattribute.attribute_id), new XText(Dbattribute.attribute_name)));
                         }
                         head.Add(column);
                     }
@@ -344,7 +344,7 @@ namespace Belina.Controllers
                 {
                     cell7 = new XElement("cell", new XText("/"));
                 }
-                cell8 = new XElement("cell", new XText("<form><input type='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + prod.product_id + ")'>Внеси</button></form>"));
+                cell8 = new XElement("cell", new XText("<img class='imagePosition_" + prod.product_id + "' onmouseover='show_normal_image(" + '"' + prod.product_image + '"' + "," + '"' + prod.product_id + '"' + ")' onmouseout='hide_normal_image()' style='width:15px;height:15px' src='" + prod.product_image + "'/><form><input type='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + prod.product_id + ")'>Внеси</button></form>"));
 
                 row.Add(cell);
                 row.Add(cell2);
@@ -542,7 +542,7 @@ namespace Belina.Controllers
         }
         #endregion
         #region update Products
-        public JsonResult updateProducts(string old_Name, string new_Name, int row_id, int product_column)
+        public void updateProducts(string old_Name, string new_Name, int row_id, int product_column)
         {
             Products productObj = (from x in db.Products
                                    where x.product_id == row_id
@@ -553,15 +553,15 @@ namespace Belina.Controllers
                     productObj.product_name = new_Name;
                     break;
                 case 2:
-                    Class classes = (from x in db.Class where new_Name.Contains(x.class_name) select x).First();
-                    productObj.class_id = classes.class_id;
+             //       var classID = (from x in db.Class where x.cla) select x).First();
+             //       productObj.class_id = classes.class_id;
                     break;
                 default:
                     break;
             }
             db.SaveChanges();
 
-            return Json("", JsonRequestBehavior.AllowGet);
+         //   return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
 

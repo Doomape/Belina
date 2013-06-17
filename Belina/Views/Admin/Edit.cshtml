@@ -43,7 +43,6 @@
             height: 300px;
             margin-top: 30px;
             margin-bottom: 50px;
-           
             float: left;
         }
 
@@ -73,7 +72,6 @@
             height: 300px;
             margin-top: 30px;
             margin-bottom: 50px;
-         
             float: left;
         }
 
@@ -88,7 +86,6 @@
             height: 300px;
             margin-top: 30px;
             margin-bottom: 50px;
-          
             float: left;
         }
 
@@ -98,20 +95,29 @@
             margin-left: 755px;
         }
 
-         #product_containerLoadingMask {
+        #product_containerLoadingMask {
             background: #333 url(/Content/sliki/jquery.ajaxLoader.gif) no-repeat 50% 50%;
             opacity: .6;
+        }
+        #showImage {
+        position: absolute;
+        display: none;
+        width: 150px;
+        height: 150px;
+        z-index: 1000;
+        left: 75%;
         }
     </style>
 </head>
 <body>
-
+    <div id="showImage"></div>
     <div id="product_container"></div>
+    
     <div style="margin:auto;width:90%">
-    <div id="class_container"></div>
-    <div id="type_container"></div>
-    <div id="attribute_container"></div>
-    <div id="company_container" style=""></div>
+        <div id="class_container"></div>
+        <div id="type_container"></div>
+        <div id="attribute_container"></div>
+        <div id="company_container"></div>
     </div>
 
     <script>
@@ -192,7 +198,7 @@
             mygrid_products.setAwaitedRowHeight(21);
             mygrid_products.enablePreRendering(50);
 
-            debugger;
+         //   debugger;
 
             mygrid_products.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
 
@@ -216,6 +222,7 @@
                         type: "POST",
                         data: { old_Name: oValue, new_Name: nValue, row_id: rId, product_column: cInd },
                         success: function (result) {
+                          //  debugger;
                             mygrid_products.cellById(rId, cInd).setValue(nValue);
                         }
                     });
@@ -291,7 +298,7 @@
                     }
                 }
                 if (stage == 2) {
-                    debugger;
+                  //  debugger;
                     $.ajax({
                         url: "/Admin/updateClasses",
                         dataType: "json",
@@ -314,7 +321,7 @@
                         type: "POST",
                         data: { objClasses: mygrid_classes.getCheckedRows(1) },
                         success: function (result) {
-                            debugger;
+                        //    debugger;
                             for (var i = mygrid_classes.getCheckedRows(1).split(",").length - 1; i >= 0; i--) {
                                 mygrid_classes.deleteRow(mygrid_classes.getCheckedRows(1).split(",")[i]);
                             }
@@ -380,7 +387,7 @@
             mygrid_attributes.setSkin("light");
             mygrid_attributes.attachFooter(",<div><a onclick='delete_attribute_row()' href='javascript:void(0)'>Избриши ги селектираните спец. карактеристики</a></div>");
             mygrid_attributes.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
-                debugger;
+              //  debugger;
                 if (stage == 0 && cInd == 1) {
                     switch (mygrid_attributes.cellById(rId, cInd).getValue()) {
                         case "0":
@@ -416,7 +423,7 @@
                         type: "POST",
                         data: { objAttributes: mygrid_attributes.getCheckedRows(1) },
                         success: function (result) {
-                            debugger;
+                         //   debugger;
                             for (var i = mygrid_attributes.getCheckedRows(1).split(",").length - 1; i >= 0; i--) {
                                 mygrid_attributes.deleteRow(mygrid_attributes.getCheckedRows(1).split(",")[i]);
                             }
@@ -466,7 +473,7 @@
                         type: "POST",
                         data: { objCompanies: mygrid_companies.getCheckedRows(1) },
                         success: function (result) {
-                            debugger;
+                          //  debugger;
                             for (var i = mygrid_companies.getCheckedRows(1).split(",").length - 1; i >= 0; i--) {
                                 mygrid_companies.deleteRow(mygrid_companies.getCheckedRows(1).split(",")[i]);
                             }
@@ -486,7 +493,7 @@
                         type: "POST",
                         data: { objProducts: mygrid_products.getCheckedRows(0) },
                         success: function (result) {
-                            debugger;
+                      //      debugger;
                             for (var i = mygrid_products.getCheckedRows(0).split(",").length - 1; i >= 0; i--) {
                                 mygrid_products.deleteRow(mygrid_products.getCheckedRows(0).split(",")[i]);
                             }
@@ -521,11 +528,24 @@
         function uploadPhoto(rowId) {
          //   alert("ebi se");
             var rowAttr = mygrid_products.cells(rowId, 1).getValue();
-            debugger;
+           // debugger;
             alert(rowAttr);
 
         }
-        
+        function show_normal_image(e,f) {
+  
+            var x =$('.imagePosition_'+parseInt(f)).position();
+            //   alert(x.top+"/"+x.left);
+            $('#showImage').css("display", "block");
+            $('#showImage').css("top", x.top);
+            $('#showImage').append("<img style='width:150px;height:150px;' src='" + e + "'/>");
+           
+        }
+        function hide_normal_image() {
+            $('#showImage').css("display", "none");
+            $('#showImage').empty();
+        }
+
     </script>
 </body>
 </html>
