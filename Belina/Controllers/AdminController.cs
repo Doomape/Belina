@@ -133,23 +133,16 @@ namespace Belina.Controllers
 
             var company_name = (from x in db.Company where x.company_id == allCompanies select x).FirstOrDefault();
 
-            if (!Directory.Exists(Server.MapPath("~/Content/companies/" + company_name)))
+            if (!Directory.Exists(Server.MapPath("~/Content/companies/" + company_name.company_id)))
             {
-                Directory.CreateDirectory(Server.MapPath("~/Content/companies/" + company_name));
+                Directory.CreateDirectory(Server.MapPath("~/Content/companies/" + company_name.company_id));
             }
             if (file != null)
             {
-                if (System.IO.File.Exists(Server.MapPath("~/Content/companies/" + company_name + "/" + file.FileName)))
-                {
-                    products.product_image = "/Content/companies/" + company_name + "/" + file.FileName;
-                }
-                else
-                {
-                    var fileName = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath("~/Content/companies/" + company_name + "/"), fileName);
-                    file.SaveAs(path);
-                    products.product_image = "/Content/companies/" + company_name + "/" + file.FileName;
-                }
+                var fileName = DateTime.Now.Ticks.ToString() + Path.GetExtension(file.FileName);
+                var path = Path.Combine(Server.MapPath("~/Content/companies/" + company_name.company_id + "/"), fileName);
+                file.SaveAs(path);
+                products.product_image = "/Content/companies/" + company_name.company_id + "/" + fileName;
             }
             if (file == null)
             {
