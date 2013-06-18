@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/Admin.css")" type="text/css" />
     <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
     <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxgrid.css">
-    <link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxcombo.css">
+    @*<link rel="STYLESHEET" type="text/css" href="/Content/grid/codebase/dhtmlxcombo.css">*@
     <link rel="STYLESHEET" type="text/css" href="/Content/grid/dhtmlx.css">
     <script src="/Content/grid/codebase/dhtmlxcommon.js"></script>
     <script src="/Content/grid/codebase/dhtmlxgrid.js"></script>
-    <script src="/Content/grid/codebase/dhtmlxcombo.js"></script>
+   @* <script src="/Content/grid/codebase/dhtmlxcombo.js"></script>*@
     <script src="/Content/grid/codebase/dhtmlxgridcell.js"></script>
     <script src="/Content/grid/dhtmlx.js"></script>
     <script src="@Url.Content("~/Scripts/jquery.ajaxloader.js")" type="text/javascript"></script>
@@ -96,7 +96,7 @@
         }
 
         #product_containerLoadingMask {
-            background: #333 url(/Content/sliki/jquery.ajaxLoader.gif) no-repeat 50% 50%;
+            background: #333 url(/Content/sliki/jquery.ajaxLoader.gif) no-repeat 50% 20%;
             opacity: .6;
         }
         #showImage {
@@ -192,6 +192,7 @@
             mygrid_products.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_products.setSkin("light");
             mygrid_products.attachFooter("<div><a onclick='delete_product_row()' href='javascript:void(0)'>Избриши</a></div>");
+           // mygrid_products.attachFooter("<form enctype='multipart/form-data' method='POST'><input type='file'></input><button id='button_row' type='button' >Внеси</button></form>");
 
             mygrid_products.enableSmartRendering(true);
             mygrid_products.isLoaded = false;
@@ -266,14 +267,19 @@
 
             mygrid_products.attachEvent("onXLS", function () {
                 $('#product_containerLoadingMask').remove();
-                $('<div id="product_containerLoadingMask" style="width:' + $('#product_container').width() + 'px; height:' + $('#product_container').height() + 'px; position:absolute; top:0px; left:78px; z-index:1000000000;"></div>').appendTo($('#product_container'));
+                $('<div id="product_containerLoadingMask" style="width:' + $('html').width() + 'px; height:' + $('html').height() + 'px; position:absolute; top:0px; left:0px; z-index:1000000000;"></div>').appendTo($('html'));
                 $loadingMaskGrid = $("#product_containerLoadingMask");
                 $loadingMaskGrid.ajaxLoader();
+                $('html').css("overflow", "hidden");
             });
 
             mygrid_products.attachEvent("onXLE", function () {
-                $loadingMaskGrid.ajaxLoaderRemove();
-                $loadingMaskGrid.remove();
+            
+                    $loadingMaskGrid.ajaxLoaderRemove();
+                    $loadingMaskGrid.remove();
+                    $('html').css("overflow", "");
+               
+               
             });
         }
         function init_Classes_grid() {
@@ -524,12 +530,25 @@
             });
         }
 
-        function uploadPhoto(rowId) {
-         //   alert("ebi se");
-            var rowAttr = mygrid_products.cells(rowId, 1).getValue();
-           // debugger;
-            alert(rowAttr);
-
+       
+        function uploadPhoto(id) {
+            debugger;
+            var allDataFromTheForm = new FormData($('form[name=' + id + ']')[0]);
+            allDataFromTheForm.append("id", id);
+            $.ajax({
+                url: "/Admin/uploadPhoto_con",
+                type: "POST",
+                data: allDataFromTheForm,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == false)
+                    {
+                        alert("Внеси фотографија");
+                    }
+                }
+            });
         }
         function show_normal_image(e,f) {
   

@@ -337,8 +337,8 @@ namespace Belina.Controllers
                 {
                     cell7 = new XElement("cell", new XText("/"));
                 }
-                cell8 = new XElement("cell", new XText("<img class='imagePosition_" + prod.product_id + "' onmouseover='show_normal_image(" + '"' + prod.product_image + '"' + "," + '"' + prod.product_id + '"' + ")' onmouseout='hide_normal_image()' style='width:15px;height:15px' src='" + prod.product_image + "'/><form><input type='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + prod.product_id + ")'>Внеси</button></form>"));
-
+                cell8 = new XElement("cell", new XText("<img class='imagePosition_" + prod.product_id + "' onmouseover='show_normal_image(" + '"' + prod.product_image + '"' + "," + '"' + prod.product_id + '"' + ")' onmouseout='hide_normal_image()' style='width:15px;height:15px' src='" + prod.product_image + "'/><form name='" + prod.product_id + "' enctype='multipart/form-data' ><input type='file' name='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + '"' + prod.product_id + '"' + ")'>Прикачи</button></form>"));
+                //<form name = '" + prod.product_id + "' enctype='multipart/form-data' method='POST'><input type='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + prod.product_id + ")'>Внеси</button></form>
                 row.Add(cell);
                 row.Add(cell2);
                 row.Add(cell3);
@@ -669,6 +669,30 @@ namespace Belina.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        public JsonResult uploadPhoto_con(HttpPostedFileBase file, string id)
+        {
+            bool cvrci=false;
+            int productID = Int32.Parse(id);
+            Products productObj = (from x in db.Products
+                                   where x.product_id == productID
+                                   select x).First();
+          
+            if (!Directory.Exists(Server.MapPath("~/Content/companies/" + productObj.company_id)))
+            {
+                Directory.CreateDirectory(Server.MapPath("~/Content/companies/" + productObj.company_id));
+            }
+            if (file != null)
+            {
+                var fileName = DateTime.Now.Ticks.ToString() + Path.GetExtension(file.FileName);
+                var path = Path.Combine(Server.MapPath("~/Content/companies/" + productObj.company_id + "/"), fileName);
+                file.SaveAs(path);
+                productObj.product_image = "/Content/companies/" + productObj.company_id + "/" + fileName;
+                cvrci = true;
+            }
+            db.SaveChanges();
+            return Json(cvrci, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

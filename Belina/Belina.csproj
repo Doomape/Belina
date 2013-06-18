@@ -236,6 +236,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Admin.css" />
+    <Content Include="Content\companies\0\635070961104776828.jpg" />
+    <Content Include="Content\companies\0\bp1.jpg" />
     <Content Include="Content\grid\codebase\calendar\calendar.css" />
     <Content Include="Content\grid\codebase\calendar\calendar.js" />
     <Content Include="Content\grid\codebase\calendar\calendar_init.js" />
@@ -688,7 +690,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\companies\" />
+    <Folder Include="Content\companies\1\" />
+    <Folder Include="Content\companies\Belina.Models.Company\" />
+    <Folder Include="Content\companies\Weber Saint Gobain\" />
+    <Folder Include="Content\companies\Јуб\" />
+    <Folder Include="Content\companies\Агнеса Дооел\" />
+    <Folder Include="Content\companies\Агропал Компани\" />
+    <Folder Include="Content\companies\Адинг Бизнис Центар\" />
+    <Folder Include="Content\companies\Алко\" />
+    <Folder Include="Content\companies\Алфа Врање\" />
+    <Folder Include="Content\companies\Ардаго Тп\" />
+    <Folder Include="Content\companies\Кандис Италија\" />
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
