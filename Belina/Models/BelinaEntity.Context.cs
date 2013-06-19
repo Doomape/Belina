@@ -30,10 +30,10 @@ namespace Belina.Models
     
         public DbSet<Class> Class { get; set; }
         public DbSet<Company> Company { get; set; }
-        public DbSet<Products> Products { get; set; }
         public DbSet<Administrator> Administrator { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Type> Type { get; set; }
+        public DbSet<Products> Products { get; set; }
     
         public virtual ObjectResult<Nullable<int>> spCountProducts(string sort_col, string sort_dir, string filters)
         {

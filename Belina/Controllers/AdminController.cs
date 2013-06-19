@@ -127,7 +127,7 @@ namespace Belina.Controllers
             products.class_id = allClasses;
             products.type_id = allTypes;
             products.company_id = allCompanies;
-            products.product_discount = discount;
+            products.product_discount = bool.Parse(discount);
             products.product_promotion = promotion;
             products.attribute_id = allAttributes;
 
@@ -182,11 +182,11 @@ namespace Belina.Controllers
         #region Generate XML for Products
         public ActionResult XMLForProducts(int orderbyindex, string direction, string fil, string dontPos = "0", string posStart = "0", string count = "50")
         {
-            string[] column_names = { "Избриши", "Производ", "Класа", "Тип", "Производител", "Специфична карактеристика", "Детален опис", "Фотографија" };
-            string[] columns = { "product_name", "class_name", "type_name", "company_name", "attribute_name", "product_description", "product_image" };
+            string[] column_names = { "Избриши", "Производ", "Класа", "Тип", "Производител", "Специфична карактеристика", "Детален опис", "Фотографија", "Попуст", "Цена" };
+            string[] columns = { "product_name", "class_name", "type_name", "company_name", "attribute_name", "product_description", "product_image", "product_discount", "product_price" };
 
             if (direction == "des") direction = "desc";
-            string filters = filters = String.Concat(Enumerable.Repeat(",#text_filter", 6));
+            string filters = filters = String.Concat(Enumerable.Repeat(",#text_filter", 7));
 
             string filters_sql = "";
 
@@ -200,6 +200,8 @@ namespace Belina.Controllers
 
                 i++;
             }
+            if (orderbyindex > 0)
+                orderbyindex = orderbyindex - 1;
 
             int products_count = 0;
             if (filters_sql != "")
@@ -212,6 +214,7 @@ namespace Belina.Controllers
             }
 
             List<spGetProducts_Result> products = new List<spGetProducts_Result>();
+            
             products = (from x in db.spGetProducts(columns[orderbyindex], direction, int.Parse(posStart), 50, filters_sql) select x).ToList();
 
             if (string.IsNullOrEmpty(posStart))
@@ -307,6 +310,18 @@ namespace Belina.Controllers
                          new XAttribute("width", "130%"), new XAttribute("sort", "server"), new XAttribute("id", "last"), new XText(columnName));
                         head.Add(column);
                     }
+                    if (column_names[8] == columnName)
+                    {
+                        column = new XElement("column", new XAttribute("type", "ch"),
+                         new XAttribute("width", "130%"), new XAttribute("sort", "server"), new XAttribute("id", "last"), new XText(columnName));
+                        head.Add(column);
+                    }
+                    if (column_names[9] == columnName)
+                    {
+                        column = new XElement("column", new XAttribute("type", "ro"),
+                         new XAttribute("width", "130%"), new XAttribute("sort", "server"), new XAttribute("id", "last"), new XText(columnName));
+                        head.Add(column);
+                    }
                     counter++;
                 }
             }
@@ -320,6 +335,8 @@ namespace Belina.Controllers
             XElement cell6;
             XElement cell7;
             XElement cell8;
+            XElement cell9;
+            XElement cell10;
             foreach (var prod in products)
             {
                 row = new XElement("row", new XAttribute("id", prod.product_id));
@@ -338,6 +355,8 @@ namespace Belina.Controllers
                     cell7 = new XElement("cell", new XText("/"));
                 }
                 cell8 = new XElement("cell", new XText("<img class='imagePosition_" + prod.product_id + "' onmouseover='show_normal_image(" + '"' + prod.product_image + '"' + "," + '"' + prod.product_id + '"' + ")' onmouseout='hide_normal_image()' style='width:15px;height:15px' src='" + prod.product_image + "'/><form name='" + prod.product_id + "' enctype='multipart/form-data' ><input type='file' name='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + '"' + prod.product_id + '"' + ")'>Прикачи</button></form>"));
+                cell9 = new XElement("cell", new XText(prod.product_discount));
+                cell10 = new XElement("cell", new XText(prod.product_price.ToString()));
                 row.Add(cell);
                 row.Add(cell2);
                 row.Add(cell3);
@@ -346,6 +365,8 @@ namespace Belina.Controllers
                 row.Add(cell6);
                 row.Add(cell7);
                 row.Add(cell8);
+                row.Add(cell9);
+                row.Add(cell10);
                 root.Add(row);
             }
             xdoc.Add(root);

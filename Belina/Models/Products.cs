@@ -22,7 +22,8 @@ namespace Belina.Models
         public int product_id { get; set; }
         public string product_description { get; set; }
         public string product_promotion { get; set; }
-        public string product_discount { get; set; }
+        public Nullable<bool> product_discount { get; set; }
         public string product_image { get; set; }
+        public Nullable<decimal> product_price { get; set; }
     }
 }
