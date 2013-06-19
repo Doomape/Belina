@@ -191,8 +191,8 @@
             mygrid_products = new dhtmlXGridObject('product_container');
             mygrid_products.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_products.setSkin("light");
-            mygrid_products.attachFooter("<div><a onclick='delete_product_row()' href='javascript:void(0)'>Избриши</a></div>");
-           // mygrid_products.attachFooter("<form enctype='multipart/form-data' method='POST'><input type='file'></input><button id='button_row' type='button' >Внеси</button></form>");
+            mygrid_products.attachFooter("<div><a onclick='delete_product_row()' href='javascript:void(0)'>Избриши</a></div>,<div><form name='multipleUpload' enctype='multipart/form-data' method='POST'><input name='file' type='file'></input><button id='button_row' type='button' >Прикачи</button></form></div>,#cspan");
+            // mygrid_products.attachFooter("<form name='multipleUpload' enctype='multipart/form-data' method='POST'><input name='file' type='file'></input><button id='button_row' type='button' >Прикачи</button></form>");
 
             mygrid_products.enableSmartRendering(true);
             mygrid_products.isLoaded = false;

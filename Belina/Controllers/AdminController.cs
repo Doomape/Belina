@@ -363,10 +363,10 @@ namespace Belina.Controllers
 
             XElement column;
             column = new XElement("column", new XAttribute("type", "ed"), new XAttribute("align", "left"),
-                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Класи"));
+                   new XAttribute("width", "350"), new XAttribute("sort", "str"), new XText("Класи"));
             head.Add(column);
             column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
-                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Избриши"));
+                   new XAttribute("width", "290"), new XAttribute("sort", "str"), new XText("Избриши"));
 
             head.Add(column);
             rows.Add(head);
@@ -397,10 +397,10 @@ namespace Belina.Controllers
 
             XElement column;
             column = new XElement("column", new XAttribute("type", "ed"),
-                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Типови"));
+                   new XAttribute("width", "350"), new XAttribute("sort", "str"), new XText("Типови"));
             head.Add(column);
             column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
-                   new XAttribute("width", "230"), new XAttribute("sort", "str"), new XText("Избриши"));
+                   new XAttribute("width", "265"), new XAttribute("sort", "str"), new XText("Избриши"));
 
             head.Add(column);
             rows.Add(head);
@@ -431,10 +431,10 @@ namespace Belina.Controllers
 
             XElement column;
             column = new XElement("column", new XAttribute("type", "ed"),
-                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Специфични карактеристики"));
+                   new XAttribute("width", "350"), new XAttribute("sort", "str"), new XText("Специфични карактеристики"));
             head.Add(column);
             column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
-                   new XAttribute("width", "230"), new XAttribute("sort", "str"), new XText("Избриши"));
+                   new XAttribute("width", "265"), new XAttribute("sort", "str"), new XText("Избриши"));
 
             head.Add(column);
             rows.Add(head);
@@ -465,10 +465,10 @@ namespace Belina.Controllers
 
             XElement column;
             column = new XElement("column", new XAttribute("type", "ed"),
-                   new XAttribute("width", "249"), new XAttribute("sort", "str"), new XText("Производители"));
+                   new XAttribute("width", "350"), new XAttribute("sort", "str"), new XText("Производители"));
             head.Add(column);
             column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
-                  new XAttribute("width", "230"), new XAttribute("sort", "str"), new XText("Избриши"));
+                  new XAttribute("width", "265"), new XAttribute("sort", "str"), new XText("Избриши"));
 
             head.Add(column);
             rows.Add(head);
