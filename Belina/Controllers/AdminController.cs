@@ -146,7 +146,7 @@ namespace Belina.Controllers
             }
             if (file == null)
             {
-                products.product_image = "/Content/sliki/belinaLogo5.png";
+                products.product_image = "/Content/sliki/no_image.jpg";
             }
 
             db.Products.Add(products);
@@ -237,7 +237,7 @@ namespace Belina.Controllers
                 head.Add(beforeinit);
                 XElement column;
                 int counter = 0;
-                var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).Distinct().ToList();
+                var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" orderby x.class_id ascending select x).Distinct().ToList();
                 var Dbtypes = (from x in db.Type select x).Distinct().ToList();
                 var Dbcompanies = (from x in db.Company select x).Distinct().ToList();
                 var Dbattributes = (from x in db.Attributes select x).Distinct().ToList();
@@ -338,7 +338,6 @@ namespace Belina.Controllers
                     cell7 = new XElement("cell", new XText("/"));
                 }
                 cell8 = new XElement("cell", new XText("<img class='imagePosition_" + prod.product_id + "' onmouseover='show_normal_image(" + '"' + prod.product_image + '"' + "," + '"' + prod.product_id + '"' + ")' onmouseout='hide_normal_image()' style='width:15px;height:15px' src='" + prod.product_image + "'/><form name='" + prod.product_id + "' enctype='multipart/form-data' ><input type='file' name='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + '"' + prod.product_id + '"' + ")'>Прикачи</button></form>"));
-                //<form name = '" + prod.product_id + "' enctype='multipart/form-data' method='POST'><input type='file'></input><br/><button class='button_row' type='button' onclick='uploadPhoto(" + prod.product_id + ")'>Внеси</button></form>
                 row.Add(cell);
                 row.Add(cell2);
                 row.Add(cell3);
@@ -366,14 +365,14 @@ namespace Belina.Controllers
                    new XAttribute("width", "350"), new XAttribute("sort", "str"), new XText("Класи"));
             head.Add(column);
             column = new XElement("column", new XAttribute("type", "ch"), new XAttribute("align", "center"),
-                   new XAttribute("width", "290"), new XAttribute("sort", "str"), new XText("Избриши"));
+                   new XAttribute("width", "265"), new XAttribute("sort", "str"), new XText("Избриши"));
 
             head.Add(column);
             rows.Add(head);
             XElement row;
             XElement cell;
             XElement cell2;
-            var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).Distinct().ToList();
+            var Dbclasses = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" && x.class_id != 1 select x).Distinct().ToList();
             foreach (var classes in Dbclasses)
             {
                 row = new XElement("row", new XAttribute("id", classes.class_id));
@@ -574,102 +573,121 @@ namespace Belina.Controllers
         #region delete Classes
         public JsonResult deleteClasses(string objClasses)
         {
-            int[] classes_id = new int[objClasses.Split(',').Length];
-            for (int i = 0; i < objClasses.Split(',').Length; i++)
+            if (objClasses != "")
             {
-                classes_id[i] = Convert.ToInt32(objClasses.Split(',')[i]);
+                int[] classes_id = new int[objClasses.Split(',').Length];
+                for (int i = 0; i < objClasses.Split(',').Length; i++)
+                {
+                    classes_id[i] = Convert.ToInt32(objClasses.Split(',')[i]);
+                }
+                var x = (from p in db.Class where classes_id.Contains(p.class_id) select p).ToList();
+                foreach (var a in x)
+                {
+                    db.Class.Remove(a);
+                }
+                db.SaveChanges();
             }
-            var x = (from p in db.Class where classes_id.Contains(p.class_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Class.Remove(a);
-            }
-            db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
         #region delete Types
         public JsonResult deleteTypes(string objTypes)
         {
-            int[] type_id = new int[objTypes.Split(',').Length];
-            for (int i = 0; i < objTypes.Split(',').Length; i++)
+            if (objTypes != "")
             {
-                type_id[i] = Convert.ToInt32(objTypes.Split(',')[i]);
+                int[] type_id = new int[objTypes.Split(',').Length];
+                for (int i = 0; i < objTypes.Split(',').Length; i++)
+                {
+                    type_id[i] = Convert.ToInt32(objTypes.Split(',')[i]);
+                }
+                var x = (from p in db.Type where type_id.Contains(p.type_id) select p).ToList();
+                foreach (var a in x)
+                {
+                    db.Type.Remove(a);
+                }
+                db.SaveChanges();
             }
-            var x = (from p in db.Type where type_id.Contains(p.type_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Type.Remove(a);
-            }
-            db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
         #region delete Attributes
         public JsonResult deleteAttributes(string objAttributes)
         {
-            int[] attribute_id = new int[objAttributes.Split(',').Length];
-            for (int i = 0; i < objAttributes.Split(',').Length; i++)
+            if (objAttributes != "")
             {
-                attribute_id[i] = Convert.ToInt32(objAttributes.Split(',')[i]);
+                int[] attribute_id = new int[objAttributes.Split(',').Length];
+                for (int i = 0; i < objAttributes.Split(',').Length; i++)
+                {
+                    attribute_id[i] = Convert.ToInt32(objAttributes.Split(',')[i]);
+                }
+                var x = (from p in db.Attributes where attribute_id.Contains(p.attribute_id) select p).ToList();
+                foreach (var a in x)
+                {
+                    db.Attributes.Remove(a);
+                }
+                db.SaveChanges();
             }
-            var x = (from p in db.Attributes where attribute_id.Contains(p.attribute_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Attributes.Remove(a);
-            }
-            db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
         #region delete Companies
         public JsonResult deleteCompanies(string objCompanies)
         {
-            int[] company_id = new int[objCompanies.Split(',').Length];
-            for (int i = 0; i < objCompanies.Split(',').Length; i++)
+            if (objCompanies != "")
             {
-                company_id[i] = Convert.ToInt32(objCompanies.Split(',')[i]);
+                int[] company_id = new int[objCompanies.Split(',').Length];
+                for (int i = 0; i < objCompanies.Split(',').Length; i++)
+                {
+                    company_id[i] = Convert.ToInt32(objCompanies.Split(',')[i]);
+                }
+                var x = (from p in db.Company where company_id.Contains(p.company_id) select p).ToList();
+                foreach (var a in x)
+                {
+                    db.Company.Remove(a);
+                }
+                db.SaveChanges();
             }
-            var x = (from p in db.Company where company_id.Contains(p.company_id) select p).ToList();
-            foreach (var a in x)
-            {
-                db.Company.Remove(a);
-            }
-            db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
         #region delete Products
         public JsonResult deleteProducts(string objProducts)
         {
-            int rowLenght = objProducts.Split(',').Length;
-            int[] product_id = new int[rowLenght];
-            for (int i = 0; i < objProducts.Split(',').Length; i++)
+            if (objProducts != "")
             {
-                product_id[i] = Convert.ToInt32(objProducts.Split(',')[i]);//get all checked row id's
-            }
-            var products = (from p in db.Products where product_id.Contains(p.product_id) select p).ToList();//select * for all rows
-            
-            int count_picture_url;
-            //get all product features and then chech their dependencies / if the dependence show only once into the product table, then that dependence should be removed
-            foreach (var a in products)
-            {
-                count_picture_url = (from product in db.Products where product.product_image == a.product_image select product).Take(2).Count();
-               
-                if (count_picture_url == 1)
+                int rowLenght = objProducts.Split(',').Length;
+                int[] product_id = new int[rowLenght];
+                for (int i = 0; i < objProducts.Split(',').Length; i++)
                 {
-                    if (System.IO.File.Exists(Server.MapPath("~" + a.product_image)))
-                    {
-                        System.IO.File.Delete(Server.MapPath("~" + a.product_image));
-                    }
+                    product_id[i] = Convert.ToInt32(objProducts.Split(',')[i]);//get all checked row id's
                 }
-                db.Products.Remove(a);
+                var products = (from p in db.Products where product_id.Contains(p.product_id) select p).ToList();//select * for all rows
+
+                int count_picture_url;
+                //get all product features and then chech their dependencies / if the dependence show only once into the product table, then that dependence should be removed
+                foreach (var a in products)
+                {
+                    count_picture_url = (from product in db.Products where product.product_image == a.product_image select product).Take(2).Count();
+
+                    if (count_picture_url == 1)
+                    {
+                        if (a.product_image != "/Content/sliki/no_image.jpg")
+                        {
+                            if (System.IO.File.Exists(Server.MapPath("~" + a.product_image)))
+                            {
+                                System.IO.File.Delete(Server.MapPath("~" + a.product_image));
+                            }
+                        }
+                    }
+                    db.Products.Remove(a);
+                }
+                db.SaveChanges();
             }
-            db.SaveChanges();
             return Json("", JsonRequestBehavior.AllowGet);
         }
         #endregion
-
+       
+        #region upload One photo
         public JsonResult uploadPhoto_con(HttpPostedFileBase file, string id)
         {
             bool cvrci=false;
@@ -693,6 +711,81 @@ namespace Belina.Controllers
             db.SaveChanges();
             return Json(cvrci, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+        #region upload Multiple pictures
+        public JsonResult multiple_uploadPhoto_con(HttpPostedFileBase file, string id)
+        {
+            bool cvrci = false;
 
+            if (id.Length > 0)
+            {
+                int rowLenght = id.Split(',').Length;
+                int[] productID = new int[rowLenght];
+                for (int i = 0; i < id.Split(',').Length; i++)
+                {
+                    productID[i] = Convert.ToInt32(id.Split(',')[i]);//get all checked row id's
+                }
+                var products = (from p in db.Products where productID.Contains(p.product_id) select p).ToList();//select * for all rows
+
+                int count_picture_url;
+                //get all product features and then chech their dependencies / if the dependence show only once into the product table, then that dependence should be removed
+                foreach (var a in products)
+                {
+
+                    Products productObj = (from x in db.Products
+                                           where x.product_id == a.product_id
+                                           select x).First();
+
+                    if (!Directory.Exists(Server.MapPath("~/Content/companies/shared")))
+                    {
+                        Directory.CreateDirectory(Server.MapPath("~/Content/companies/shared"));
+                    }
+                    if (file != null)
+                    {
+                        if (!System.IO.File.Exists(Server.MapPath("~/Content/companies/shared/") + file.FileName))
+                        {
+                            var path = Path.Combine(Server.MapPath("~/Content/companies/shared/"), file.FileName);
+                            file.SaveAs(path);
+                        }
+                        productObj.product_image = "/Content/companies/shared/" + file.FileName;
+                        cvrci = true;
+                    }
+                    db.SaveChanges();
+                }
+            }
+            return Json(cvrci, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Disable products
+        public JsonResult disableProducts(string id)
+        {
+            bool cvrci = false;
+            if (id.Length > 0)
+            {
+                cvrci = true;
+                int rowLenght = id.Split(',').Length;
+                int[] productID = new int[rowLenght];
+                for (int i = 0; i < id.Split(',').Length; i++)
+                {
+                    productID[i] = Convert.ToInt32(id.Split(',')[i]);//get all checked row id's
+                }
+                var products = (from p in db.Products where productID.Contains(p.product_id) select p).ToList();//select * for all rows
+                //get all product features and then chech their dependencies / if the dependence show only once into the product table, then that dependence should be removed
+                foreach (var a in products)
+                {
+                    Products productObj = (from x in db.Products
+                                           where x.product_id == a.product_id
+                                           select x).First();
+                    productObj.class_id = 1;
+                    db.SaveChanges();
+                }
+            }
+            return Json(cvrci, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }
+
+
+ 

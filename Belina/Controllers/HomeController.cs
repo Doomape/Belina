@@ -21,7 +21,7 @@ namespace Belina.Controllers
         }
         public JsonResult getClasses()
         {
-            IList<Class> classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" select x).Distinct().ToList();
+            IList<Class> classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" && x.class_id != 1 select x).Distinct().ToList();
             return Json(classes, JsonRequestBehavior.AllowGet);
 
         }

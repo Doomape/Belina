@@ -543,6 +543,8 @@
     <Content Include="Content\sliki\kraft\vnatresni\Profi-Interior.jpg" />
     <Content Include="Content\sliki\kraft\vnatresni\Superior.jpg" />
     <Content Include="Content\sliki\note-edit-icon.png" />
+    <Content Include="Content\sliki\notification_done.png" />
+    <Content Include="Content\sliki\no_image.jpg" />
     <Content Include="Content\sliki\painting-3.jpg" />
     <Content Include="Content\sliki\Register-icon.png" />
     <Content Include="Content\sliki\search-icon-2.png" />

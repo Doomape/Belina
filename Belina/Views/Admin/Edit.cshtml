@@ -44,6 +44,7 @@
             margin-top: 30px;
             margin-bottom: 50px;
             float: left;
+            margin-right: 70px;
         }
 
         #delete_class {
@@ -73,6 +74,7 @@
             margin-top: 30px;
             margin-bottom: 50px;
             float: left;
+            margin-right: 88px;
         }
 
         #delete_attribute {
@@ -191,19 +193,12 @@
             mygrid_products = new dhtmlXGridObject('product_container');
             mygrid_products.setImagePath("/Content/grid/codebase/imgs/");
             mygrid_products.setSkin("light");
-            mygrid_products.attachFooter("<div><a onclick='delete_product_row()' href='javascript:void(0)'>Избриши</a></div>,<div><form name='multipleUpload' enctype='multipart/form-data' method='POST'><input name='file' type='file'></input><button id='button_row' type='button' >Прикачи</button></form></div>,#cspan");
-            // mygrid_products.attachFooter("<form name='multipleUpload' enctype='multipart/form-data' method='POST'><input name='file' type='file'></input><button id='button_row' type='button' >Прикачи</button></form>");
-
+            mygrid_products.attachFooter("<div><a onclick='disableProducts()' href='javascript:void(0)'>Не ги прикажувај селектираните производи</a></div>,#cspan,<div><form name='multipleUpload' enctype='multipart/form-data' method='POST'><input name='file' type='file'></input><button id='button_row' type='button' onclick='multiple_uploadPhoto()'>Прикачи</button></form></div>,#cspan,<div><a onclick='delete_product_row()' href='javascript:void(0)'>Избриши ги селектираните производи</a></div>,#cspan");
             mygrid_products.enableSmartRendering(true);
             mygrid_products.isLoaded = false;
             mygrid_products.setAwaitedRowHeight(21);
             mygrid_products.enablePreRendering(50);
-
-         //   debugger;
-
             mygrid_products.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
-
-                    debugger;
                 if (stage == 0 && cInd == 0) {
                     switch (mygrid_products.cellById(rId, cInd).getValue()) {
                         case "0":
@@ -317,7 +312,7 @@
             });
         }
         function delete_class_row() {
-            if (mygrid_classes.getCheckedRows(1).split(",").length > 0) {
+            if (mygrid_classes.getCheckedRows(1).split(",").length > 0 && mygrid_classes.getCheckedRows(0).split(",")[0] != "") {
                 if (confirm('Избриши ' + mygrid_classes.getCheckedRows(1).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
@@ -369,7 +364,7 @@
             });
         }
         function delete_type_row() {
-            if (mygrid_types.getCheckedRows(1).split(",").length > 0) {
+            if (mygrid_types.getCheckedRows(1).split(",").length > 0 && mygrid_types.getCheckedRows(0).split(",")[0] != "") {
                 if (confirm('Избриши ' + mygrid_types.getCheckedRows(1).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
@@ -419,7 +414,7 @@
             });
         }
         function delete_attribute_row() {
-            if (mygrid_attributes.getCheckedRows(1).split(",").length > 0) {
+            if (mygrid_attributes.getCheckedRows(1).split(",").length > 0 && mygrid_attributes.getCheckedRows(0).split(",")[0] != "") {
                 if (confirm('Избриши ' + mygrid_attributes.getCheckedRows(1).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
@@ -469,7 +464,7 @@
             });
         }
         function delete_company_row() {
-            if (mygrid_companies.getCheckedRows(1).split(",").length > 0) {
+            if (mygrid_companies.getCheckedRows(1).split(",").length > 0 && mygrid_companies.getCheckedRows(0).split(",")[0] != "") {
                 if (confirm('Избриши ' + mygrid_companies.getCheckedRows(1).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
@@ -488,8 +483,9 @@
             }
         }
         function delete_product_row() {
-         //   alert(mygrid_products.getCheckedRows(0).split(",").length);
-            if (mygrid_products.getCheckedRows(0).split(",").length > 0) {
+            //   alert(mygrid_products.getCheckedRows(0).split(",").length);
+
+            if (mygrid_products.getCheckedRows(0).split(",").length > 0 && mygrid_products.getCheckedRows(0).split(",")[0]!="") {
                 if (confirm('Избриши ' + mygrid_products.getCheckedRows(0).split(",").length + ' ред/ови ?')) {
 
                     $.ajax({
@@ -530,9 +526,26 @@
             });
         }
 
-       
+        function disableProducts() {
+            $.ajax({
+                url: "/Admin/disableProducts",
+                dataType: "json",
+                type: "POST",
+                data: { id: mygrid_products.getCheckedRows(0) },
+                success: function (result) {
+                    if (result == true) {
+                        for (var i = mygrid_products.getCheckedRows(0).split(",").length - 1; i >= 0; i--) {
+                            mygrid_products.cellById(mygrid_products.getCheckedRows(0).split(',')[i], 2).setValue(1);
+                        }
+                    }
+                    else {
+                        alert("Селектирајте производи");
+                    }
+                }
+            });
+        }
+
         function uploadPhoto(id) {
-            debugger;
             var allDataFromTheForm = new FormData($('form[name=' + id + ']')[0]);
             allDataFromTheForm.append("id", id);
             $.ajax({
@@ -543,9 +556,39 @@
                 contentType: false,
                 processData: false,
                 success: function (result) {
-                    if (result == false)
-                    {
+                    if (result == false) {
                         alert("Внеси фотографија");
+                    }
+                    else {
+                        $(':input', 'form[name="' + id + '"]').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked').removeAttr('selected');
+
+                    }
+                }
+            });
+        }
+
+        function multiple_uploadPhoto() {
+            var allDataFromTheForm = new FormData($('form[name="multipleUpload"]')[0]);
+            allDataFromTheForm.append("id", mygrid_products.getCheckedRows(0));
+            debugger;
+            $.ajax({
+                url: "/Admin/multiple_uploadPhoto_con",
+                type: "POST",
+                data: allDataFromTheForm,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == false) {
+                        alert("Внеси фотографија");
+                    }
+                    else {
+                        $('form[name="multipleUpload"]').append("<img src='/Content/sliki/notification_done.png' style='float:right'/>");
+                        setInterval(function () {
+                            $('form[name="multipleUpload"] img').fadeOut(5000);
+                            $(':input', 'form[name="multipleUpload"]').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked').removeAttr('selected');
+                        }, 3000);
+                        
                     }
                 }
             });
@@ -563,6 +606,7 @@
             $('#showImage').css("display", "none");
             $('#showImage').empty();
         }
+
 
     </script>
 </body>
