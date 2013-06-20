@@ -199,6 +199,7 @@
             mygrid_products.setAwaitedRowHeight(21);
             mygrid_products.enablePreRendering(50);
             mygrid_products.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
+                debugger;
                 if (stage == 0 && cInd == 0) {
                     switch (mygrid_products.cellById(rId, cInd).getValue()) {
                         case "0":
@@ -211,7 +212,43 @@
                             break;
                     }
                 }
-                if (stage == 2 && cInd >= 1 && cInd <= 6) {
+                if (stage == 0 && cInd == 8) {
+                    debugger;
+                    switch (mygrid_products.cellById(rId, cInd).getValue()) {
+                        case "0":
+                            $.ajax({
+                                url: "/Admin/updateDiscount",
+                                dataType: "json",
+                                type: "POST",
+                                data: { rowID: rId, ch: true },
+                                success: function (result) {
+                                    if (result == true) {
+                                        mygrid_products.cellById(rId, cInd).setChecked(true);
+                                    }
+                                    else {
+                                        alert(result);
+                                    }
+                                }
+                            });
+                            break;
+                        case "1":
+                            $.ajax({
+                                url: "/Admin/updateDiscount",
+                                dataType: "json",
+                                type: "POST",
+                                data: { rowID: rId, ch: false },
+                                success: function (result) {
+                                    if (result == true) {
+                                        mygrid_products.cellById(rId, cInd).setChecked(false);
+                                    }
+                                }
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (stage == 2 && cInd >= 1 && cInd <= 6 || stage == 2 && cInd == 9) {
                     $.ajax({
                         url: "/Admin/updateProducts",
                         dataType: "json",

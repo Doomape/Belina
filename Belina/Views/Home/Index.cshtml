@@ -3,7 +3,26 @@
     Layout = "~/Views/Shared/SiteMaster.cshtml";
 }
 
-				<div id="product1">Производ А</div>
+			@*	<div id="product1">Производ А</div>
 				<div id="product2">Производ Б</div>
 				<div id="product3">Производ В</div>
-				<div id="annyer"><img src="Content/sliki/d28A.jpg"></img></div>
+				<div id="annyer"><img src="~/Content/sliki/d28A.jpg"></img></div>*@
+
+
+  <script type="text/javascript">
+  
+      $(document).ready(function () {
+          $.ajax({
+              url: "/Home/get_promotionProduct",
+              type: "GET",
+              data: {},
+              success: function (result) {
+                //    debugger;
+                    for (i = 0; i < 10; i++) {
+                        $('#main_content').append('<div id="product_' + i + '"><img style="width:90px;height:90px;vertical-align: middle;" src="' + result[i].product_image + '" /><p>' + result[i].product_name + '</p></div>');
+                    }
+                  }
+          });
+      });
+      
+  </script>

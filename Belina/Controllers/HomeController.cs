@@ -108,7 +108,7 @@ namespace Belina.Controllers
             }
             else return Json("Error!", JsonRequestBehavior.AllowGet);
 
-        }//
+        }
         public JsonResult getByClass(int classid)
         {
             var Types = (from products in db.Products
@@ -164,6 +164,13 @@ namespace Belina.Controllers
                              where c.class_id == classID && t.type_id == typeID && a.attribute_id == attributeNameID
                              select comp.company_name).Distinct().ToList();
 
+            return Json(companies, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult get_promotionProduct()
+        {
+            var companies = (from x in db.Products
+                             where x.product_discount == true
+                             select new { x.product_image, x.product_name, x.product_price }).Distinct().ToList();
             return Json(companies, JsonRequestBehavior.AllowGet);
         }
     }

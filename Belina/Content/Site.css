@@ -265,7 +265,7 @@
 			width:1024px;
 			height:574px;
 		}
-		#product1
+		#product_0
 		{
 			position:relative;
 			top:140px;
@@ -280,7 +280,7 @@
 			border:solid 1px #b7b7b7;
 			z-index:1;
 		}
-		#product2
+		#product_1
 		{
 			position:relative;
 			top:120px;
@@ -295,7 +295,7 @@
 			border:solid 1px #b7b7b7;
 			z-index:2;
 		}
-		#product3
+		#product_2
 		{
 			position:relative;
 			top:-80px;
@@ -310,7 +310,111 @@
 			border:solid 1px #b7b7b7;
 			z-index:3;
 		}
-
+        #product_3
+		{
+			position:relative;
+			top:-410px;
+			left:380px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
+        #product_4
+		{
+			position:relative;
+			top:-410px;
+			left:480px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
+        #product_5
+		{
+			position:relative;
+			top:-410px;
+			left:580px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
+        #product_6
+		{
+			position:relative;
+			top:-810px;
+			left:780px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
+         #product_7
+		{
+			position:relative;
+			top:-790px;
+			left:780px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
+          #product_8
+		{
+			position:relative;
+			top:-1142px;
+			left:580px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
+           #product_9
+		{
+			position:relative;
+			top: -962px;
+            left: 409px;
+			width:125px;
+			height:150px;
+			line-height:150px;
+			font-family:verdana;
+			font-size:9pt;
+			text-align:center;
+			background:#e7e7e7;
+			border:solid 1px #b7b7b7;
+			z-index:3;
+		}
 /*==============products_subMenu=================*/
 
 #products_submenu

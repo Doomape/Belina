@@ -119,7 +119,7 @@ namespace Belina.Controllers
         }
         #endregion
         #region Insert new product
-        public JsonResult insertProduct(HttpPostedFileBase file, string productName, int allClasses, int allTypes, int allAttributes, int allCompanies, string productDecription, string discount, string promotion)
+        public JsonResult insertProduct(HttpPostedFileBase file, string productName, int allClasses, int allTypes, int allAttributes, int allCompanies, string productDecription, string discount, string promotion, Decimal price)
         {
             Products products = new Products();
 
@@ -130,6 +130,7 @@ namespace Belina.Controllers
             products.product_discount = bool.Parse(discount);
             products.product_promotion = promotion;
             products.attribute_id = allAttributes;
+            products.product_price = price;
 
             var company_name = (from x in db.Company where x.company_id == allCompanies select x).FirstOrDefault();
 
@@ -186,7 +187,7 @@ namespace Belina.Controllers
             string[] columns = { "product_name", "class_name", "type_name", "company_name", "attribute_name", "product_description", "product_image", "product_discount", "product_price" };
 
             if (direction == "des") direction = "desc";
-            string filters = filters = String.Concat(Enumerable.Repeat(",#text_filter", 7));
+            string filters = filters = String.Concat(Enumerable.Repeat(",#text_filter", 6));
 
             string filters_sql = "";
 
@@ -307,7 +308,7 @@ namespace Belina.Controllers
                     if (column_names[7] == columnName)
                     {
                         column = new XElement("column", new XAttribute("type", "ro"),
-                         new XAttribute("width", "130%"), new XAttribute("sort", "server"), new XAttribute("id", "last"), new XText(columnName));
+                         new XAttribute("width", "200%"), new XAttribute("sort", "server"), new XAttribute("id", "last"), new XText(columnName));
                         head.Add(column);
                     }
                     if (column_names[8] == columnName)
@@ -318,7 +319,7 @@ namespace Belina.Controllers
                     }
                     if (column_names[9] == columnName)
                     {
-                        column = new XElement("column", new XAttribute("type", "ro"),
+                        column = new XElement("column", new XAttribute("type", "ed"),
                          new XAttribute("width", "130%"), new XAttribute("sort", "server"), new XAttribute("id", "last"), new XText(columnName));
                         head.Add(column);
                     }
@@ -584,10 +585,35 @@ namespace Belina.Controllers
                 case 6:
                     productObj.product_description = new_Name;
                     break;
+                case 9:
+                    productObj.product_price = Decimal.Parse(new_Name);
+                    break;
                 default:
                     break;
             }
             db.SaveChanges();
+        }
+        #endregion
+        #region Update Discount
+        public JsonResult updateDiscount(int rowID, bool ch)
+        {
+            var number_of_Checkedrows = (from x in db.Products
+                                         where x.product_discount == true
+                                         select x).ToList().Count();
+            if (number_of_Checkedrows < 10 || (ch == false && number_of_Checkedrows > 0))
+            {
+                Products productObj = (from x in db.Products
+                                       where x.product_id == rowID
+                                       select x).First();
+                productObj.product_discount = ch;
+                db.SaveChanges();
+            }
+            else
+            {
+                return Json("Максималниот број(10) е достигнат, ослободете место.", JsonRequestBehavior.AllowGet);
+            }
+          
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
