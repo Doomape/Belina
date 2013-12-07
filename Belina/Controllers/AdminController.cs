@@ -735,6 +735,8 @@ namespace Belina.Controllers
         #endregion
        
         #region upload One photo
+        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult uploadPhoto_con(HttpPostedFileBase file, string id)
         {
             bool cvrci=false;
@@ -760,6 +762,7 @@ namespace Belina.Controllers
         }
         #endregion
         #region upload Multiple pictures
+        [HttpPost]
         public JsonResult multiple_uploadPhoto_con(HttpPostedFileBase file, string id)
         {
             bool cvrci = false;

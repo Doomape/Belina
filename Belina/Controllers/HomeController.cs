@@ -5,6 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using Belina.Models;
+using System.Net.Mail;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
+using System.Collections;
 
 namespace Belina.Controllers
 {
@@ -15,13 +19,168 @@ namespace Belina.Controllers
         {
             return View();
         }
+       
+        public ActionResult Products(int id, int type, int company, String attr, int? pageId)
+        {
+            IList<Belina.Models.Type> allTypes;
+            IList<Company> companies;
+
+            //var randomProduct = (from x in db.Products
+            //                               join c in db.Class on x.class_id equals c.class_id
+            //                               join t in db.Type on x.type_id equals t.type_id
+            //                               join com in db.Company on x.company_id equals com.company_id
+            //                               join atr in db.Attributes on x.attribute_id equals atr.attribute_id
+            //                               where x.class_id == id
+            //                               select
+            //                                   new
+            //                                   {
+            //                                       x.product_id,
+            //                                       x.product_name,
+            //                                       x.product_image,
+            //                                       x.product_description,
+            //                                       c.class_name,
+            //                                       t.type_name,
+            //                                       com.company_name,
+            //                                       atr.attribute_name
+            //                                   }).ToList();
+            //var rand = new Random();
+            //var randomPt = randomProduct[rand.Next(randomProduct.Count())];
+            //ViewBag.randomProd = new RandomProduct(randomPt.class_name, randomPt.product_id, randomPt.product_name, randomPt.product_image, randomPt.product_description, randomPt.type_name, randomPt.company_name, randomPt.class_name, randomPt.attribute_name);
+            #region if type == 0
+            if (type == 0 && company == 0 && attr == "all")
+            {
+                allTypes = (from products in db.Products
+                                                      join t in db.Type on products.type_id equals t.type_id
+                                                      join c in db.Class on products.class_id equals c.class_id
+                                                      where
+                                                          c.class_id == id
+                                                      select t).Distinct().ToList();
+                int typeId = Convert.ToInt32(allTypes[0].type_id);
+                companies = (from products in db.Products
+                                            join t in db.Type on products.type_id equals t.type_id
+                                            join comp in db.Company on products.company_id equals comp.company_id
+                                            join c in db.Class on products.class_id equals c.class_id
+                                                where c.class_id == id && t.type_id == typeId
+                                            select comp).Distinct().ToList();
+                ViewBag.pageId = id;
+                ViewBag.allItems = allTypes;
+                ViewBag.Companies = companies;
+                int companyID = Convert.ToInt32(companies[0].company_id);
+                List<Attributes> attributes = (from p in db.Products
+                                               join t in db.Type on p.type_id equals t.type_id
+                                               join c in db.Class on p.class_id equals c.class_id
+                                               join comp in db.Company on p.company_id equals comp.company_id
+                                               join a in db.Attributes on p.attribute_id equals a.attribute_id
+                                               where c.class_id == id && t.type_id == typeId && comp.company_id == companyID
+                                               select a).Distinct().ToList();
+                ViewBag.Attributes = attributes;
+                
+                IList<Products> allProducts = (from product in db.Products
+                                join t in db.Type on product.type_id equals t.type_id
+                                join comp in db.Company on product.company_id equals comp.company_id
+                                join c in db.Class on product.class_id equals c.class_id
+                                where
+                                c.class_id == id && t.type_id == typeId && comp.company_id == companyID
+                                               select product).ToList();
+               
+                var Page = pageId != null ? pageId : 1;
+                int currentPageId = Convert.ToInt32(Page);
+                var mater = allProducts.Skip(currentPageId*10).Take(10).ToList();
+                ViewBag.pagingLength = allProducts.Count()/10;
+                ViewBag.AllProducts = mater;
+            }
+            #endregion
+            #region if id != 0
+            if (id!=0&&type!=0)
+            {
+                //int type, int company,int attr
+                allTypes = (from products in db.Products
+                            join t in db.Type on products.type_id equals t.type_id
+                            join c in db.Class on products.class_id equals c.class_id
+                            where
+                                c.class_id == id
+                            select t).Distinct().ToList();
+               
+                companies = (from products in db.Products
+                             join t in db.Type on products.type_id equals t.type_id
+                             join comp in db.Company on products.company_id equals comp.company_id
+                             join c in db.Class on products.class_id equals c.class_id
+                             where c.class_id == id && t.type_id == type
+                             select comp).Distinct().ToList();
+                ViewBag.pageId = id;
+                ViewBag.allItems = allTypes;
+                ViewBag.Companies = companies;
+                ViewBag.TypeId = type;
+                int companyId;
+                if (company == 0)
+                {
+                    companyId = Convert.ToInt32(companies[0].company_id);
+                }
+                else
+                {
+                    companyId = company;
+                }
+                ViewBag.companyId = companyId;
+                List<Attributes> attributes = (from p in db.Products
+                                               join t in db.Type on p.type_id equals t.type_id
+                                               join c in db.Class on p.class_id equals c.class_id
+                                               join comp in db.Company on p.company_id equals comp.company_id
+                                               join a in db.Attributes on p.attribute_id equals a.attribute_id
+                                               where c.class_id == id && t.type_id == type && comp.company_id == companyId
+                                               select a).Distinct().ToList();
+                ViewBag.Attributes = attributes;
+                int attribute;
+                if(attr!="all")
+                {
+                    attribute = Convert.ToInt32(attr);
+                    IList<Products> allProducts = (from product in db.Products
+                                                   join t in db.Type on product.type_id equals t.type_id
+                                                   join comp in db.Company on product.company_id equals comp.company_id
+                                                   join c in db.Class on product.class_id equals c.class_id
+                                                   join a in db.Attributes on product.attribute_id equals a.attribute_id
+                                                   where
+                                                   c.class_id == id && t.type_id == type && comp.company_id == companyId
+                                                   && a.attribute_id == attribute
+                                                   select product).Distinct().ToList();
+                    ViewBag.AllProducts = allProducts;
+                }
+                if (attr == "all")
+                {
+                var Page = pageId != null ? pageId : 1;
+                int currentPageId = Convert.ToInt32(Page);
+                
+                    IList<Products> allProducts = (from product in db.Products
+                                                   join t in db.Type on product.type_id equals t.type_id
+                                                   join comp in db.Company on product.company_id equals comp.company_id
+                                                   join c in db.Class on product.class_id equals c.class_id
+                                                   where
+                                                   c.class_id == id && t.type_id == type && comp.company_id == companyId
+                                                   select product).Distinct().ToList();
+
+                    var mater = allProducts.Skip(1).Take(10).ToList();
+                    ViewBag.paging = mater;
+                    ViewBag.AllProducts = allProducts;
+                }
+
+                
+            }
+            #endregion
+            return View();
+        }
+        public ActionResult ProductInfo(int id)
+        {
+            IList<Products> product = (from products in db.Products where products.product_id == id select products).ToList();
+            ViewBag.Product = product;
+            return View();
+        }
         public ActionResult Contact()
         {
             return View();
         }
+        [AllowAnonymous]
         public JsonResult getClasses()
         {
-            IList<Class> classes = (from x in db.Class where x.class_name != "Недефинирано" && x.class_name != "Разно" && x.class_id != 1 select x).Distinct().ToList();
+            IList<Class> classes = (from x in db.Class where x.class_name != "ХТЗ Опрема" && x.class_name != "Водовод" && x.class_name != "Електрика" && x.class_name != "Недефинирано" && x.class_name != "Разно" && x.class_id != 1 select x).Distinct().ToList();
             return Json(classes, JsonRequestBehavior.AllowGet);
 
         }
@@ -170,8 +329,55 @@ namespace Belina.Controllers
         {
             var companies = (from x in db.Products
                              where x.product_discount == true
-                             select new { x.product_image, x.product_name, x.product_price }).Distinct().ToList();
+                             select new { x.product_image, x.product_name, x.product_price, x.product_description,x.product_id }).Distinct().ToList();
             return Json(companies, JsonRequestBehavior.AllowGet);
+        }
+
+        public static void SendMail(string subject, string body)
+        {
+
+            var fromAddress = new MailAddress("belinaskopje@gmail.com", "Belina");
+            string fromPassword = "belinaljupce";
+
+            try
+            {
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new System.Net.NetworkCredential(fromAddress.Address, fromPassword)
+                };
+
+                System.Web.UI.WebControls.MailDefinition md = new System.Web.UI.WebControls.MailDefinition();
+                md.From = "belinaskopje@gmail.com";
+                md.IsBodyHtml = false;
+                md.Subject = subject;
+                System.Collections.Specialized.ListDictionary replacements = new System.Collections.Specialized.ListDictionary();
+                MailMessage msg = md.CreateMailMessage("belinaljupce@belina.com.mk", replacements, body, new System.Web.UI.Control());
+                smtp.Send(msg);
+            }
+            catch
+            {
+
+            }
+        }
+        public JsonResult Sendform(string ime, string broj, string email, string poraka)
+        {
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            if ((ime != "") && (email != "") && (poraka != ""))
+            {
+                string porakadoBelina = "Name or Company: " + ime + "\n" + "Email: " + email + "\n" + "Number: " + broj + "\n" + "Message:" + "\n" + poraka;
+                SendMail("Нова порака", porakadoBelina);
+                res.Add("msg", " Успешно испратена порака ");
+            }
+            else
+            {
+                res.Add("msg", " Неуспешно испратена порака ");
+            }
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
     }
 }

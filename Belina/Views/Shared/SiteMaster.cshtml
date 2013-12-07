@@ -2,97 +2,116 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta title="Бои и лакови железарија градежништво машини алати автокозметика козметика" />
     <title>Belina</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
-    <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"></script>
+@*    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>*@
+
+    <link rel="stylesheet" media="screen and (min-width: 100px) and (max-width: 3600px)" href="@Url.Content("~/Content/Site.css")"  />
+    @*<link rel="stylesheet" media="screen and (min-device-width: 800px) and (max-width: 999px)" href="@Url.Content("~/Content/Site1600.css")" />*@
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/Content/bjqs.css">
+    <link rel="stylesheet" href="/Content/demo.css">
+    <script src="/Scripts/bjqs-1.3.js"></script>
     @*    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")*@
 </head>
 <body>
-    <div id="header">
-        <div id="header_top">
-            <div id="logo">
+    <div id="header-top">
+        <div id="header-center">
+            <div id="logo" onclick="location.href = '/Home/Index';">
                 <img src="/Content/sliki/belinaLogo5.png" />
             </div>
-            <div id="products_menu">
-                <ul class="classesName">
-                </ul>
+            <div id="site-navigation">
+                <div id="navigation">
+                    <ul id="navigation-hypers">
+                        <li><a href="/Home/Index" class="a_top_hypers">Дома</a></li>
+                        <li><a href="#" class="a_top_hypers">За нас</a></li>
+                        <li><a href="/Home/Contact" class="a_top_hypers">Контакт</a></li>
+                    </ul>
+                </div>
+            <div id="search">
+                <input placeholder="Пребарај Белина..."/>
             </div>
-            <div id="products_submenu">
-                <h2></h2>
-                <h3></h3>
-                <ul></ul>
             </div>
         </div>
     </div>
-    <div id="main_content" class="cf">
+    <div id="header-bottom">
+        <div id="class-navigation">
+             <ul id="menu-hypers">
+                 
+              </ul>
+        </div>
+    </div>
+    <div id="main-content">
         @RenderBody()
     </div>
-    <div id="prebaraj">
-        <div id="tab_icon">
-            <img src="/Content/sliki/search-icon-2.png" />
-        </div>
+    
+    <div id="footer">
+        <div id="back-top"><a href='#top'>back to top</a></div>
+        <div id="menu-bottom">
+            <div class="classes-bottom">
+                <h3>Бои и лакови</h3>
+                <p>Внатрешни ѕидови</p>
+                <p>Дрво и метал</p>
+                <p>Микс систем</p>
+                <p>Надворешни ѕидови</p>
+                <p>Подлоги</p>
+                <p>Премази за камен,бетон и асфалт</p>
+                <p>Разредувачи</p>
+            </div>
+            <div class="classes-bottom">
+                <h3>Градежништво</h3>
+                <p>Лепаци</p>
+                <p>Пасти</p>
+                <p>Термо изолација-фасади</p>
+            </div>
+            <div class="classes-bottom">
+                <h3>Алати</h3>
+                <p>Земјоделски алат
+                <p>Молерски алат и прибор</p>
+                <p>Прибор за животни и стока</p>
+                <p>Униор алат</p>
+            </div>
+            <div class="classes-bottom">
+                <h3>Железарија</h3>
+                <p>Јажиња</p>
+                <p>Ланци</p>
+            </div>
+            <div class="classes-bottom">
+                <h3>Автокозметика</h3>
+                <p>Авто шампони</p>
+                <p>Гуми</p>
+                <p>Декоратива</p>
+                <p>Дестилирана вода</p>
+                <p>Зимски средства</p>
+                <p>Летни средства</p>
+                <p>Пасти</p>
+                <p>Професионал</p>
+                <p>Спрејови</p>
+                <p>Средства</p>
+                <p>Смајли</p>
+                <p>Технички производи</p>
+            </div>
+            <div class="classes-bottom">
+                <h3>Машини</h3>
+                <p>Земјоделска механизација</p>
+            </div>
+            <div class="classes-bottom">
+                <h3>Козметика</h3>
+                <p>Фризерска опрема</p>
+            </div>
 
-        <form action="">
-            <fieldset>
-                <h3>Пребарај во групата</h3>
-                <div id="select_spacing">
-                    <label>Класа</label>
-                    <select id="class">
-                        <option>Сите</option>
-                    </select>
-                    <label>Карактеристика</label>
-                    <select id="type">
-                         <option>Сите</option>
-                    </select>
-                    <label>Особина</label>
-                    <select id="attribute">
-                        <option>Сите</option>
-                    </select>
-                    <label>Производител</label>
-                    <select id="brand">
-                        <option>Сите</option>
-                    </select>
-                </div>
-                <div id="input_spacing">
-                    <label>Клучен збор</label>
-                    <input></input>
-                </div>
-                <label></label>
-                <button>Најди!</button>
-            </fieldset>
-        </form>
-        
+        </div>
     </div>
-    <div id="layer_3"><div id="layer_3_mid_1024_px"></div></div>
-    <div id="layer_4">
-		<div id="layer_4_mid_1024_px">
-			<div id="product_details">
-				<div id="product_details_content">
-					<div id="details_info">
-						<div id="details_title">
-							<h4>Impregnant</h4>
-							<div id="details_subtitle">Заштита на дрвото од штеточини</div>
-						</div>
-						<div id="details_image"></div>
-					</div>
-					<div id="details_order">
-					</div>
-				</div>
-				<div id="product_details_close">
-					<a href="#">						
-						<img src="Content/sliki/close-button.png"></img>
-						<div id="close_text">Затвори го прозорецот</div>
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-    <div id="footer"></div>
+    <div id="info">
+            <p>phone</p>
+            <p>email</p>
+            <p>address</p>
+    </div>
    
     <script type="text/javascript">
         var className, companyName, typeName, attributeName;
@@ -105,443 +124,443 @@
                 type: "GET",
                 data: {},
                 success: function (result) {
-                  //  debugger;
                     for (n = 0; n < result.length; n++) {
-                        $('.classesName').append('<li><a href="#" id="menuLink" onclick="showTypes(\'' + result[n].class_id + '\',\'' + result[n].class_name + '\')"'
-                            + 'class="classesLink" >' + result[n].class_name + '</a></li>');
-                        $('#class').append('<option value="' + result[n].class_id + '">' + result[n].class_name + '</option>');
+                        $('#menu-hypers').append('<li><a href="/Home/Products?id=' + result[n].class_id + '&type=0&company=0&attr=all">'
+                                                 + result[n].class_name + '</a></li>');
                     }
                 }
             });
-          
-
-            $("#class").change(function () {
-               classidS = $(this).val();
-                $('#type').empty();
-                $('#type').append('<option>Сите</option>');
-                $('#attribute').empty();
-                $('#attribute').append('<option>Сите</option>');
-                $('#brand').empty();
-                $('#brand').append('<option>Сите</option>');
-                $.ajax({
-                    url: "/Home/getByClass",
-                    type: "GET",
-                    data: { classid: classidS },
-                    success: function (result) {
-                        for (x = 0; x < result.types.length; x++) {
-                            typeNameS = result.types[x];
-                            typeNameID = result.typesid[x];
-                            $('#type').append('<option value="' + typeNameID + '">' + typeNameS + '</option>');
-                        }
-                        for (x = 0; x < result.attributes.length; x++) {
-                            attributeNameS = result.attributes[x];
-                            attributeNameID = result.attributesid[x];
-                            $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
-                        }
-                        for (x = 0; x < result.companies.length; x++) {
-                            companyNameS = result.companies[x];
-                            companyNameID = result.companiesid[x];
-                            $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
-                        }
-                    }
-                });
-            });
-
-            $("#type").change(function () {
-                
-                typeNameS = "";
-                typeNameS = $(this).find('option:selected').text();
-                classNameS = $('#class :selected').text();
-                var typeNameSid = $(this).val();
-                var classNameSid = $('#class').val();
-                $('#attribute').empty();
-                $('#attribute').append('<option>Сите</option>');
-                $('#brand').empty();
-                $('#brand').append('<option>Сите</option>');
-                if (typeNameS == "Сите") {
-                    $.ajax({
-                        url: "/Home/getByClass",
-                        type: "GET",
-                        data: { classid: classNameSid },
-                        success: function (result) {
-                            for (x = 0; x < result.companies.length; x++) {
-                                companyNameS = result.companies[x];
-                                companyNameID = result.companiesid[x];
-                                $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
-                            }
-                            for (x = 0; x < result.attributes.length; x++) {
-                                attributeNameS = result.attributes[x];
-                                attributeNameID = result.attributesid[x];
-                                $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
-                            }
-                        }
-                    });
-                }
-                if (typeNameS != "Сите") {
-
-                    $.ajax({
-                        url: "/Home/getCompanies",
-                        type: "GET",
-                        data: { classID: classNameSid, typeID: typeNameSid },
-                        success: function (result) {
-                            for (x = 0; x < result.length; x++) {
-                                companyNameS = result[x].company_name;
-                                companyNameID = result[x].company_id;
-                                $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
-                            }
-                        }
-                    });
-                    $.ajax({
-                        url: "/Home/getAttributesbyClassType",
-                        type: "GET",
-                        data: { classID: classNameSid, typeID: typeNameSid },
-                        success: function (result) {
-                            for (x = 0; x < result.length; x++) {
-                                attributeNameS = result[x].attribute_name;
-                                attributeNameID = result[x].attribute_id;
-                                $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
-                            }
-                        }
-                    });
-                }
-            });
-
-            $("#attribute").change(function () {
-                $('#brand').empty();
-                $('#brand').append('<option>Сите</option>');
-                var typeNameSid = $("#type").val();
-                var classNameSid = $('#class').val();
-                var attributeNameSid = $(this).val();
-
-                attributeNameS = $("#attribute :selected").text();
-                companyNameS = "";
-                if (attributeNameS == "Сите") {
-                    $.ajax({
-                        url: "/Home/getCompanies",
-                        type: "GET",
-                        data: { classID: classNameSid, typeID: typeNameSid },
-                        success: function (result) {
-                            for (x = 0; x < result.length; x++) {
-                                companyNameS = result[x];
-                                $('#brand').append('<option>' + companyNameS + '</option>');
-                            }
-                        }
-                    });
-                }
-                if (attributeNameS != "Сите") {
-                    $.ajax({
-                        url: "/Home/getCompanybyClassTypeAttribute",
-                        type: "GET",
-                        data: { classID: classNameSid, typeID: typeNameSid, attributeNameID: attributeNameSid },
-                        success: function (result) {
-                            for (x = 0; x < result.length; x++) {
-                                companyNameS = result[x];
-                                $('#brand').append('<option>' + companyNameS + '</option>');
-                            }
-                        }
-                    });
-                }
-            });
-
-            $("#prebaraj").animate({ right: "-270px" }, 0);
-            var hidden = true;
-            $("#tab_icon").click(function () {
-                if (hidden) {
-                    $("#prebaraj").animate({ right: "0px" }, 600, 'easeInBack');
-                    hidden = false;
-                }
-                else {
-                    $("#prebaraj").animate({ right: "-270px" }, 600, 'easeOutBounce');
-                    hidden = true;
-                }
+            $("a[href='#top']").click(function () {
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                return false;
             });
         });
-
-        function showTypes(classID, className) {
-          //  debugger;
-            $('#products_submenu h2').empty();
-            $('#products_submenu h3').empty();
-            $('#products_submenu ul').empty();
-            $('#products_submenu #dropDownAttributes').remove();
-            $('#main_content').empty();
-            $('#main_content').append(
-                '<div id="left_cube"><div id="top_cube">Предлог/проба за да се искористи просторот..пример да прикажува Најбарани производи од секоја една класа, во моментов од класата Бои и лакови</div>'
-                + '<div id="bottom_cube">Предлог/проба за да се искористи просторот..пример да прикажува Промоција на производи од секоја една класа, во моментов од класата Бои и лакови</div>'
-                +'</div><div id="right_cube"></div>');
-            var typeName;
-            $.ajax({
-                url: "/Home/getTypes",
-                type: "GET",
-                data: { classID: classID },
-                success: function (result) {
-                    for (x = 0; x < result.length; x++) {
-                        typeName = result[x].type_name;
-                        typeID = result[x].type_id;
-                        $('#right_cube').append(
-                             '<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + className + '\',\'' + typeName + '\',\'' + classID + '\',\'' + typeID + '\')">'
-                             + '<div style="width:90px;height:80px;margin-right:10px;margin-top:5px;margin-bottom:5px;float:left;text-align:center">'
-                             + '<div style="margin: auto;width: 70px;height: 40px;background-color:rgb(' + Math.floor((Math.random() * 255) + 3) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 2) + ')">'
-                             + '</div>' + '<p style="font-size: 13px;margin-bottom: 0px;margin-top: 0px;">' + typeName + '</p>' + '</div></a>');
-                    }
-                }
-            });
-        }
-
-        function showCompanies(className, typeName, classID, typeID) {
-        //    debugger;
-            var getfirstCompany = '';
-            $('#main_content').empty();
-            $('#products_submenu ul').empty();
-            $('#products_submenu h2').empty();
-            $('#products_submenu h3').empty();
-            $('#products_submenu h2').append(className);
-            $('#products_submenu h3').append(typeName);
-            var companyName,companyID;
-            $.ajax({
-                url: "/Home/getCompanies",
-                type: "GET",
-                data: { classID: classID, typeID: typeID },
-                success: function (result) {
-              //      debugger;
-                    getfirstCompany = result[0].company_id;
-                    for (x = 0; x < result.length; x++) {  
-                        companyName = result[x].company_name;
-                        companyID = result[x].company_id;
-                        $('#products_submenu ul').append('<li><a href="#" onclick="showProducts(\'' + classID + '\',\'' + companyID + '\',\'' + typeID + '\',\'' + typeName + '\',\'' + 'false' + '\')">' + companyName + '</a></li>');
-                    }
-                    showProducts(classID, getfirstCompany, typeID, typeName, 'false');
-                    $("#products_submenu ul li a").first().css('color', 'red')
-                }
-            });
-        }
-
-        function showProducts(classIDF, companyIDF, typeIDF, typeName, attributeNameF) {
-      //      debugger;
-            classID = classIDF;
-            companyID = companyIDF;
-            typeID = typeIDF;
-            $('#main_content').empty();
-            var product = '<div id="products">';
-            var products_scroll_left = '<div id="products_scroll_left">';
-            var scroll_left = '<a href="#" id="scroll_left"><img src="/Content/sliki/green-arrow-left-2.png"></img></a>';
-            var products_scroll_right = ' <div id="products_scroll_right">';
-            var scroll_right = '  <a href="#" id="scroll_right"><img src="/Content/sliki/green-arrow-right-2.png"></img></a>'
-            var closeDiv = '</div>';
-            var products_window = '<div id="products_window">';
-            var products_selection = '<div id="products_selection">';
-            var left = products_scroll_left + scroll_left + closeDiv;
-            var right = products_scroll_right + scroll_right + closeDiv;
-            var dropDownAttributes = '<select id="dropDownAttributes"></select>';
-            $('#main_content').append(product + left + products_window + products_selection + closeDiv + closeDiv + right + closeDiv);
-            $.ajax({
-                url: "/Home/getProducts",
-                type: "GET",
-                data: { classID: classID, companyID: companyID, typeID: typeID, attributeName: attributeNameF },
-                success: function (result) {
-                  //  debugger;
-                    if (attributeNameF == 'false') {
-                        $('#products_submenu #dropDownAttributes').remove();
-                        $('#products_submenu').append(dropDownAttributes);
-                        $('#dropDownAttributes').append('<option value="all">Сите</option>');
-                        for (k = 0; k < result.attributes.length; k++) {
-                            debugger;
-                            $('#dropDownAttributes').append('<option value=' + result.attributes[k] + '>' + result.attributes[k] + '</option>');
-                        }
-                    }
-                    if (result.products.length > 10) {
-                        $('#scroll_right').css('display', 'block');
-                    }
-                    var count_next_container = -1;
-                    for (x = 0; x < result.products.length; x++) {
-                      
-                        if (x == 0 || ((x / 10) % 1 != 0) == false) {
-                            count_next_container++;
-                            var productImage = result.products[x].split('#')[1].split('@@')[0];
-                            var productDescription = result.products[x].split('#')[1].split('@@')[1];
-                            var productTitle = result.products[x].split('#')[0];
-                            $('#products_selection').append('<div class="products_frame"><div class="frame_title">'
-                            + '<h3>' + typeName + '</h3>'
-                            + '</div><div id="prod_container_' + count_next_container + '" class="products_group">'
-                            + '<a href="javascript:void(0)"><div class="product">'
-                            + '<p class="fullDescription">' + productDescription + '</p>'
-                            + '<div class="product_image">'
-                            + '<img src="' + productImage + '"></img></div>'
-                            + '<div class="product_title">' + productTitle + '</div>'
-                            + '<div class="product_description"></div>'
-                            + '</div></a>'
-                            + '</div>');
-                        }
-                        else {
-                            var count = count_next_container.toString();
-                            var productDescription = result.products[x].split('#')[1].split('@@')[1];
-                            var productImage = result.products[x].split('#')[1].split('@@')[0];
-                            var productTitle = result.products[x].split('#')[0];
-                            $('#prod_container_' + count).append(
-                            '<a href="javascript:void(0)"><div class="product"><div class="product_image">'
-                            + '<p class="fullDescription">' + productDescription + '</p>'
-                            + '<img src="' + productImage + '"></img></div>'
-                            + '<div class="product_title">' + productTitle + '</div>'
-                            + '<div class="product_description"></div>'
-                            + '</div></a>');
-                        }
-                    }
-                    setScrolling();
-                    productDetails();
-                }
-            });
-        }
-
-        $('#dropDownAttributes').live('change', function (event) {
-            $('#main_content').empty();
-            var attributeValue = $("#dropDownAttributes option:selected").text();
-            var type_name = $("#products_submenu h3").text();
-            showProducts(classID, companyID, typeID, type_name, attributeValue);
-            attributeName = attributeValue;
-        });
-
-
-        function setScrolling() {
-            var hidden = true;
-            var frame_index = 1;
-            var frame_length = $(".products_frame").length;
-            debugger;
-
-
-            $("#scroll_left").click(function () {
-                if (frame_index > 1) {
-                    position = "+=770px";
-                    $('#products_selection').animate(
-                        { left: position },
-                        1200,
-                        'easeInOutQuint'
-                    );
-                    frame_index--;
-                }
-            });
-
-            $("#scroll_right").click(function () {
-                $('#scroll_left').css('display', 'block');
-                debugger;
-                if (frame_index < frame_length) {
-                    position = "-=770px";
-                    $('#products_selection').animate(
-                        { left: position },
-                        800,
-                        'easeInOutQuint'
-                    );
-                    frame_index++;
-                }
-            });
-
-            $(".product").mouseenter(function () {
-                var styles =
-                {
-                    zIndex: "25",
-                    backgroundColor: "#fefdfc",
-                    color: "#506e80",
-                    opacity: "0.9",
-                    boxShadow: "0px 0px 20px 5px #c7c7c7"
-                };
-                $(this).css(styles);
-            });
-
-            $(".product").mouseleave(function () {
-                var styles =
-                {
-                    zIndex: "20",
-                    backgroundColor: "#ffffff",
-                    borderColor: "#d7d7d7",
-                    color: "#809eb0",
-                    opacity: "1",
-                    boxShadow: "0px 0px 0px 0px #979797"
-                };
-                $(this).css(styles);
-            });
-        }
-
-        function productDetails() {
-            $(".product").click(function () {
-                $('#layer_3').show();
-                var styles =
-                {
-                    width: "2px",
-                    height: "2px",
-                    top: "320px"
-                };
-                $('#product_details').css(styles);
-                var content_styles =
-                {
-                    display: "none",
-                    opacity: "0"
-                };
-                $('#product_details_content').css(content_styles);
-                $('#product_details_close').css('display', 'none');
-
-                var title = $(this).find('.product_title').text();
-                $('#details_title h4').text(title);
-                var description = $(this).find('.product_description').text();
-                $('#details_subtitle').text(description);
-                var image = $(this).find('.product_image').html() + "</img>";
-                $('#details_image').html(image); //debugger;
-                var fullDescription = $(this).find('.fullDescription').text();
-                $('#details_order').text(fullDescription);
-                $('#layer_4').show(800, function () {
-                    $('#product_details').animate(
-                        {
-                            width: "900px",
-                            height: "622px",
-                            top: "0px"
-                        },
-                        600,
-                        "linear",
-                        function () {
-                            $('#product_details_content').css('display', 'block');
-                            $('#product_details_content').animate(
-                                {
-                                    opacity: "1"
-                                },
-                                1000,
-                                function () {
-                                    $('#product_details_close').css('display', 'block');
-                                }
-                            );
-                        }
-                    );
-                });
-            });
-
-            $('#product_details_close').click(function () {
-                $('#layer_4').animate(
-                    {
-                        opacity: "0"
-                    },
-                    300,
-                    function () {
-                        var layer_4_styles =
-                        {
-                            display: "none",
-                            opacity: "1"
-                        };
-                        $('#layer_4').css(layer_4_styles);
-                        $('#layer_3').animate(
-                            { opacity: "0" },
-                            1000,
-                            function () {
-                                var layer_3_styles =
-                                {
-                                    display: "none",
-                                    opacity: "0.3"
-                                };
-                                $('#layer_3').css(layer_3_styles);
-                            }
-                        );
-                    }
-                );
-            });
-        }
-
 
 
     </script>
 </body>
 </html>
+
+@*      //      $("#class").change(function () {
+      //         classidS = $(this).val();
+      //          $('#type').empty();
+      //          $('#type').append('<option>Сите</option>');
+      //          $('#attribute').empty();
+      //          $('#attribute').append('<option>Сите</option>');
+      //          $('#brand').empty();
+      //          $('#brand').append('<option>Сите</option>');
+      //          $.ajax({
+      //              url: "/Home/getByClass",
+      //              type: "GET",
+      //              data: { classid: classidS },
+      //              success: function (result) {
+      //                  for (x = 0; x < result.types.length; x++) {
+      //                      typeNameS = result.types[x];
+      //                      typeNameID = result.typesid[x];
+      //                      $('#type').append('<option value="' + typeNameID + '">' + typeNameS + '</option>');
+      //                  }
+      //                  for (x = 0; x < result.attributes.length; x++) {
+      //                      attributeNameS = result.attributes[x];
+      //                      attributeNameID = result.attributesid[x];
+      //                      $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
+      //                  }
+      //                  for (x = 0; x < result.companies.length; x++) {
+      //                      companyNameS = result.companies[x];
+      //                      companyNameID = result.companiesid[x];
+      //                      $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
+      //                  }
+      //              }
+      //          });
+      //      });
+
+      //      $("#type").change(function () {
+                
+      //          typeNameS = "";
+      //          typeNameS = $(this).find('option:selected').text();
+      //          classNameS = $('#class :selected').text();
+      //          var typeNameSid = $(this).val();
+      //          var classNameSid = $('#class').val();
+      //          $('#attribute').empty();
+      //          $('#attribute').append('<option>Сите</option>');
+      //          $('#brand').empty();
+      //          $('#brand').append('<option>Сите</option>');
+      //          if (typeNameS == "Сите") {
+      //              $.ajax({
+      //                  url: "/Home/getByClass",
+      //                  type: "GET",
+      //                  data: { classid: classNameSid },
+      //                  success: function (result) {
+      //                      for (x = 0; x < result.companies.length; x++) {
+      //                          companyNameS = result.companies[x];
+      //                          companyNameID = result.companiesid[x];
+      //                          $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
+      //                      }
+      //                      for (x = 0; x < result.attributes.length; x++) {
+      //                          attributeNameS = result.attributes[x];
+      //                          attributeNameID = result.attributesid[x];
+      //                          $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
+      //                      }
+      //                  }
+      //              });
+      //          }
+      //          if (typeNameS != "Сите") {
+
+      //              $.ajax({
+      //                  url: "/Home/getCompanies",
+      //                  type: "GET",
+      //                  data: { classID: classNameSid, typeID: typeNameSid },
+      //                  success: function (result) {
+      //                      for (x = 0; x < result.length; x++) {
+      //                          companyNameS = result[x].company_name;
+      //                          companyNameID = result[x].company_id;
+      //                          $('#brand').append('<option value="' + companyNameID + '">' + companyNameS + '</option>');
+      //                      }
+      //                  }
+      //              });
+      //              $.ajax({
+      //                  url: "/Home/getAttributesbyClassType",
+      //                  type: "GET",
+      //                  data: { classID: classNameSid, typeID: typeNameSid },
+      //                  success: function (result) {
+      //                      for (x = 0; x < result.length; x++) {
+      //                          attributeNameS = result[x].attribute_name;
+      //                          attributeNameID = result[x].attribute_id;
+      //                          $('#attribute').append('<option value="' + attributeNameID + '">' + attributeNameS + '</option>');
+      //                      }
+      //                  }
+      //              });
+      //          }
+      //      });
+
+      //      $("#attribute").change(function () {
+      //          $('#brand').empty();
+      //          $('#brand').append('<option>Сите</option>');
+      //          var typeNameSid = $("#type").val();
+      //          var classNameSid = $('#class').val();
+      //          var attributeNameSid = $(this).val();
+
+      //          attributeNameS = $("#attribute :selected").text();
+      //          companyNameS = "";
+      //          if (attributeNameS == "Сите") {
+      //              $.ajax({
+      //                  url: "/Home/getCompanies",
+      //                  type: "GET",
+      //                  data: { classID: classNameSid, typeID: typeNameSid },
+      //                  success: function (result) {
+      //                      for (x = 0; x < result.length; x++) {
+      //                          companyNameS = result[x];
+      //                          $('#brand').append('<option>' + companyNameS + '</option>');
+      //                      }
+      //                  }
+      //              });
+      //          }
+      //          if (attributeNameS != "Сите") {
+      //              $.ajax({
+      //                  url: "/Home/getCompanybyClassTypeAttribute",
+      //                  type: "GET",
+      //                  data: { classID: classNameSid, typeID: typeNameSid, attributeNameID: attributeNameSid },
+      //                  success: function (result) {
+      //                      for (x = 0; x < result.length; x++) {
+      //                          companyNameS = result[x];
+      //                          $('#brand').append('<option>' + companyNameS + '</option>');
+      //                      }
+      //                  }
+      //              });
+      //          }
+      //      });
+
+      //      $("#prebaraj").animate({ right: "-270px" }, 0);
+      //      var hidden = true;
+      //      $("#tab_icon").click(function () {
+      //          if (hidden) {
+      //              $("#prebaraj").animate({ right: "0px" }, 600, 'easeInBack');
+      //              hidden = false;
+      //          }
+      //          else {
+      //              $("#prebaraj").animate({ right: "-270px" }, 600, 'easeOutBounce');
+      //              hidden = true;
+      //          }
+      //      });
+      //  });
+
+      //  function showTypes(classID, className) {
+      //    //  debugger;
+      //      $('#products_submenu h2').empty();
+      //      $('#products_submenu h3').empty();
+      //      $('#products_submenu ul').empty();
+      //      $('#products_submenu #dropDownAttributes').remove();
+      //      $('#main_content').empty();
+      //      $('#main_content').append(
+      //          '<div id="left_cube"><div id="top_cube">Предлог/проба за да се искористи просторот..пример да прикажува Најбарани производи од секоја една класа, во моментов од класата Бои и лакови</div>'
+      //          + '<div id="bottom_cube">Предлог/проба за да се искористи просторот..пример да прикажува Промоција на производи од секоја една класа, во моментов од класата Бои и лакови</div>'
+      //          +'</div><div id="right_cube"></div>');
+      //      var typeName;
+      //      $.ajax({
+      //          url: "/Home/getTypes",
+      //          type: "GET",
+      //          data: { classID: classID },
+      //          success: function (result) {
+      //              for (x = 0; x < result.length; x++) {
+      //                  typeName = result[x].type_name;
+      //                  typeID = result[x].type_id;
+      //                  $('#right_cube').append(
+      //                       '<a href="#" class="companyName" class="companyName" onclick="showCompanies(\'' + className + '\',\'' + typeName + '\',\'' + classID + '\',\'' + typeID + '\')">'
+      //                       + '<div style="width:90px;height:80px;margin-right:10px;margin-top:5px;margin-bottom:5px;float:left;text-align:center">'
+      //                       + '<div style="margin: auto;width: 70px;height: 40px;background-color:rgb(' + Math.floor((Math.random() * 255) + 3) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 2) + ')">'
+      //                       + '</div>' + '<p style="font-size: 13px;margin-bottom: 0px;margin-top: 0px;">' + typeName + '</p>' + '</div></a>');
+      //              }
+      //          }
+      //      });
+      //  }
+
+      //  function showCompanies(className, typeName, classID, typeID) {
+      //  //    debugger;
+      //      var getfirstCompany = '';
+      //      $('#main_content').empty();
+      //      $('#products_submenu ul').empty();
+      //      $('#products_submenu h2').empty();
+      //      $('#products_submenu h3').empty();
+      //      $('#products_submenu h2').append(className);
+      //      $('#products_submenu h3').append(typeName);
+      //      var companyName,companyID;
+      //      $.ajax({
+      //          url: "/Home/getCompanies",
+      //          type: "GET",
+      //          data: { classID: classID, typeID: typeID },
+      //          success: function (result) {
+      //        //      debugger;
+      //              getfirstCompany = result[0].company_id;
+      //              for (x = 0; x < result.length; x++) {  
+      //                  companyName = result[x].company_name;
+      //                  companyID = result[x].company_id;
+      //                  $('#products_submenu ul').append('<li><a href="#" onclick="showProducts(\'' + classID + '\',\'' + companyID + '\',\'' + typeID + '\',\'' + typeName + '\',\'' + 'false' + '\')">' + companyName + '</a></li>');
+      //              }
+      //              showProducts(classID, getfirstCompany, typeID, typeName, 'false');
+      //              $("#products_submenu ul li a").first().css('color', 'red')
+      //          }
+      //      });
+      //  }
+
+      //  function showProducts(classIDF, companyIDF, typeIDF, typeName, attributeNameF) {
+      ////      debugger;
+      //      classID = classIDF;
+      //      companyID = companyIDF;
+      //      typeID = typeIDF;
+      //      $('#main_content').empty();
+      //      var product = '<div id="products">';
+      //      var products_scroll_left = '<div id="products_scroll_left">';
+      //      var scroll_left = '<a href="#" id="scroll_left"><img src="/Content/sliki/green-arrow-left-2.png"></img></a>';
+      //      var products_scroll_right = ' <div id="products_scroll_right">';
+      //      var scroll_right = '  <a href="#" id="scroll_right"><img src="/Content/sliki/green-arrow-right-2.png"></img></a>'
+      //      var closeDiv = '</div>';
+      //      var products_window = '<div id="products_window">';
+      //      var products_selection = '<div id="products_selection">';
+      //      var left = products_scroll_left + scroll_left + closeDiv;
+      //      var right = products_scroll_right + scroll_right + closeDiv;
+      //      var dropDownAttributes = '<select id="dropDownAttributes"></select>';
+      //      $('#main-content').append(product + left + products_window + products_selection + closeDiv + closeDiv + right + closeDiv);
+      //      $.ajax({
+      //          url: "/Home/getProducts",
+      //          type: "GET",
+      //          data: { classID: classID, companyID: companyID, typeID: typeID, attributeName: attributeNameF },
+      //          success: function (result) {
+      //            //  debugger;
+      //              if (attributeNameF == 'false') {
+      //                  $('#products_submenu #dropDownAttributes').remove();
+      //                  $('#products_submenu').append(dropDownAttributes);
+      //                  $('#dropDownAttributes').append('<option value="all">Сите</option>');
+      //                  for (k = 0; k < result.attributes.length; k++) {
+      //                      debugger;
+      //                      $('#dropDownAttributes').append('<option value=' + result.attributes[k] + '>' + result.attributes[k] + '</option>');
+      //                  }
+      //              }
+      //              if (result.products.length > 10) {
+      //                  $('#scroll_right').css('display', 'block');
+      //              }
+      //              var count_next_container = -1;
+      //              for (x = 0; x < result.products.length; x++) {
+                      
+      //                  if (x == 0 || ((x / 10) % 1 != 0) == false) {
+      //                      count_next_container++;
+      //                      var productImage = result.products[x].split('#')[1].split('@@')[0];
+      //                      var productDescription = result.products[x].split('#')[1].split('@@')[1];
+      //                      var productTitle = result.products[x].split('#')[0];
+      //                      $('#products_selection').append('<div class="products_frame"><div class="frame_title">'
+      //                      + '<h3>' + typeName + '</h3>'
+      //                      + '</div><div id="prod_container_' + count_next_container + '" class="products_group">'
+      //                      + '<a href="javascript:void(0)"><div class="product">'
+      //                      + '<p class="fullDescription">' + productDescription + '</p>'
+      //                      + '<div class="product_image">'
+      //                      + '<img src="' + productImage + '"></img></div>'
+      //                      + '<div class="product_title">' + productTitle + '</div>'
+      //                      + '<div class="product_description"></div>'
+      //                      + '</div></a>'
+      //                      + '</div>');
+      //                  }
+      //                  else {
+      //                      var count = count_next_container.toString();
+      //                      var productDescription = result.products[x].split('#')[1].split('@@')[1];
+      //                      var productImage = result.products[x].split('#')[1].split('@@')[0];
+      //                      var productTitle = result.products[x].split('#')[0];
+      //                      $('#prod_container_' + count).append(
+      //                      '<a href="javascript:void(0)"><div class="product"><div class="product_image">'
+      //                      + '<p class="fullDescription">' + productDescription + '</p>'
+      //                      + '<img src="' + productImage + '"></img></div>'
+      //                      + '<div class="product_title">' + productTitle + '</div>'
+      //                      + '<div class="product_description"></div>'
+      //                      + '</div></a>');
+      //                  }
+      //              }
+      //              setScrolling();
+      //              productDetails();
+      //          }
+      //      });
+      //  }
+
+      //  $('#dropDownAttributes').live('change', function (event) {
+      //      $('#main_content').empty();
+      //      var attributeValue = $("#dropDownAttributes option:selected").text();
+      //      var type_name = $("#products_submenu h3").text();
+      //      showProducts(classID, companyID, typeID, type_name, attributeValue);
+      //      attributeName = attributeValue;
+      //  });
+
+
+      //  function setScrolling() {
+      //      var hidden = true;
+      //      var frame_index = 1;
+      //      var frame_length = $(".products_frame").length;
+      //      debugger;
+
+
+      //      $("#scroll_left").click(function () {
+      //          if (frame_index > 1) {
+      //              position = "+=770px";
+      //              $('#products_selection').animate(
+      //                  { left: position },
+      //                  1200,
+      //                  'easeInOutQuint'
+      //              );
+      //              frame_index--;
+      //          }
+      //      });
+
+      //      $("#scroll_right").click(function () {
+      //          $('#scroll_left').css('display', 'block');
+      //          debugger;
+      //          if (frame_index < frame_length) {
+      //              position = "-=770px";
+      //              $('#products_selection').animate(
+      //                  { left: position },
+      //                  800,
+      //                  'easeInOutQuint'
+      //              );
+      //              frame_index++;
+      //          }
+      //      });
+
+      //      $(".product").mouseenter(function () {
+      //          var styles =
+      //          {
+      //              zIndex: "25",
+      //              backgroundColor: "#fefdfc",
+      //              color: "#506e80",
+      //              opacity: "0.9",
+      //              boxShadow: "0px 0px 20px 5px #c7c7c7"
+      //          };
+      //          $(this).css(styles);
+      //      });
+
+      //      $(".product").mouseleave(function () {
+      //          var styles =
+      //          {
+      //              zIndex: "20",
+      //              backgroundColor: "#ffffff",
+      //              borderColor: "#d7d7d7",
+      //              color: "#809eb0",
+      //              opacity: "1",
+      //              boxShadow: "0px 0px 0px 0px #979797"
+      //          };
+      //          $(this).css(styles);
+      //      });
+      //  }
+
+      //  function productDetails() {
+      //      $(".product").click(function () {
+      //          $('#layer_3').show();
+      //          var styles =
+      //          {
+      //              width: "2px",
+      //              height: "2px",
+      //              top: "320px"
+      //          };
+      //          $('#product_details').css(styles);
+      //          var content_styles =
+      //          {
+      //              display: "none",
+      //              opacity: "0"
+      //          };
+      //          $('#product_details_content').css(content_styles);
+      //          $('#product_details_close').css('display', 'none');
+
+      //          var title = $(this).find('.product_title').text();
+      //          $('#details_title h4').text(title);
+      //          var description = $(this).find('.product_description').text();
+      //          $('#details_subtitle').text(description);
+      //          var image = $(this).find('.product_image').html() + "</img>";
+      //          $('#details_image').html(image); //debugger;
+      //          var fullDescription = $(this).find('.fullDescription').text();
+      //          $('#details_order').text(fullDescription);
+      //          $('#layer_4').show(800, function () {
+      //              $('#product_details').animate(
+      //                  {
+      //                      width: "900px",
+      //                      height: "622px",
+      //                      top: "0px"
+      //                  },
+      //                  600,
+      //                  "linear",
+      //                  function () {
+      //                      $('#product_details_content').css('display', 'block');
+      //                      $('#product_details_content').animate(
+      //                          {
+      //                              opacity: "1"
+      //                          },
+      //                          1000,
+      //                          function () {
+      //                              $('#product_details_close').css('display', 'block');
+      //                          }
+      //                      );
+      //                  }
+      //              );
+      //          });
+      //      });
+
+      //      $('#product_details_close').click(function () {
+      //          $('#layer_4').animate(
+      //              {
+      //                  opacity: "0"
+      //              },
+      //              300,
+      //              function () {
+      //                  var layer_4_styles =
+      //                  {
+      //                      display: "none",
+      //                      opacity: "1"
+      //                  };
+      //                  $('#layer_4').css(layer_4_styles);
+      //                  $('#layer_3').animate(
+      //                      { opacity: "0" },
+      //                      1000,
+      //                      function () {
+      //                          var layer_3_styles =
+      //                          {
+      //                              display: "none",
+      //                              opacity: "0.3"
+      //                          };
+      //                          $('#layer_3').css(layer_3_styles);
+      //                      }
+      //                  );
+      //              }
+      //          );
+      //      });*@

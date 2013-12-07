@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="BelinaModel.Administrator" Width="1.5" PointX="8.75" PointY="3.375" />
         <EntityTypeShape EntityType="BelinaModel.Attributes" Width="1.5" PointX="7" PointY="0.875" />
         <EntityTypeShape EntityType="BelinaModel.Type" Width="1.5" PointX="5.25" PointY="0.875" />
-        <EntityTypeShape EntityType="BelinaModel.Products" Width="1.5" PointX="10.548577408561751" PointY="6.70377369537194" />
+        <EntityTypeShape EntityType="BelinaModel.Products" Width="1.5" PointX="3.875" PointY="2.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

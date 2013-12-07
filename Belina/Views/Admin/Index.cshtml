@@ -27,12 +27,23 @@
             <p>Едитирање</p>
         </a>
     </div>
-    <div id="register">
+    <div id="register" style="position:relative">
+        <div style="position:absolute;top:0px;right: 0px;">
+            <form id="logout_form" action="/Account/LogOff" method="post">
+                <a href="#" onclick="Logout()">Logout</a>
+            </form>
+        </div>
         <a href="/Account/Register">
             <img style="width: 30%;" src="~/Content/sliki/Register-icon.png" />
             <p>Регистрирање нови администратори</p>
             @* <p>@Html.ActionLink("Регистрирање нови корисници", "Register", "Account")</p>*@
         </a>
     </div>
+
+    <script type="text/javascript">
+        function Logout() {
+            $("#logout_form").submit();
+        }
+    </script>
 </body>
 </html>

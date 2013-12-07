@@ -1,28 +1,86 @@
 ﻿
 @{
-    Layout = "~/Views/Shared/SiteMaster.cshtml";
-}
+    Layout = "~/Views/Shared/SiteMaster.cshtml"; 
+} 
+      <div id="banner-fade" style="min-width:1024px;">
 
-			@*	<div id="product1">Производ А</div>
-				<div id="product2">Производ Б</div>
-				<div id="product3">Производ В</div>
-				<div id="annyer"><img src="~/Content/sliki/d28A.jpg"></img></div>*@
+        <!-- start Basic Jquery Slider -->
+        <ul class="bjqs">
+            <li>
+                <img src="../../Content/sliki/8-2.png" title="Бои и лакови">
+                <meta name="Бои и лакови" content="Располагаме со различни видови на бои и лакови: за внатрешна употреба, за надворешна употреба, лакови, премази. Главни увозници на производите на Крафт, Вебер.."/>
+            </li>
+@*          <li><img src="../../Content/sliki/7.png" title="Text 1"></li>*@
+          <li>
+              <img src="../../Content/sliki/6-1.png" title="Земјоделски алат">
+                <meta name="Земјоделски алат" content="Располагаме со различен земјоделски алат: трактори и опрема за трактори, лопати, мотики, ашови, кофи. Главни увозници на Мута, Товална Мерил.."/>
+          </li>
+          <li>
+              <img src="../../Content/sliki/2-1.png" title="Огради">
+              <meta name="Огради" content="Вршиме монтирање на огради со различни димензии од метар на метар, до четири метри на метро и дваесет сантими"/>
+          </li>
+        </ul>
+        <!-- end Basic jQuery Slider -->
 
+      </div>
+      <!-- End outer wrapper -->
+
+      <script class="secret-source">
+          $(document).ready(function ($) {
+
+              $('#banner-fade').bjqs({
+                  height: 500,
+                  width: 2000,
+                  responsive: true
+              });
+
+          });
+      </script>
+<div id="home-page-products">
+<div class="title">Промоција на производи</div>
+<div id="products-promotion"></div>
+    <div style="clear:both"></div>
+    <div class="title">Официјални претставници на</div>
+ <div id="product-companies">
+     <div class="fcompanies"><img src="../Content/sliki/kraft-logo.png" /></div>
+     <div class="companies"><img src="../Content/sliki/renco-logo.png" /></div>
+     <div class="companies"><img src="../Content/sliki/kocevar-logo.png" /></div>
+     <div class="companies"><img src="../Content/sliki/belinka-logo.png" /></div>
+     <div class="companies"><img src="../Content/sliki/weber-logo.png" /></div>
+     <div class="companies"><img src="../Content/sliki/tokos-logo.png" /></div>
+     <div class="lcompanies"><img src="../Content/sliki/muta-logo.png" /></div>
+ </div>
+    </div>
 
   <script type="text/javascript">
-  
-      $(document).ready(function () {
+
+     
+          var desc="";
           $.ajax({
               url: "/Home/get_promotionProduct",
               type: "GET",
               data: {},
               success: function (result) {
-                //    debugger;
-                    for (i = 0; i < 10; i++) {
-                        $('#main_content').append('<div id="product_' + i + '"><img style="width:90px;height:90px;vertical-align: middle;" src="' + result[i].product_image + '" /></div>');
-                    }
+                  for (i = 0; i < result.length; i++) {
+                      if (result[i].product_description != null) {
+                          desc = result[i].product_description;
+                      }
+                      $('#products-promotion').append('<div class="home-page-product" id="product_' + i + '">'
+                          + '<div class="top-product-holder">'
+                             + '<p class="product-title">' + result[i].product_name + '</p>'
+                          + '</div>'
+                              + '<div class="middle-product-holder">'
+                                  +'<img class="image-holder" src="' + result[i].product_image + '" />'
+                                  + '<div class="home-product-description"><p>' + desc.slice(0, 360) + "..." + '</p></div>'
+                              + '</div>'
+                              +'<div class="bottom-product-holder">'
+                                + '<div class="more-container"><a href="/Home/ProductInfo?id=' + result[i].product_id + '">повеќе</a></div>'
+                              + '</div>'
+                          + '</div>');
+                      desc = "";
                   }
+              }
           });
-      });
-      
+   
+
   </script>

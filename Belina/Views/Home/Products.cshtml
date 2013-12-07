@@ -1,0 +1,278 @@
+﻿@{
+    ViewBag.Title = "Products";
+}
+
+@{
+    var pageId = ViewBag.pageId;
+    var companyId = ViewBag.companyId;
+    var TypeList = (List<Belina.Models.Type>)ViewBag.allItems;
+    var Companies = (List<Belina.Models.Company>)ViewBag.Companies;
+    var AllProducts = (List<Belina.Models.Products>)ViewBag.AllProducts;
+    var Attributes = (List<Belina.Models.Attributes>)ViewBag.Attributes;
+    var typeId = ViewBag.TypeId;
+    var pagingLength = ViewBag.pagingLength;
+    //var random_Product = ViewBag.randomProd;//random elementot od listata
+}
+<style>
+    #left-container {
+        width: 210px;
+        float: left;
+        margin-top: 50px;
+       
+    }
+
+    #products {
+        float: right;
+        width: 810px;
+        margin-top: 50px;
+        border-left: 2px solid #E3E3E3;
+        min-height: 700px;
+    }
+
+    #main-content {
+        width: 1024px;
+        margin: auto;
+        min-height: 750px;
+    }
+
+    .margin-left {
+        margin-left: 13px;
+    }
+
+    .highlightTypes {
+        background-color: #547b32;
+        color: white !important;
+    }
+    .highlightCompany {
+        background-color: #547b32;
+        color: white !important;
+    }
+        .highlightAttr {
+        background-color: #547b32;
+        color: white !important;
+    }
+
+</style>
+<div id="left-container">
+    <div id="Types">
+        <div class="title-holder">
+            <h3>Типови</h3>
+        </div>
+        <div id="type-holder">
+            @foreach (var item in TypeList)
+            {
+                <p>
+                    <a href="/Home/Products?id=@pageId&type=@item.type_id&company=0&attr=all">@item.type_name</a>
+                </p>
+            }
+        </div>
+    </div>
+    <div id="companies">
+        <div class="title-holder">
+            <h3>Производител</h3>
+        </div>
+        <div id="company-holder">
+            @foreach (var company in Companies)
+            {
+                if (@typeId != null)
+                {
+                <p>
+                    <a href="/Home/Products?id=@pageId&type=@typeId&company=@company.company_id&attr=all">@company.company_name</a>
+                </p>
+                }
+                else
+                {
+                <p>
+                    <a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=@company.company_id&attr=all">@company.company_name</a>
+                </p>
+                }
+            }
+        </div>
+    </div>
+    <div id="attributes">
+        <div class="title-holder">
+            <h3>Карактеристика</h3>
+        </div>
+        <div id="attr-holder">
+            @{
+                int i = 0;
+            }
+            @foreach (var attr in Attributes)
+            {
+
+                if (@companyId != null && @typeId != null && @pageId != null)
+                {
+                    if (i == 0)
+                    {
+                        <p>
+                            <a href="/Home/Products?id=@pageId&type=@typeId&company=@companyId&attr=all">сите</a>
+                        </p>
+                        i++;
+                    }
+                        <p>
+                            <a href="/Home/Products?id=@pageId&type=@typeId&company=@companyId&attr=@attr.attribute_id">@attr.attribute_name</a>
+                        </p>
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        <p><a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=@Companies[0].company_id&attr=all">сите</a></p>
+                        i++;
+                    }
+                    <p>
+                        <a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=@Companies[0].company_id&attr=@attr.attribute_id">@attr.attribute_name</a>
+
+                    </p>
+                }
+
+            }
+        </div>
+    </div>
+</div>
+<div id="products">
+    @*    <div class="product-on-top-promotion">
+        <div class="product-on-top-image">
+            <div class="product-on-top-image-holder">
+                <img src="@random_Product.product_image" />
+            </div> 
+        </div>
+        <div class="product-on-top-description">
+            <div class="product-on-top-title">
+                <h1>@random_Product.product_name</h1>
+            </div>
+        </div>
+    </div>*@
+    @foreach (var product in AllProducts)
+    {
+        <div class="product-page-product margin-left">
+            <div class="product-top-product-holder">
+                <p class="product-product-title">@product.product_name</p>
+            </div>
+            <div class="product-middle-product-holder">
+                <img class="image-holder" src="@product.product_image" />
+                <div class="product-product-description">
+                    @{if (@product.product_description == null)
+                      { 
+                        <p>...</p>
+                      }
+                      if (@product.product_description != null)
+                      {
+                          if (@product.product_description.Length > 215)
+                          {
+                           <p>@product.product_description.Substring(0, 215)...</p>
+                          }
+                          else
+                          {
+                           <p>@product.product_description...</p>
+                          }
+                      }
+                    }
+                </div>
+            </div>
+            <div class="product-bottom-product-holder">
+                <div class="more-container"><a href="/Home/ProductInfo?id=@product.product_id">повеќе</a></div>
+            </div>
+        </div>
+    }
+</div>
+<div id="paging">
+
+@{
+  int j = 1;
+    for (int k = 0; k <= Convert.ToInt32(@pagingLength);k++ )
+    {
+    <a href="/Home/Products?id=@pageId&type=0&company=0&attr=all&pageId=@k">@(k+1)</a>
+    }
+}
+</div>
+<script type="text/javascript">
+
+    var type;
+    $(document).ready(function () {
+
+        var str = location.href.toLowerCase();
+        if (str.split("&")[1].split("=")[1] == 0) {
+            $("#Types a:first").addClass("highlightTypes");
+        }
+        else {
+            $("#Types a").each(function () {
+                debugger;
+                if (this.href.toLowerCase().split("&")[1].split("=")[1] == str.split("&")[1].split("=")[1]) {
+                    $("#Types a.highlightTypes").removeClass("highlightTypes");
+                    $(this).addClass("highlightTypes");
+                }
+            });
+        }
+
+        if (str.split("&")[2].split("=")[1] == 0) {
+            $("#companies a:first").addClass("highlightTypes");
+        }
+        else {
+            $("#companies a").each(function () {
+                debugger;
+                if (this.href.toLowerCase().split("&")[2].split("=")[1] == str.split("&")[2].split("=")[1]) {
+                    // debugger;
+                    $("#companies a.highlightTypes").removeClass("highlightTypes");
+                    $(this).addClass("highlightTypes");
+                }
+            });
+        }
+
+        if (str.split("&")[3].split("=")[1] == "all") {
+            $("#attributes a:first").addClass("highlightTypes");
+        }
+        else {
+            $("#attributes a").each(function () {
+                debugger;
+                if (this.href.toLowerCase().split("&")[3].split("=")[1] == str.split("&")[3].split("=")[1]) {
+                    $("#attributes a.highlightTypes").removeClass("highlightTypes");
+                    $(this).addClass("highlightTypes");
+                }
+            });
+        }
+    });
+
+
+
+    //if (sessionStorage["scrollPostion"] == undefined) {
+    //    sessionStorage.setItem("scrollPostion", 0);
+    //}
+    //var scrollP = sessionStorage['scrollPostion'];
+    //$('#left-container').scrollTop(scrollP);
+    //$(window).scroll(function () {
+
+    //    if ($(this).scrollTop() < 40) {
+    //        $("#left-container").css("top", 210);
+    //    }
+    //    if ($(this).scrollTop() == 40) {
+    //        $("#left-container").css("top", 170);
+    //    }
+    //    if ($(this).scrollTop() > 40 && $(this).scrollTop() < 210) {
+
+    //        $("#left-container").css("top", 210 - $(this).scrollTop());
+    //    }
+    //    if ($(this).scrollTop() == 400) {
+
+    //        $('#left-container').css("top", -20)
+    //    }
+    //    if ($(this).scrollTop() == 440) {
+
+    //        $('#left-container').css("top", -30)
+    //    }
+    //    //if ($(this).scrollTop() > 210 && $("#products").height() > 600) {
+    //    //    debugger;
+    //    //    $("#left-container").css("top", 10);
+    //    //}
+    //    if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+    //        $("#left-container").css("top", -100);
+    //    }
+    //});
+    //$('#left-container').bind('mousewheel DOMMouseScroll', function (e) {
+    //    var delta = e.wheelDelta || -e.detail;
+    //    this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+    //    e.preventDefault();
+    //    sessionStorage["scrollPostion"] = $('#left-container').scrollTop();
+    //});
+    // 
+</script>

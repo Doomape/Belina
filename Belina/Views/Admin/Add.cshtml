@@ -146,7 +146,6 @@
     //    //your validation
     //});
     $('#product').click(function () {
-        debugger;
         var allDataFromTheForm = new FormData($('form')[0]);//Site vrednosti od formata spored Name
         $.ajax({
             url: "/Admin/insertProduct",
@@ -175,7 +174,6 @@
         }
     }
         $('#class').click(function () {
-            debugger;
             var className = $('#className').val();
             $.ajax({
                 url: "/Admin/insertClasses",
@@ -188,7 +186,6 @@
             });
         });
         $('#type').click(function () {
-            debugger;
             var typeName = $('#typeName').val();
             $.ajax({
                 url: "/Admin/insertType",
@@ -201,7 +198,6 @@
             });
         });
         $('#company').click(function () {
-            debugger;
             var companyName = $('#companyName').val();
             $.ajax({
                 url: "/Admin/insertCompany",
@@ -214,7 +210,6 @@
             });
         });
         $('#attribute').click(function () {
-            debugger;
             var attributeName = $('#attributeName').val();
             $.ajax({
                 url: "/Admin/insertAttribute",

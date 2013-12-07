@@ -53,7 +53,7 @@
           <Property Name="type_id" Type="int" />
           <Property Name="attribute_id" Type="int" />
           <Property Name="product_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="product_description" Type="nvarchar" MaxLength="250" />
+          <Property Name="product_description" Type="nvarchar(max)" />
           <Property Name="product_promotion" Type="nvarchar" MaxLength="250" />
           <Property Name="product_discount" Type="bit" />
           <Property Name="product_image" Type="nvarchar" MaxLength="250" />
@@ -149,7 +149,7 @@
           <Property Type="Int32" Name="type_id" />
           <Property Type="Int32" Name="attribute_id" />
           <Property Type="Int32" Name="product_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="product_description" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="product_description" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="product_promotion" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="product_discount" />
           <Property Type="String" Name="product_image" MaxLength="250" FixedLength="false" Unicode="true" />

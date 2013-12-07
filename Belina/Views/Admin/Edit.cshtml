@@ -199,7 +199,6 @@
             mygrid_products.setAwaitedRowHeight(21);
             mygrid_products.enablePreRendering(50);
             mygrid_products.attachEvent("onEditCell", function (stage, rId, cInd, nValue, oValue) {
-                debugger;
                 if (stage == 0 && cInd == 0) {
                     switch (mygrid_products.cellById(rId, cInd).getValue()) {
                         case "0":
@@ -213,7 +212,6 @@
                     }
                 }
                 if (stage == 0 && cInd == 8) {
-                    debugger;
                     switch (mygrid_products.cellById(rId, cInd).getValue()) {
                         case "0":
                             $.ajax({
@@ -585,6 +583,7 @@
         function uploadPhoto(id) {
             var allDataFromTheForm = new FormData($('form[name=' + id + ']')[0]);
             allDataFromTheForm.append("id", id);
+            debugger;
             $.ajax({
                 url: "/Admin/uploadPhoto_con",
                 type: "POST",
@@ -607,7 +606,6 @@
         function multiple_uploadPhoto() {
             var allDataFromTheForm = new FormData($('form[name="multipleUpload"]')[0]);
             allDataFromTheForm.append("id", mygrid_products.getCheckedRows(0));
-            debugger;
             $.ajax({
                 url: "/Admin/multiple_uploadPhoto_con",
                 type: "POST",
