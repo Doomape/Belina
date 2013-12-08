@@ -82,11 +82,12 @@ namespace Belina.Controllers
                                 where
                                 c.class_id == id && t.type_id == typeId && comp.company_id == companyID
                                                select product).ToList();
-               
-                var Page = pageId != null ? pageId : 1;
+
+                var Page = pageId != null ? pageId : 0;
                 int currentPageId = Convert.ToInt32(Page);
-                var mater = allProducts.Skip(currentPageId*10).Take(10).ToList();
-                ViewBag.pagingLength = allProducts.Count()/10;
+                var mater = allProducts.Skip(currentPageId*15).Take(15).ToList();
+                double g = allProducts.Count() / 15.0;
+                ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
                 ViewBag.AllProducts = mater;
             }
             #endregion
@@ -157,12 +158,13 @@ namespace Belina.Controllers
                                                    c.class_id == id && t.type_id == type && comp.company_id == companyId
                                                    select product).Distinct().ToList();
 
-                    var mater = allProducts.Skip(1).Take(10).ToList();
-                    ViewBag.paging = mater;
-                    ViewBag.AllProducts = allProducts;
+                    var PageSpec = pageId != null ? pageId : 0;
+                    int currentPageIdSpec = Convert.ToInt32(PageSpec);
+                    var mater = allProducts.Skip(currentPageIdSpec * 15).Take(15).ToList();
+                    double g = allProducts.Count() / 15.0;
+                    ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
+                    ViewBag.AllProducts = mater;
                 }
-
-                
             }
             #endregion
             return View();
