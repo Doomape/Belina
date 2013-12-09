@@ -195,6 +195,7 @@
     </Compile>
     <Compile Include="Helpers\LargeJsonResult.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Administrator.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
@@ -222,6 +223,7 @@
     <Compile Include="Models\Company.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EditAdmin.cs" />
     <Compile Include="Models\MyMembershipProvider.cs" />
     <Compile Include="Models\Products.cs">
       <DependentUpon>BelinaEntity.tt</DependentUpon>
@@ -718,6 +720,8 @@
     <Content Include="Views\Home\Products.cshtml" />
     <Content Include="Views\Shared\SiteMaster.cshtml" />
     <Content Include="Views\Home\ProductInfo.cshtml" />
+    <Content Include="Views\Account\ShowAdmins.cshtml" />
+    <Content Include="Views\Account\EditAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

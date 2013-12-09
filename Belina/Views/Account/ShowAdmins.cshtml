@@ -1,0 +1,45 @@
+﻿@model List<Belina.Models.Admin>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ShowAdmins</title>
+    <script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"></script>
+</head>
+<body>
+    <div>
+        <table>
+            <th>@Html.LabelFor(x => x[0].user_name)</th>
+            <th>@Html.LabelFor(x => x[0].user_email)</th>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    @Html.HiddenFor(x => x[i].user_id, new { @class = "user_id"})
+                    <td>@Html.LabelFor(x => x[i].user_name, Model[i].user_name)</td>
+                    <td>@Html.LabelFor(x => x[i].user_email, Model[i].user_email)</td>
+                    <td><input type="button" value="Измени" class="ChangePass" /> </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        $(".ChangePass").click(function () {
+
+        var admin_id = $($(this).parent().siblings(".user_id")[0]).val();
+
+        var link = '@Url.Action("EditAdmin", "Account", new { id = "-1" })';
+            link = link.replace("-1", admin_id);
+
+            window.location = link;
+        });
+    </script>
+</body>
+
+</html>

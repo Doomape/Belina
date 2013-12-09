@@ -143,7 +143,12 @@ namespace Belina.Controllers
                                                    c.class_id == id && t.type_id == type && comp.company_id == companyId
                                                    && a.attribute_id == attribute
                                                    select product).Distinct().ToList();
-                    ViewBag.AllProducts = allProducts;
+                    var PageSpec = pageId != null ? pageId : 0;
+                    int currentPageIdSpec = Convert.ToInt32(PageSpec);
+                    var mater = allProducts.Skip(currentPageIdSpec * 15).Take(15).ToList();
+                    double g = allProducts.Count() / 15.0;
+                    ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
+                    ViewBag.AllProducts = mater;
                 }
                 if (attr == "all")
                 {
