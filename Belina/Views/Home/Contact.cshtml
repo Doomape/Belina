@@ -35,7 +35,7 @@
 
     .contact_form {
         float: left;
-        width: 400px;
+        width: 360px;
     }
 </style>
 <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
@@ -190,16 +190,14 @@
         map = new google.maps.Map(document.getElementById("map"), myOptions);
         google.maps.event.trigger(map, 'resize');
 
-        marker = new google.maps.Marker
-        (
-            {
-
-                position: new google.maps.LatLng(41.935595, 21.525618),
-                map: map,
-                title: 'Click me'
-
-            }
-        );
+        var image = '../Images/maps_logo.png';
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(41.935595, 21.525618),
+            map: map,
+            icon: image,
+            title: 'Белина'
+        });
+        
 
         var infowindow = new google.maps.InfoWindow({
             content: 'Location info: St. Ratko Mitrovic bb 1000 Skopje, Macedonia - '
