@@ -1,0 +1,42 @@
+﻿@model Belina.Models.EditAdmin
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditAdmin</title>
+</head>
+<body>
+@using (Html.BeginForm("SaveAdmin", "Account", FormMethod.Post))
+{ 
+    @Html.HiddenFor(x => x.ID)
+    <div>
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+    </div>
+    <div>
+        @Html.LabelFor(x => x.Mail)
+        @Html.TextBoxFor(x => x.Mail)
+    </div>
+    <div>
+        @Html.LabelFor(x => x.NewPassword)
+        @Html.TextBoxFor(x => x.NewPassword)
+    </div>
+    <div>
+        @Html.LabelFor(x => x.ConfirmPassword)
+        @Html.TextBoxFor(x => x.ConfirmPassword)
+    </div>
+    <div>
+        <input type="submit" value="Измени"/>
+    </div>
+    <div>
+        @Html.ValidationSummary()
+    </div>
+}
+</body>
+</html>

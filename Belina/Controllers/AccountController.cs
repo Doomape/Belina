@@ -28,7 +28,66 @@ namespace Belina.Controllers
 
             base.Initialize(requestContext);
         }
-        
+
+        public ActionResult ShowAdmins()
+        {
+            var all_admins = db.Administrator.ToList();
+            List<Admin> admins = new List<Admin>();
+            foreach(var admin in all_admins)
+            {
+                Admin new_admin = new Admin()
+                {
+                    user_id = admin.user_id,
+                    user_name = admin.user_name,
+                    user_email = admin.user_email
+                };
+                admins.Add(new_admin);
+            }
+            return View(admins);
+        }
+
+        public ActionResult EditAdmin(int id)
+        {
+            var admin = db.Administrator.FirstOrDefault(x => x.user_id == id);
+            EditAdmin edit_admin = new EditAdmin()
+            {
+                ID = id,
+                Mail = admin.user_email,
+                Name = admin.user_name
+            };
+            return View(edit_admin);
+        }
+
+        public ActionResult SaveAdmin(EditAdmin admin_model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var admin = db.Administrator.FirstOrDefault(x => x.user_id == admin_model.ID);
+                    if (admin != null)
+                    {
+                        System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+                        byte[] bs = System.Text.Encoding.UTF8.GetBytes(admin_model.NewPassword);
+                        bs = md5.ComputeHash(bs);
+
+                        admin.user_email = admin_model.Mail;
+                        admin.user_name = admin_model.Name;
+                        admin.user_pass = bs;
+
+                        db.SaveChanges();
+                    }
+
+                    return RedirectToAction("Index", "Admin");
+                }
+                catch(Exception ex)
+                {
+                    return View("EditAdmin", admin_model);
+                }
+            }
+            return View("EditAdmin", admin_model);
+        }
+
         [AllowAnonymous]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Login(string returnUrl)
