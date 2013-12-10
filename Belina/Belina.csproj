@@ -629,6 +629,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>BelinaEntity.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\favicon.ico" />
+    <Content Include="Images\maps_logo.png" />
     <Content Include="Models\BelinaEntity.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BelinaEntity.edmx</DependentUpon>
