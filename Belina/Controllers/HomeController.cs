@@ -20,34 +20,13 @@ namespace Belina.Controllers
             return View();
         }
        
-        public ActionResult Products(int id, int type, int company, String attr, int? pageId)
+        public ActionResult Products(int id, int type, String company, String attr, int? pageId)
         {
             IList<Belina.Models.Type> allTypes;
             IList<Company> companies;
 
-            //var randomProduct = (from x in db.Products
-            //                               join c in db.Class on x.class_id equals c.class_id
-            //                               join t in db.Type on x.type_id equals t.type_id
-            //                               join com in db.Company on x.company_id equals com.company_id
-            //                               join atr in db.Attributes on x.attribute_id equals atr.attribute_id
-            //                               where x.class_id == id
-            //                               select
-            //                                   new
-            //                                   {
-            //                                       x.product_id,
-            //                                       x.product_name,
-            //                                       x.product_image,
-            //                                       x.product_description,
-            //                                       c.class_name,
-            //                                       t.type_name,
-            //                                       com.company_name,
-            //                                       atr.attribute_name
-            //                                   }).ToList();
-            //var rand = new Random();
-            //var randomPt = randomProduct[rand.Next(randomProduct.Count())];
-            //ViewBag.randomProd = new RandomProduct(randomPt.class_name, randomPt.product_id, randomPt.product_name, randomPt.product_image, randomPt.product_description, randomPt.type_name, randomPt.company_name, randomPt.class_name, randomPt.attribute_name);
             #region if type == 0
-            if (type == 0 && company == 0 && attr == "all")
+            if (type == 0 && company == "all" && attr == "all")
             {
                 allTypes = (from products in db.Products
                                                       join t in db.Type on products.type_id equals t.type_id
@@ -71,7 +50,7 @@ namespace Belina.Controllers
                                                join c in db.Class on p.class_id equals c.class_id
                                                join comp in db.Company on p.company_id equals comp.company_id
                                                join a in db.Attributes on p.attribute_id equals a.attribute_id
-                                               where c.class_id == id && t.type_id == typeId && comp.company_id == companyID
+                                               where c.class_id == id && t.type_id == typeId
                                                select a).Distinct().ToList();
                 ViewBag.Attributes = attributes;
                 
@@ -80,19 +59,19 @@ namespace Belina.Controllers
                                 join comp in db.Company on product.company_id equals comp.company_id
                                 join c in db.Class on product.class_id equals c.class_id
                                 where
-                                c.class_id == id && t.type_id == typeId && comp.company_id == companyID
+                                c.class_id == id && t.type_id == typeId
                                                select product).ToList();
 
                 var Page = pageId != null ? pageId : 0;
                 int currentPageId = Convert.ToInt32(Page);
-                var mater = allProducts.Skip(currentPageId*15).Take(15).ToList();
-                double g = allProducts.Count() / 15.0;
+                var mater = allProducts.Skip(currentPageId*12).Take(12).ToList();
+                double g = allProducts.Count() / 12.0;
                 ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
                 ViewBag.AllProducts = mater;
             }
             #endregion
             #region if id != 0
-            if (id!=0&&type!=0)
+            if (id != 0 && type != 0)
             {
                 //int type, int company,int attr
                 allTypes = (from products in db.Products
@@ -101,7 +80,7 @@ namespace Belina.Controllers
                             where
                                 c.class_id == id
                             select t).Distinct().ToList();
-               
+
                 companies = (from products in db.Products
                              join t in db.Type on products.type_id equals t.type_id
                              join comp in db.Company on products.company_id equals comp.company_id
@@ -113,63 +92,117 @@ namespace Belina.Controllers
                 ViewBag.Companies = companies;
                 ViewBag.TypeId = type;
                 int companyId;
-                if (company == 0)
+                if (company == "all")
                 {
-                    companyId = Convert.ToInt32(companies[0].company_id);
+                    
+                    List<Attributes> attributes = (from p in db.Products
+                                                   join t in db.Type on p.type_id equals t.type_id
+                                                   join c in db.Class on p.class_id equals c.class_id
+                                                   join comp in db.Company on p.company_id equals comp.company_id
+                                                   join a in db.Attributes on p.attribute_id equals a.attribute_id
+                                                   where c.class_id == id && t.type_id == type
+                                                   select a).Distinct().ToList();
+                    ViewBag.Attributes = attributes;
+                    ViewBag.companyId = "all";
+
+
+                    int attribute;
+                    if (attr != "all")
+                    {
+                        attribute = Convert.ToInt32(attr);
+                        IList<Products> allProducts = (from product in db.Products
+                                                       join t in db.Type on product.type_id equals t.type_id
+                                                       join comp in db.Company on product.company_id equals comp.company_id
+                                                       join c in db.Class on product.class_id equals c.class_id
+                                                       join a in db.Attributes on product.attribute_id equals a.attribute_id
+                                                       where
+                                                       c.class_id == id && t.type_id == type
+                                                       && a.attribute_id == attribute
+                                                       select product).Distinct().ToList();
+                        var PageSpec = pageId != null ? pageId : 0;
+                        int currentPageIdSpec = Convert.ToInt32(PageSpec);
+                        var mater = allProducts.Skip(currentPageIdSpec * 12).Take(12).ToList();
+                        double g = allProducts.Count() / 12.0;
+                        ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
+                        ViewBag.AllProducts = mater;
+                    }
+                    if (attr == "all")
+                    {
+                        var Page = pageId != null ? pageId : 1;
+                        int currentPageId = Convert.ToInt32(Page);
+
+                        IList<Products> allProducts = (from product in db.Products
+                                                       join t in db.Type on product.type_id equals t.type_id
+                                                       join comp in db.Company on product.company_id equals comp.company_id
+                                                       join c in db.Class on product.class_id equals c.class_id
+                                                       where
+                                                       c.class_id == id && t.type_id == type
+                                                       select product).Distinct().ToList();
+
+                        var PageSpec = pageId != null ? pageId : 0;
+                        int currentPageIdSpec = Convert.ToInt32(PageSpec);
+                        var mater = allProducts.Skip(currentPageIdSpec * 12).Take(12).ToList();
+                        double g = allProducts.Count() / 12.0;
+                        ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
+                        ViewBag.AllProducts = mater;
+                    }
                 }
                 else
                 {
-                    companyId = company;
-                }
-                ViewBag.companyId = companyId;
-                List<Attributes> attributes = (from p in db.Products
-                                               join t in db.Type on p.type_id equals t.type_id
-                                               join c in db.Class on p.class_id equals c.class_id
-                                               join comp in db.Company on p.company_id equals comp.company_id
-                                               join a in db.Attributes on p.attribute_id equals a.attribute_id
-                                               where c.class_id == id && t.type_id == type && comp.company_id == companyId
-                                               select a).Distinct().ToList();
-                ViewBag.Attributes = attributes;
-                int attribute;
-                if(attr!="all")
-                {
-                    attribute = Convert.ToInt32(attr);
-                    IList<Products> allProducts = (from product in db.Products
-                                                   join t in db.Type on product.type_id equals t.type_id
-                                                   join comp in db.Company on product.company_id equals comp.company_id
-                                                   join c in db.Class on product.class_id equals c.class_id
-                                                   join a in db.Attributes on product.attribute_id equals a.attribute_id
-                                                   where
-                                                   c.class_id == id && t.type_id == type && comp.company_id == companyId
-                                                   && a.attribute_id == attribute
-                                                   select product).Distinct().ToList();
-                    var PageSpec = pageId != null ? pageId : 0;
-                    int currentPageIdSpec = Convert.ToInt32(PageSpec);
-                    var mater = allProducts.Skip(currentPageIdSpec * 15).Take(15).ToList();
-                    double g = allProducts.Count() / 15.0;
-                    ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
-                    ViewBag.AllProducts = mater;
-                }
-                if (attr == "all")
-                {
-                var Page = pageId != null ? pageId : 1;
-                int currentPageId = Convert.ToInt32(Page);
-                
-                    IList<Products> allProducts = (from product in db.Products
-                                                   join t in db.Type on product.type_id equals t.type_id
-                                                   join comp in db.Company on product.company_id equals comp.company_id
-                                                   join c in db.Class on product.class_id equals c.class_id
-                                                   where
-                                                   c.class_id == id && t.type_id == type && comp.company_id == companyId
-                                                   select product).Distinct().ToList();
+                    companyId = Convert.ToInt32(company);
+                    List<Attributes> attributes = (from p in db.Products
+                                                   join t in db.Type on p.type_id equals t.type_id
+                                                   join c in db.Class on p.class_id equals c.class_id
+                                                   join comp in db.Company on p.company_id equals comp.company_id
+                                                   join a in db.Attributes on p.attribute_id equals a.attribute_id
+                                                   where c.class_id == id && t.type_id == type && comp.company_id == companyId
+                                                   select a).Distinct().ToList();
+                    ViewBag.Attributes = attributes;
+                    ViewBag.companyId = companyId;
 
-                    var PageSpec = pageId != null ? pageId : 0;
-                    int currentPageIdSpec = Convert.ToInt32(PageSpec);
-                    var mater = allProducts.Skip(currentPageIdSpec * 15).Take(15).ToList();
-                    double g = allProducts.Count() / 15.0;
-                    ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
-                    ViewBag.AllProducts = mater;
+
+                    int attribute;
+                    if (attr != "all")
+                    {
+                        attribute = Convert.ToInt32(attr);
+                        IList<Products> allProducts = (from product in db.Products
+                                                       join t in db.Type on product.type_id equals t.type_id
+                                                       join comp in db.Company on product.company_id equals comp.company_id
+                                                       join c in db.Class on product.class_id equals c.class_id
+                                                       join a in db.Attributes on product.attribute_id equals a.attribute_id
+                                                       where
+                                                       c.class_id == id && t.type_id == type && comp.company_id == companyId
+                                                       && a.attribute_id == attribute
+                                                       select product).Distinct().ToList();
+                        var PageSpec = pageId != null ? pageId : 0;
+                        int currentPageIdSpec = Convert.ToInt32(PageSpec);
+                        var mater = allProducts.Skip(currentPageIdSpec * 12).Take(12).ToList();
+                        double g = allProducts.Count() / 12.0;
+                        ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
+                        ViewBag.AllProducts = mater;
+                    }
+                    if (attr == "all")
+                    {
+                        var Page = pageId != null ? pageId : 1;
+                        int currentPageId = Convert.ToInt32(Page);
+
+                        IList<Products> allProducts = (from product in db.Products
+                                                       join t in db.Type on product.type_id equals t.type_id
+                                                       join comp in db.Company on product.company_id equals comp.company_id
+                                                       join c in db.Class on product.class_id equals c.class_id
+                                                       where
+                                                       c.class_id == id && t.type_id == type && comp.company_id == companyId
+                                                       select product).Distinct().ToList();
+
+                        var PageSpec = pageId != null ? pageId : 0;
+                        int currentPageIdSpec = Convert.ToInt32(PageSpec);
+                        var mater = allProducts.Skip(currentPageIdSpec * 12).Take(12).ToList();
+                        double g = allProducts.Count() / 12.0;
+                        ViewBag.pagingLength = g <= 1.0 ? 0 : (int)Math.Ceiling(g);
+                        ViewBag.AllProducts = mater;
+                    }
                 }
+               
             }
             #endregion
             return View();
@@ -386,7 +419,48 @@ namespace Belina.Controllers
             }
             return Json(res, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult getFooter()
+        {
+            IList<Class> classes = (from x in db.Class where x.class_name != "ХТЗ Опрема" && x.class_name != "Водовод" && x.class_name != "Електрика" && x.class_name != "Недефинирано" && x.class_name != "Разно" && x.class_id != 1 select x).Distinct().ToList();
+            Dictionary<String, IList<Belina.Models.Type>> res = new Dictionary<String, IList<Belina.Models.Type>>();
+            IList<Belina.Models.Type> allTypes;
+            for (int i = 0; i < classes.Count;i++ )
+            {
+                int p = Convert.ToInt32(classes[i].class_id);
+                 allTypes = (from products in db.Products
+                                                      join t in db.Type on products.type_id equals t.type_id
+                                                      join c in db.Class on products.class_id equals c.class_id
+                                                      where
+                                                          c.class_id == p
+                                                      select t).Distinct().ToList();
+                res.Add(classes[i].class_id+"#"+classes[i].class_name, allTypes);
+            }
+
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
     }
 }
 
 
+//var randomProduct = (from x in db.Products
+//                               join c in db.Class on x.class_id equals c.class_id
+//                               join t in db.Type on x.type_id equals t.type_id
+//                               join com in db.Company on x.company_id equals com.company_id
+//                               join atr in db.Attributes on x.attribute_id equals atr.attribute_id
+//                               where x.class_id == id
+//                               select
+//                                   new
+//                                   {
+//                                       x.product_id,
+//                                       x.product_name,
+//                                       x.product_image,
+//                                       x.product_description,
+//                                       c.class_name,
+//                                       t.type_name,
+//                                       com.company_name,
+//                                       atr.attribute_name
+//                                   }).ToList();
+//var rand = new Random();
+//var randomPt = randomProduct[rand.Next(randomProduct.Count())];
+//ViewBag.randomProd = new RandomProduct(randomPt.class_name, randomPt.product_id, randomPt.product_name, randomPt.product_image, randomPt.product_description, randomPt.type_name, randomPt.company_name, randomPt.class_name, randomPt.attribute_name);

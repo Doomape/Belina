@@ -14,6 +14,7 @@
     //var random_Product = ViewBag.randomProd;//random elementot od listata
 }
 <style>
+
     #left-container {
         width: 210px;
         float: left;
@@ -104,6 +105,28 @@
                 box-shadow: inset 0 1px 0 #ddd !important;
     }
 
+
+
+    #companies .title-holder {
+        cursor:pointer;
+    }
+
+    #company-holder{
+        display:none;
+    }
+
+    #attributes .title-holder {
+        cursor:pointer;
+    }
+    #attr-holder {
+        display:none;
+    }
+    
+    .plus {
+    font-weight:bold;
+    float: right;
+    margin-right: 15px;
+}
 </style>
 <div id="left-container">
     <div id="Types">
@@ -114,26 +137,44 @@
             @foreach (var item in TypeList)
             {
                 <p>
-                    <a href="/Home/Products?id=@pageId&type=@item.type_id&company=0&attr=all">@item.type_name</a>
+                    <a href="/Home/Products?id=@pageId&type=@item.type_id&company=all&attr=all">@item.type_name</a>
                 </p>
             }
         </div>
     </div>
     <div id="companies">
         <div class="title-holder">
-            <h3>Производител</h3>
+            <h3 style="float:left">Производител</h3>
+            <p class="plus">+</p>
         </div>
         <div id="company-holder">
+            @{
+                int z = 0;
+            }
             @foreach (var company in Companies)
             {
                 if (@typeId != null)
                 {
+                    if (z == 0)
+                    {
+                        <p>
+                             <a href="/Home/Products?id=@pageId&type=@typeId&company=all&attr=all">сите</a>
+                        </p>
+                        z++;
+                    }
                 <p>
                     <a href="/Home/Products?id=@pageId&type=@typeId&company=@company.company_id&attr=all">@company.company_name</a>
                 </p>
                 }
                 else
                 {
+                    if (z == 0)
+                    {
+                        <p>
+                             <a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=all&attr=all">сите</a>
+                        </p>
+                        z++;
+                    }
                 <p>
                     <a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=@company.company_id&attr=all">@company.company_name</a>
                 </p>
@@ -143,7 +184,8 @@
     </div>
     <div id="attributes">
         <div class="title-holder">
-            <h3>Карактеристика</h3>
+            <h3 style="float:left">Карактеристика</h3>
+            <p class="plus">+</p>
         </div>
         <div id="attr-holder">
             @{
@@ -169,11 +211,11 @@
                 {
                     if (i == 0)
                     {
-                        <p><a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=@Companies[0].company_id&attr=all">сите</a></p>
+                        <p><a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=all&attr=all">сите</a></p>
                         i++;
                     }
                     <p>
-                        <a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=@Companies[0].company_id&attr=@attr.attribute_id">@attr.attribute_name</a>
+                        <a href="/Home/Products?id=@pageId&type=@TypeList[0].type_id&company=all&attr=@attr.attribute_id">@attr.attribute_name</a>
 
                     </p>
                 }
@@ -264,38 +306,43 @@
             });
         }
 
-        if (str.split("&")[2].split("=")[1] == 0) {
-            $("#companies a:first").addClass("highlightTypes");
+        if (str.split("&")[2].split("=")[1] == "all") {
+            $("#companies a:first").addClass("highlightCompany");
+            debugger;
         }
         else {
             $("#companies a").each(function () {
                 if (this.href.toLowerCase().split("&")[2].split("=")[1] == str.split("&")[2].split("=")[1]) {
-                    // debugger;
-                    $("#companies a.highlightTypes").removeClass("highlightTypes");
-                    $(this).addClass("highlightTypes");
+                     debugger;
+                    $("#companies a.highlightCompany").removeClass("highlightCompany");
+                    $(this).addClass("highlightCompany");
+                    $("#company-holder").css("display", "block");
+                    $("#companies .plus").text("-");
                 }
             });
         }
 
         if (str.split("&")[3].split("=")[1] == "all") {
-            $("#attributes a:first").addClass("highlightTypes");
+            $("#attributes a:first").addClass("highlightAttr");
         }
         else {
             $("#attributes a").each(function () {
                 if (this.href.toLowerCase().split("&")[3].split("=")[1] == str.split("&")[3].split("=")[1]) {
-                    $("#attributes a.highlightTypes").removeClass("highlightTypes");
-                    $(this).addClass("highlightTypes");
+                    $("#attributes a.highlightAttr").removeClass("highlightAttr");
+                    $(this).addClass("highlightAttr");
+                    $("#attr-holder").css("display","block");
+                    $("#attributes .plus").text("-");
                 }
             });
         }
-        debugger;
+      //  debugger;
         if (str.split("&")[4] != undefined) {
             if (str.split("&")[4].split("=")[1] == "0") {
                 $("#paging a:first").addClass("pagingHightlight");
             }
             else {
                 $("#paging a").each(function () {
-                    debugger;
+                //    debugger;
                     if (this.href.toLowerCase().split("&")[4].split("=")[1] == str.split("&")[4].split("=")[1]) {
                         $("#paging a.pagingHightlight").removeClass("pagingHightlight");
                         $(this).addClass("pagingHightlight");
@@ -303,6 +350,34 @@
                 });
             }
         }
+        
+
+        $("#companies .title-holder").click(function () {
+            if ($("#company-holder").is(':visible')) {
+                $("#company-holder").slideUp("slow", function () {
+                    $("#companies .plus").text("+");
+                });
+            }
+            else {
+                $("#company-holder").slideDown("slow", function () {
+                    $("#companies .plus").text("-");
+                });
+            }  
+        });
+
+        $("#attributes .title-holder").click(function () {
+            if ($("#attr-holder").is(':visible')) {
+                $("#attr-holder").slideUp("slow", function () {
+                    $("#attributes .plus").text("+");
+                });
+            }
+            else {
+                $("#attr-holder").slideDown("slow", function () {
+                    $("#attributes .plus").text("-");
+                });
+            }
+        });
+
     });
 
 

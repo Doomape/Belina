@@ -53,64 +53,13 @@
     <div id="footer">
         <div id="back-top"><a href='#top'>back to top</a></div>
         <div id="menu-bottom">
-            <div class="classes-bottom">
-                <h3>Бои и лакови</h3>
-                <p>Внатрешни ѕидови</p>
-                <p>Дрво и метал</p>
-                <p>Микс систем</p>
-                <p>Надворешни ѕидови</p>
-                <p>Подлоги</p>
-                <p>Премази за камен,бетон и асфалт</p>
-                <p>Разредувачи</p>
-            </div>
-            <div class="classes-bottom">
-                <h3>Градежништво</h3>
-                <p>Лепаци</p>
-                <p>Пасти</p>
-                <p>Термо изолација-фасади</p>
-            </div>
-            <div class="classes-bottom">
-                <h3>Алати</h3>
-                <p>Земјоделски алат
-                <p>Молерски алат и прибор</p>
-                <p>Прибор за животни и стока</p>
-                <p>Униор алат</p>
-            </div>
-            <div class="classes-bottom">
-                <h3>Железарија</h3>
-                <p>Јажиња</p>
-                <p>Ланци</p>
-            </div>
-            <div class="classes-bottom">
-                <h3>Автокозметика</h3>
-                <p>Авто шампони</p>
-                <p>Гуми</p>
-                <p>Декоратива</p>
-                <p>Дестилирана вода</p>
-                <p>Зимски средства</p>
-                <p>Летни средства</p>
-                <p>Пасти</p>
-                <p>Професионал</p>
-                <p>Спрејови</p>
-                <p>Средства</p>
-                <p>Смајли</p>
-                <p>Технички производи</p>
-            </div>
-            <div class="classes-bottom">
-                <h3>Машини</h3>
-                <p>Земјоделска механизација</p>
-            </div>
-            <div class="classes-bottom">
-                <h3>Козметика</h3>
-                <p>Фризерска опрема</p>
-            </div>
-
+           
         </div>
     </div>
     <div id="info">
-            <p>phone</p>
-            <p>email</p>
-            <p>address</p>
+            <p>+389 02/2700 999</p>
+            <p>belinaljupce@belina.com.mk</p>
+            <p>ул.Ратко Митровиќ бб. 1000 Скопје</p>
     </div>
    
     <script type="text/javascript">
@@ -125,9 +74,26 @@
                 data: {},
                 success: function (result) {
                     for (n = 0; n < result.length; n++) {
-                        $('#menu-hypers').append('<li><a href="/Home/Products?id=' + result[n].class_id + '&type=0&company=0&attr=all">'
+                        $('#menu-hypers').append('<li><a href="/Home/Products?id=' + result[n].class_id + '&type=0&company=all&attr=all">'
                                                  + result[n].class_name + '</a></li>');
                     }
+                }
+            });
+            $.ajax({
+                url: "/Home/getFooter",
+                type: "GET",
+                data: {},
+                success: function (result) {        
+                    $.each(result, function (index, value) {
+                        $("#menu-bottom").append('<div id="' + index.split("#")[1].replace(/\s+/g, '') + '" class="classes-bottom">'
+                                                    + '<h3><a href="/Home/Products?id=' + index.split("#")[0] + '&type=0&company=all&attr=all">' + index.split("#")[1] + '</a></h3>'
+                                                    +'</div>');
+                        for (i = 0; i < value.length; i++) {
+                            $("#" + index.split("#")[1].replace(/\s+/g, '')).append(
+                                '<p><a href="/Home/Products?id=' + index.split("#")[0] + '&type=' + value[i].type_id + '&company=all&attr=all">' + value[i].type_name + '</a></p>'
+                                );
+                        }
+                    });
                 }
             });
             $("a[href='#top']").click(function () {

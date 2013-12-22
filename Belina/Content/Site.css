@@ -67,7 +67,7 @@ table {
 
 
 body {
-    background: #e6e7e7;
+    background: white;
 }
 
 #header-top {
@@ -202,11 +202,7 @@ body {
             color: black;
         }
 
-#info {
-    width: 1024px;
-    min-width: 1024px;
-    margin: auto;
-}
+
 
 #home-page-products {
     margin: auto;
@@ -357,26 +353,44 @@ body {
 .classes-bottom h3 {
     text-transform: uppercase;
 }
+.classes-bottom h3 a{
+    text-transform: uppercase;
+    color:black;
+}
+.classes-bottom h3 a:hover{
+   
+    color:#97bf4d;
+}
 
 .classes-bottom {
     float: left;
     line-height: 15px;
     font-size: 13px;
     margin-top: 18px;
-    margin-right: 37px;
+    margin-right: 19px;
     color: #222;
+
 }
 
     .classes-bottom p {
-        font-size: 9px;
+        font-size: 11px;
     }
-
+        .classes-bottom p a{
+            color:black;
+        }
+         .classes-bottom p a:hover{
+            color:#97bf4d;
+        }
 #info {
     width: 100%;
     height: 60px;
     background: #97bf4d;
     text-align: center;
+
 }
+    #info p {
+        font-size: 14px;
+    }
 
 
 .top-product-holder {
