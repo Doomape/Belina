@@ -50,22 +50,6 @@ table {
 }
 
 
-::-webkit-scrollbar {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    background-color: #F5F5F5;
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #F5F5F5;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #97bf4d;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
-}
-
-
 body {
     background: white;
 }
@@ -156,8 +140,6 @@ body {
             font-weight: bold;
         }
 
-#main-content {
-}
 
 #footer {
     width: 100%;
@@ -407,22 +389,23 @@ body {
 .bottom-product-holder {
     height: 25px;
 }
+
+
 /*products*/
-
-.product-page-product {
-    background: white;
-    float: left;
-    margin-bottom: 20px;
-    width: 255px;
-    height: 200px;
-    border: 1px solid #ebebeb;
-    border-radius: 7px;
-    -webkit-box-shadow: 0px 2px 15px #ebebeb;
-    -moz-box-shadow: 0px 2px 15px #ebebeb;
-    box-shadow: 0px 2px 15px #ebebeb;
-}
-
-.product-top-product-holder {
+ @media screen and (min-width: 0px) and (max-width: 1580px) {
+    .product-page-product {
+        background: white;
+        float: left;
+        margin-bottom: 20px;
+        width: 255px;
+        height: 200px;
+        border: 1px solid #ebebeb;
+        border-radius: 7px;
+        -webkit-box-shadow: 0px 2px 15px #ebebeb;
+        -moz-box-shadow: 0px 2px 15px #ebebeb;
+        box-shadow: 0px 2px 15px #ebebeb;
+    }
+    .product-top-product-holder {
     height: 36px;
     margin-top: 5px;
     margin-left: 8px;
@@ -462,43 +445,107 @@ body {
     line-height: 17px;
     padding: 1px 1px 1px 3px;
 }
+}
+@media screen and (min-width: 1581px) and (max-width: 4000px) {
+        .product-page-product {
+        background: white;
+        float: left;
+        margin-bottom: 20px;
+        width: 241px;
+        height: 200px;
+        border: 1px solid #ebebeb;
+        border-radius: 7px;
+        -webkit-box-shadow: 0px 2px 15px #ebebeb;
+        -moz-box-shadow: 0px 2px 15px #ebebeb;
+        box-shadow: 0px 2px 15px #ebebeb;
+    }
+        .product-top-product-holder {
+    height: 36px;
+    margin-top: 5px;
+    margin-left: 8px;
+}
+
+.product-middle-product-holder {
+    margin-top: 10px;
+    height: 118px;
+}
+
+.product-bottom-product-holder {
+    height: 25px;
+}
+
+.product-product-description {
+    width: 126px;
+    height: 110px;
+    word-wrap: break-word;
+    font-size: 12px;
+    font-weight: 300;
+    overflow: hidden;
+    float: left;
+    margin-left: 7px;
+}
+
+    .product-product-description p {
+        font-family: Arial;
+        font-size: 11px;
+    }
+
+.product-product-title {
+    font-size: 13px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    color: black;
+    width: 200px;
+    line-height: 17px;
+    padding: 1px 1px 1px 3px;
+}
+}
+
 /*end*/
 .title-holder {
-    /* IE10 Consumer Preview */
+    /*/* IE10 Consumer Preview 
     background-image: -ms-linear-gradient(bottom, #E2FAE6 0%, #FAFEFB 100%);
-    /* Mozilla Firefox */
+    /* Mozilla Firefox 
     background-image: -moz-linear-gradient(bottom, #E2FAE6 0%, #FAFEFB 100%);
-    /* Opera */
+    /* Opera 
     background-image: -o-linear-gradient(bottom, #E2FAE6 0%, #FAFEFB 100%);
-    /* Webkit (Safari/Chrome 10) */
+    /* Webkit (Safari/Chrome 10) 
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #E2FAE6), color-stop(1, #FAFEFB));
-    /* Webkit (Chrome 11+) */
+    /* Webkit (Chrome 11+) 
     background-image: -webkit-linear-gradient(bottom, #E2FAE6 0%, #FAFEFB 100%);
-    /* W3C Markup, IE10 Release Preview */
+    /* W3C Markup, IE10 Release Preview 
     background-image: linear-gradient(to top, #E2FAE6 0%, #FAFEFB 100%);
     height: 35px;
     line-height: 35px;
-    border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;*/
+    height: 30px;
+    line-height: 30px;
 }
 
     .title-holder h3 {
         padding-left: 10px;
-        font-family: 'Myriad Pro';
+       /* font-family: 'Myriad Pro';*/
+        color: #999;
+        overflow: hidden;
+        white-space: nowrap;
+        word-wrap: normal;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
     }
 
 #type-holder {
-    /* IE10 Consumer Preview */
+    /* IE10 Consumer Preview 
     background-image: -ms-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Mozilla Firefox */
+    /* Mozilla Firefox 
     background-image: -moz-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Opera */
+    /* Opera 
     background-image: -o-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Webkit (Safari/Chrome 10) */
+    /* Webkit (Safari/Chrome 10) 
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #F6F6F6), color-stop(1, #FEFEFE));
-    /* Webkit (Chrome 11+) */
+    /* Webkit (Chrome 11+) 
     background-image: -webkit-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* W3C Markup, IE10 Release Preview */
-    background-image: linear-gradient(to top, #F6F6F6 0%, #FEFEFE 100%);
+    /* W3C Markup, IE10 Release Preview 
+    background-image: linear-gradient(to top, #F6F6F6 0%, #FEFEFE 100%);*/
     padding-left: 3px;
     padding-right: 3px;
 }
@@ -511,10 +558,11 @@ body {
         #type-holder p a {
             padding-left: 20px;
             display: block;
-            color: #696969;
             padding-top: 5px;
             padding-bottom: 5px;
             border-bottom: 1px solid #ebebeb;
+            font-size: 12px;
+            color: #555;
         }
 
             #type-holder p a:hover {
@@ -523,18 +571,18 @@ body {
             }
 
 #company-holder {
-    /* IE10 Consumer Preview */
+    /* IE10 Consumer Preview 
     background-image: -ms-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Mozilla Firefox */
+    /* Mozilla Firefox
     background-image: -moz-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Opera */
+    /* Opera 
     background-image: -o-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Webkit (Safari/Chrome 10) */
+    /* Webkit (Safari/Chrome 10) 
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #F6F6F6), color-stop(1, #FEFEFE));
-    /* Webkit (Chrome 11+) */
+    /* Webkit (Chrome 11+) 
     background-image: -webkit-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* W3C Markup, IE10 Release Preview */
-    background-image: linear-gradient(to top, #F6F6F6 0%, #FEFEFE 100%);
+    /* W3C Markup, IE10 Release Preview 
+    background-image: linear-gradient(to top, #F6F6F6 0%, #FEFEFE 100%);*/
     padding-left: 3px;
     padding-right: 3px;
 }
@@ -547,10 +595,11 @@ body {
         #company-holder p a {
             padding-left: 20px;
             display: block;
-            color: #696969;
             padding-top: 5px;
             padding-bottom: 5px;
             border-bottom: 1px solid #ebebeb;
+            font-size: 12px;
+            color: #555;
         }
 
             #company-holder p a:hover {
@@ -559,18 +608,18 @@ body {
             }
 
 #attr-holder {
-    /* IE10 Consumer Preview */
+    /* IE10 Consumer Preview
     background-image: -ms-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Mozilla Firefox */
+    /* Mozilla Firefox 
     background-image: -moz-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Opera */
+    /* Opera 
     background-image: -o-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* Webkit (Safari/Chrome 10) */
+    /* Webkit (Safari/Chrome 10)
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #F6F6F6), color-stop(1, #FEFEFE));
-    /* Webkit (Chrome 11+) */
+    /* Webkit (Chrome 11+) 
     background-image: -webkit-linear-gradient(bottom, #F6F6F6 0%, #FEFEFE 100%);
-    /* W3C Markup, IE10 Release Preview */
-    background-image: linear-gradient(to top, #F6F6F6 0%, #FEFEFE 100%);
+    /* W3C Markup, IE10 Release Preview 
+    background-image: linear-gradient(to top, #F6F6F6 0%, #FEFEFE 100%);*/
     padding-left: 3px;
     padding-right: 3px;
 }
@@ -581,12 +630,13 @@ body {
     }
 
         #attr-holder p a {
-            display: block;
             padding-left: 20px;
-            color: #696969;
+            display: block;
             padding-top: 5px;
             padding-bottom: 5px;
             border-bottom: 1px solid #ebebeb;
+            font-size: 12px;
+            color: #555;
         }
 
             #attr-holder p a:hover {
@@ -781,3 +831,21 @@ button.submit {
 
 /*End of Contact form*/
 
+
+::-webkit-scrollbar {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+-webkit-box-shadow: inset 0 0 1px transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #97bf4d;
+}

@@ -15,31 +15,59 @@
 }
 <style>
 
-    #left-container {
-        width: 210px;
-        float: left;
-        margin-top: 50px;
-        margin-bottom:10px;
+     /*@@media screen and (min-width: 100px) and (max-width: 3600px)*/
+
+    @@media screen and (min-width: 0px) and (max-width: 1580px) {
+        #left-container {
+            width: 210px;
+            float: left;
+            margin-top: 50px;
+            margin-bottom: 10px;
+        }
+        #products {
+            float: right;
+            width: 810px;
+            margin-top: 50px;
+            min-height: 600px;
+            position: relative;
+         }
+            .margin-left {
+             margin-left: 13px;
+        }
+            
+        #main-content {
+            width: 1024px;
+            margin: auto;
+            min-height: 750px;
+        }
+    }
+    @@media screen and (min-width: 1581px) and (max-width: 4000px) {
+
+        #left-container {
+            width: 210px;
+            float: left;
+            margin-top: 52px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+        #products {
+            float: left;
+            width: 1024px;
+            margin-top: 50px;
+            min-height: 600px;
+        }
+        .margin-left {
+            margin-right: 13px;
+        }
+        
+        #main-content {
+            width: 1470px;
+            margin: auto;
+            min-height: 750px;
+        }
     }
 
-    #products {
-        float: right;
-        width: 810px;
-        margin-top: 50px;
-        border-left: 2px solid #E3E3E3;
-        min-height: 600px;
-        position: relative;
-    }
-
-    #main-content {
-        width: 1024px;
-        margin: auto;
-        min-height: 750px;
-    }
-
-    .margin-left {
-        margin-left: 13px;
-    }
 
     .highlightTypes {
         background-color: #547b32;
@@ -113,6 +141,8 @@
 
     #company-holder{
         display:none;
+        max-height: 200px;
+        overflow: auto;
     }
 
     #attributes .title-holder {
@@ -120,12 +150,15 @@
     }
     #attr-holder {
         display:none;
+        max-height: 200px;
+        overflow: auto;
     }
     
     .plus {
-    font-weight:bold;
+    font-weight: 400;
     float: right;
     margin-right: 15px;
+    font-size: 14px;
 }
 </style>
 <div id="left-container">
@@ -308,12 +341,10 @@
 
         if (str.split("&")[2].split("=")[1] == "all") {
             $("#companies a:first").addClass("highlightCompany");
-            debugger;
         }
         else {
             $("#companies a").each(function () {
                 if (this.href.toLowerCase().split("&")[2].split("=")[1] == str.split("&")[2].split("=")[1]) {
-                     debugger;
                     $("#companies a.highlightCompany").removeClass("highlightCompany");
                     $(this).addClass("highlightCompany");
                     $("#company-holder").css("display", "block");
@@ -335,14 +366,14 @@
                 }
             });
         }
-      //  debugger;
+        //  debugger;
         if (str.split("&")[4] != undefined) {
             if (str.split("&")[4].split("=")[1] == "0") {
                 $("#paging a:first").addClass("pagingHightlight");
             }
             else {
                 $("#paging a").each(function () {
-                //    debugger;
+                    //    debugger;
                     if (this.href.toLowerCase().split("&")[4].split("=")[1] == str.split("&")[4].split("=")[1]) {
                         $("#paging a.pagingHightlight").removeClass("pagingHightlight");
                         $(this).addClass("pagingHightlight");
@@ -361,6 +392,7 @@
             else {
                 $("#company-holder").slideDown("slow", function () {
                     $("#companies .plus").text("-");
+
                 });
             }  
         });
@@ -380,7 +412,21 @@
 
     });
 
+    if (sessionStorage["attrPosition"] == undefined) {
+        sessionStorage.setItem("attrPosition", 0);
+    }
+    if (sessionStorage["companyPosition"] == undefined) {
+        sessionStorage.setItem("companyPosition", 0);
+    }
 
+    $('#attr-holder, #company-holder').bind('mousewheel DOMMouseScroll', function (e) {
+        var e0 = e.originalEvent,
+        delta = e0.wheelDelta || -e0.detail;
+        sessionStorage.setItem("attrPosition", $("#attr-holder").scrollTop());
+        sessionStorage.setItem("companyPosition", $("#company-holder").scrollTop());
+        this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+        e.preventDefault();
+    });
 
     //if (sessionStorage["scrollPostion"] == undefined) {
     //    sessionStorage.setItem("scrollPostion", 0);
@@ -422,4 +468,10 @@
     //    sessionStorage["scrollPostion"] = $('#left-container').scrollTop();
     //});
     // 
+    $(window).load(function () {
+        var scrollA = sessionStorage['attrPosition'];
+        var scrollC = sessionStorage['companyPosition'];
+        $('#attr-holder').scrollTop(scrollA);
+        $('#company-holder').scrollTop(scrollC);
+    });
 </script>
